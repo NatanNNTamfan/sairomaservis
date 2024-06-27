@@ -55,6 +55,14 @@ if (isset($_POST['add_product'])) {
             document.getElementById('hargabeli').addEventListener('keyup', function(e) {
                 this.value = formatRupiah(this.value, 'Rp ');
             });
+
+            document.getElementById('hargajual').addEventListener('blur', function(e) {
+                this.value = formatRupiah(this.value, 'Rp ');
+            });
+
+            document.getElementById('hargabeli').addEventListener('blur', function(e) {
+                this.value = formatRupiah(this.value, 'Rp ');
+            });
         </script>
         <div class="form-group">
             <label for="search">Search:</label>

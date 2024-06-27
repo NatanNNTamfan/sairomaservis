@@ -76,6 +76,13 @@ $conn->close();
             document.getElementById('edit_hargabeli').addEventListener('keyup', function(e) {
                 this.value = formatRupiah(this.value, 'Rp ');
             });
+            document.getElementById('edit_hargajual').addEventListener('blur', function(e) {
+                this.value = formatRupiah(this.value, 'Rp ');
+            });
+
+            document.getElementById('edit_hargabeli').addEventListener('blur', function(e) {
+                this.value = formatRupiah(this.value, 'Rp ');
+            });
         </script>
         <div class="form-group">
             <label for="name">Name:</label>
