@@ -19,7 +19,14 @@
                 <label for="end_date">End Date:</label>
                 <input type="date" class="form-control" id="end_date" name="end_date" value="<?php echo isset($_GET['end_date']) ? $_GET['end_date'] : ''; ?>">
             </div>
-            <div class="form-group col-md-2">
+            <div class="form-group col-md-3">
+                <label for="start_time">Start Time:</label>
+                <input type="time" class="form-control" id="start_time" name="start_time" value="<?php echo isset($_GET['start_time']) ? $_GET['start_time'] : '00:00'; ?>">
+            </div>
+            <div class="form-group col-md-3">
+                <label for="end_time">End Time:</label>
+                <input type="time" class="form-control" id="end_time" name="end_time" value="<?php echo isset($_GET['end_time']) ? $_GET['end_time'] : '23:59'; ?>">
+            </div>
                 <label>&nbsp;</label>
                 <button type="submit" class="btn btn-primary btn-block">Filter</button>
             </div>
@@ -42,10 +49,12 @@
             <?php
             $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : '1970-01-01';
             $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : date('Y-m-d');
+            $start_time = isset($_GET['start_time']) ? $_GET['start_time'] : '00:00:00';
+            $end_time = isset($_GET['end_time']) ? $_GET['end_time'] : '23:59:59';
             $sql = "SELECT p.merk, p.name, s.quantity, s.price, s.discount, s.total, DATE(s.date) as date, TIME(s.date) as time, (s.price - p.hargabeli) * s.quantity - s.discount as profit 
                     FROM sales s 
                     JOIN products p ON s.product_id = p.id 
-                    WHERE s.date BETWEEN '$start_date' AND '$end_date'
+                    WHERE s.date BETWEEN '$start_date $start_time' AND '$end_date $end_time'
                     ORDER BY s.date DESC";
             $result = $conn->query($sql);
 
