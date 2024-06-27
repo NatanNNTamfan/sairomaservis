@@ -203,8 +203,8 @@ if (isset($_POST['add_product'])) {
         </div>
     </div>
 
-    <form id="addProductForm" onsubmit="return validateForm()">
-        <div class="form-group">
+    <form id="addProductForm" onsubmit="return addProduct(event)">
+    <div class="form-group">
             <label for="name">Name:</label>
             <input type="text" class="form-control" id="name" name="name" required autocomplete="off">
         </div>
@@ -268,31 +268,50 @@ if (isset($_POST['add_product'])) {
                 <option value="Wiko">Wiko</option>
             </select>
         </div>
-        <button type="button" class="btn btn-primary" onclick="addProduct()">Add Product</button>
-    </form>
+        <button type="submit" class="btn btn-primary">Add Product</button>
+        </form>
 </div>
 </div>
 
 <script>
-    function addProduct() {
-        const form = document.getElementById('addProductForm');
-        const formData = new FormData(form);
+    function addProduct(event) {
+    event.preventDefault(); // Prevent default form submission
 
-        fetch('process_add_product.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('addProductForm').reset();
-            Swal.fire({
-                icon: 'success',
-                title: 'Success',
-                text: data
-            }).then(function() {
-                window.location = 'inventory.php';
-            });
-        })
-        .catch(error => console.error('Error:', error));
+    if (!validateForm()) {
+        return false;
     }
+
+    const form = document.getElementById('addProductForm');
+    const formData = new FormData(form);
+
+    fetch('process_add_product.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        try {
+            const result = JSON.parse(data);
+            Swal.fire({
+                icon: result.icon,
+                title: result.title,
+                text: result.text
+            }).then(function() {
+                if (result.icon === 'success') {
+                    window.location = 'inventory.php';
+                }
+            });
+        } catch (e) {
+            console.error('Error parsing JSON:', e);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'An unexpected error occurred'
+            });
+        }
+    })
+    .catch(error => console.error('Error:', error));
+
+    return false; // Prevent default form submission
+}
 </script>
