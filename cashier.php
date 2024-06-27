@@ -43,15 +43,36 @@
                         .then(response => response.text())
                         .then(text => {
                             try {
-                                const data = JSON.parse(text);
-                                productSelect.innerHTML = '<option value="">Select Product</option>'; // Clear previous options
-                                data.forEach(product => {
-                                    var option = document.createElement('option');
-                                    option.value = product.id;
-                                    option.text = product.merk + ' ' + product.name + ' ' + product.kategori;
-                                    productSelect.appendChild(option);
-                                });
+                                if (isValidJSON(text)) {
+                                    const data = JSON.parse(text);
+                                    productSelect.innerHTML = '<option value="">Select Product</option>'; // Clear previous options
+                                    data.forEach(product => {
+                                        var option = document.createElement('option');
+                                        option.value = product.id;
+                                        option.text = product.merk + ' ' + product.name + ' ' + product.kategori;
+                                        productSelect.appendChild(option);
+                                    });
+                                } else {
+                                    console.error('Invalid JSON:', text);
+                                }
                             } catch (error) {
+                                console.error('Error parsing JSON:', error, text);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching products:', error);
+                            return response.text().then(text => console.log('Raw response text:', text));
+                        });
+                }
+            });
+
+            function isValidJSON(text) {
+                try {
+                    JSON.parse(text);
+                    return true;
+                } catch (error) {
+                    return false;
+                }
                                 console.error('Error parsing JSON:', error, text);
                             }
                         })
