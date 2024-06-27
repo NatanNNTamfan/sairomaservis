@@ -55,7 +55,10 @@
                                 console.error('Error parsing JSON:', error, text);
                             }
                         })
-                        .catch(error => console.error('Error fetching products:', error));
+                        .catch(error => {
+                            console.error('Error fetching products:', error);
+                            response.text().then(text => console.log('Raw response text:', text));
+                        });
                 }
             });
         </script>
