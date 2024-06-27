@@ -1,6 +1,6 @@
 <?php include 'config.php'; ?>
 
-// Add product
+<!-- Add product -->
 if (isset($_POST['add_product'])) {
     $name = $_POST['name'];
     $price = $_POST['price'];
@@ -14,7 +14,7 @@ if (isset($_POST['add_product'])) {
     }
 }
 
-// Display products
+<!-- Display products -->
 $sql = "SELECT * FROM products";
 $result = $conn->query($sql);
 

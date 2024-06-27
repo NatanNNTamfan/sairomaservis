@@ -1,6 +1,6 @@
 <?php include 'config.php'; ?>
 
-// Display financial report
+<!-- Display financial report -->
 $sql = "SELECT SUM(total_price) as total_revenue FROM sales";
 $result = $conn->query($sql);
 

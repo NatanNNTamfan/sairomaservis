@@ -18,11 +18,11 @@ $total_sales = $result->fetch_assoc()['total_sales'];
 
 $conn->close();
 ?>
-
-<?php include 'config.php'; ?>
+<div class="container">
     <h1>Dashboard Overview</h1>
     <p>Total Stock: <?php echo $total_stock; ?></p>
     <p>Total Transactions: <?php echo $total_transactions; ?></p>
     <p>Total Sales: <?php echo $total_sales; ?></p>
+</div>
 </body>
 </html>
