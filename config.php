@@ -2,7 +2,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "pos_db";
+$dbname = "sairoma";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
