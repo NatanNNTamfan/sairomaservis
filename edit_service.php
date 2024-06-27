@@ -40,7 +40,7 @@ if (isset($_POST['edit_service'])) {
     $service_products = [];
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
-            $service_products[] = $row;
+            $service_products[] = $row['product_id'];
         }
     }
 
