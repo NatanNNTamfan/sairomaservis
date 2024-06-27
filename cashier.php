@@ -91,31 +91,6 @@
     </form>
 </div>
 <script>
-    document.getElementById('category').addEventListener('change', function() {
-        var category = this.value;
-        var productSelect = document.getElementById('product_id');
-        productSelect.innerHTML = '<option value="">Select Product</option>';
-
-        if (category) {
-            fetch('get_product.php?category=' + category)
-                .then(response => response.text())
-                .then(text => {
-                    try {
-                        const data = JSON.parse(text);
-                        productSelect.innerHTML = '<option value="">Select Product</option>'; // Clear previous options
-                        data.forEach(product => {
-                            var option = document.createElement('option');
-                            option.value = product.id;
-                            option.text = product.merk + ' ' + product.name + ' ' + product.kategori;
-                            productSelect.appendChild(option);
-                        });
-                    } catch (error) {
-                        console.error('Error parsing JSON:', error, text);
-                    }
-                })
-                .catch(error => console.error('Error fetching products:', error));
-        }
-    });
 </script>
 </body>
 </html>

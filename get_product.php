@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: application/json');
 include 'config.php';
 
 if (isset($_GET['id']) || isset($_GET['category'])) {
