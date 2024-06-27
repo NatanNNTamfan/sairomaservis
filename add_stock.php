@@ -8,15 +8,27 @@ if (isset($_POST['id']) && isset($_POST['add_stock'])) {
     // Update stock
     $sql = "UPDATE products SET stock = stock + $add_stock WHERE id='$id'";
     if ($conn->query($sql) === TRUE) {
-        echo "Stock updated successfully";
+        echo "<script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Stock updated successfully'
+                }).then(function() {
+                    window.location = 'inventory.php';
+                });
+              </script>";
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        echo "<script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error: " . $sql . "<br>" . $conn->error . "'
+                }).then(function() {
+                    window.location = 'inventory.php';
+                });
+              </script>";
     }
 }
 
 $conn->close();
-
-// Redirect back to the inventory page
-header("Location: inventory.php");
-exit();
 ?>

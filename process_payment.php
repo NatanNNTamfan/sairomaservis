@@ -29,19 +29,49 @@ if (isset($_POST['products'])) {
                     $stmt->bind_param("ii", $new_stock, $product_id);
                     $stmt->execute();
                 } else {
-                    echo "<div class='alert alert-danger'>Error: " . $stmt->error . "</div>";
+                    echo "<script>
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Error: " . $stmt->error . "'
+                            }).then(function() {
+                                window.location = 'cashier.php';
+                            });
+                          </script>";
                 }
             } else {
-                echo "<div class='alert alert-warning'>Not enough stock for product ID: $product_id</div>";
+                echo "<script>
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Warning',
+                            text: 'Not enough stock for product ID: $product_id'
+                        }).then(function() {
+                            window.location = 'cashier.php';
+                        });
+                      </script>";
             }
         } else {
-            echo "<div class='alert alert-danger'>Product not found for product ID: $product_id</div>";
+            echo "<script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Product not found for product ID: $product_id'
+                    }).then(function() {
+                        window.location = 'cashier.php';
+                    });
+                  </script>";
         }
     }
 
-    echo "<div class='alert alert-success'>Payment processed successfully.</div>";
+    echo "<script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Payment processed successfully.'
+            }).then(function() {
+                window.location = 'cashier.php';
+            });
+          </script>";
 }
 $conn->close();
-header("Location: cashier.php");
-exit();
 ?>

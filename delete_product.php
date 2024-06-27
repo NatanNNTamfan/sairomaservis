@@ -11,15 +11,27 @@ if (isset($_POST['id'])) {
     // Delete product
     $sql = "DELETE FROM products WHERE id='$id'";
     if ($conn->query($sql) === TRUE) {
-        echo "Product deleted successfully";
+        echo "<script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Product deleted successfully'
+                }).then(function() {
+                    window.location = 'inventory.php';
+                });
+              </script>";
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        echo "<script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error: " . $sql . "<br>" . $conn->error . "'
+                }).then(function() {
+                    window.location = 'inventory.php';
+                });
+              </script>";
     }
 }
 
 $conn->close();
-
-// Redirect back to the inventory page
-header("Location: inventory.php");
-exit();
 ?>

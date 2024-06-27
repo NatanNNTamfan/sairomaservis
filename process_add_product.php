@@ -13,20 +13,50 @@ if (isset($_POST['name']) && isset($_POST['hargabeli']) && isset($_POST['stock']
     $check_result = $conn->query($check_sql);
 
     if ($check_result->num_rows > 0) {
-        echo "<div class='alert alert-warning'>Product already exists</div>";
+        echo "<script>
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Warning',
+                    text: 'Product already exists'
+                }).then(function() {
+                    window.location = 'inventory.php';
+                });
+              </script>";
     } else {
         $sql = "INSERT INTO products (name, hargabeli, stock, kategori, merk) VALUES ('$name', '$hargabeli', '$stock', '$kategori', '$merk')";
         if ($conn->query($sql) === TRUE) {
-            echo "<div class='alert alert-success'>New product added successfully</div>";
+            echo "<script>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'New product added successfully'
+                    }).then(function() {
+                        window.location = 'inventory.php';
+                    });
+                  </script>";
         } else {
-            echo "<div class='alert alert-danger'>Error: " . $conn->error . "</div>";
+            echo "<script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Error: " . $conn->error . "'
+                    }).then(function() {
+                        window.location = 'inventory.php';
+                    });
+                  </script>";
         }
     }
 } else {
-    echo "<div class='alert alert-warning'>All fields are required</div>";
+    echo "<script>
+            Swal.fire({
+                icon: 'warning',
+                title: 'Warning',
+                text: 'All fields are required'
+            }).then(function() {
+                window.location = 'inventory.php';
+            });
+          </script>";
 }
 
 $conn->close();
-header("Location: inventory.php");
-exit();
 ?>

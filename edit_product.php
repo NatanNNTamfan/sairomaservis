@@ -27,14 +27,26 @@ if (isset($_POST['edit_product'])) {
     // Update product
     $sql = "UPDATE products SET name='$name', hargabeli='$hargabeli', stock='$stock', kategori='$kategori', merk='$merk' WHERE id='$id'";
     if ($conn->query($sql) === TRUE) {
-        echo "Product updated successfully";
+        echo "<script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Product updated successfully'
+                }).then(function() {
+                    window.location = 'inventory.php';
+                });
+              </script>";
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        echo "<script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error: " . $sql . "<br>" . $conn->error . "'
+                }).then(function() {
+                    window.location = 'inventory.php';
+                });
+              </script>";
     }
-
-    // Redirect back to the inventory page
-    header("Location: inventory.php");
-    exit();
 }
 
 $conn->close();
