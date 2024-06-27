@@ -35,13 +35,14 @@
                 <th>Total</th>
                 <th>Profit</th>
                 <th>Date</th>
+                <th>Time</th>
             </tr>
         </thead>
         <tbody>
             <?php
             $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : '1970-01-01';
             $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : date('Y-m-d');
-            $sql = "SELECT p.merk, p.name, s.quantity, s.price, s.discount, s.total, s.date, (s.price - p.hargabeli) * s.quantity - s.discount as profit 
+            $sql = "SELECT p.merk, p.name, s.quantity, s.price, s.discount, s.total, DATE(s.date) as date, TIME(s.date) as time, (s.price - p.hargabeli) * s.quantity - s.discount as profit 
                     FROM sales s 
                     JOIN products p ON s.product_id = p.id 
                     WHERE s.date BETWEEN '$start_date' AND '$end_date'
@@ -58,6 +59,7 @@
                     echo "<td>Rp " . number_format($row["total"], 0, ',', '.') . "</td>";
                     echo "<td>Rp " . number_format($row["profit"], 0, ',', '.') . "</td>";
                     echo "<td>" . $row["date"] . "</td>";
+                    echo "<td>" . $row["time"] . "</td>";
                     echo "</tr>";
                 }
             } else {
