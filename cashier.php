@@ -18,32 +18,6 @@
             </select>
         </div>
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                var productSelect = document.getElementById('product_id');
-                fetch('get_product.php')
-                    .then(response => response.text())
-                    .then(text => {
-                        try {
-                            if (isValidJSON(text)) {
-                                const data = JSON.parse(text);
-                                productSelect.innerHTML = '<option value="">Select Product</option>'; // Clear previous options
-                                data.forEach(product => {
-                                    var option = document.createElement('option');
-                                    option.value = product.id;
-                                    option.text = product.merk + ' ' + product.name + ' ' + product.kategori;
-                                    productSelect.appendChild(option);
-                                });
-                            } else {
-                                console.error('Invalid JSON:', text);
-                            }
-                        } catch (error) {
-                            console.error('Error parsing JSON:', error, text);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error fetching products:', error);
-                    });
-            });
 
             function isValidJSON(text) {
                 try {
