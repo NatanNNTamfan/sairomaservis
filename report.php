@@ -27,7 +27,10 @@
                 <label for="end_time">End Time:</label>
                 <input type="time" class="form-control" id="end_time" name="end_time" value="<?php echo isset($_GET['end_time']) ? $_GET['end_time'] : '23:59'; ?>">
             </div>
-                <label>&nbsp;</label>
+            <div class="form-group col-md-5">
+                <label for="search">Search:</label>
+                <input type="text" class="form-control" id="search" name="search" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
+            </div>
                 <button type="submit" class="btn btn-primary btn-block">Filter</button>
             </div>
         </div>
@@ -51,10 +54,13 @@
             $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : date('Y-m-d');
             $start_time = isset($_GET['start_time']) ? $_GET['start_time'] : '00:00:00';
             $end_time = isset($_GET['end_time']) ? $_GET['end_time'] : '23:59:59';
+            $search = isset($_GET['search']) ? $_GET['search'] : '';
+            $search = str_replace(' ', '', $search);
             $sql = "SELECT p.merk, p.name, s.quantity, s.price, s.discount, s.total, DATE(s.date) as date, TIME(s.date) as time, (s.price - p.hargabeli) * s.quantity - s.discount as profit 
                     FROM sales s 
                     JOIN products p ON s.product_id = p.id 
-                    WHERE s.date BETWEEN '$start_date $start_time' AND '$end_date $end_time'
+                    WHERE (s.date BETWEEN '$start_date $start_time' AND '$end_date $end_time')
+                    AND (REPLACE(p.name, ' ', '') LIKE '%$search%' OR REPLACE(p.merk, ' ', '') LIKE '%$search%')
                     ORDER BY s.date DESC";
             $result = $conn->query($sql);
 
