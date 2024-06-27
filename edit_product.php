@@ -83,6 +83,10 @@ $conn->close();
             document.getElementById('edit_hargabeli').addEventListener('blur', function(e) {
                 this.value = formatRupiah(this.value, 'Rp ');
             });
+
+            // Ensure the initial value is formatted correctly
+            document.getElementById('edit_hargajual').value = formatRupiah(document.getElementById('edit_hargajual').value, 'Rp ');
+            document.getElementById('edit_hargabeli').value = formatRupiah(document.getElementById('edit_hargabeli').value, 'Rp ');
         </script>
         <div class="form-group">
             <label for="name">Name:</label>

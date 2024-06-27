@@ -63,6 +63,10 @@ if (isset($_POST['add_product'])) {
             document.getElementById('hargabeli').addEventListener('blur', function(e) {
                 this.value = formatRupiah(this.value, 'Rp ');
             });
+
+            // Ensure the initial value is formatted correctly
+            document.getElementById('hargajual').value = formatRupiah(document.getElementById('hargajual').value, 'Rp ');
+            document.getElementById('hargabeli').value = formatRupiah(document.getElementById('hargabeli').value, 'Rp ');
         </script>
         <div class="form-group">
             <label for="search">Search:</label>
