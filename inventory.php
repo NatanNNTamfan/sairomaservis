@@ -169,7 +169,8 @@ if (isset($_POST['add_product'])) {
         .then(response => response.text())
         .then(data => {
             document.getElementById('addProductForm').reset();
-            alert(data);
+            document.getElementById('messageModalBody').innerText = data;
+            $('#messageModal').modal('show');
         })
         .catch(error => console.error('Error:', error));
     }
@@ -178,6 +179,25 @@ if (isset($_POST['add_product'])) {
 <div class="container">
 <div class="container mt-4">
     <h2>Add New Product</h2>
+    <!-- Modal for displaying messages -->
+    <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="messageModalLabel">Message</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="messageModalBody">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <form id="addProductForm" onsubmit="return validateForm()">
         <div class="form-group">
             <label for="name">Name:</label>
