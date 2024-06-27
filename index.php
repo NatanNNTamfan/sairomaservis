@@ -15,7 +15,6 @@ $sql = "SELECT SUM(total) as total_sales FROM sales";
 $result = $conn->query($sql);
 $total_sales = $result->fetch_assoc()['total_sales'];
 
-$conn->close();
 ?>
 <div class="container">
     <h1>Dashboard Overview</h1>
