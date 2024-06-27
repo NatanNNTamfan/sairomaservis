@@ -73,6 +73,15 @@
                         });
                 }
             });
+
+            function isValidJSON(text) {
+                try {
+                    JSON.parse(text);
+                    return true;
+                } catch (error) {
+                    return false;
+                }
+            }
         </script>
         <div class="form-group">
             <label for="quantity">Quantity:</label>
