@@ -14,7 +14,7 @@ if (isset($_POST['add_product'])) {
     $check_result = $conn->query($check_sql);
 
     if ($check_result->num_rows > 0) {
-        echo "Product already exists";
+        echo "<div class='alert alert-warning'>Product already exists</div>";
     } else {
         $sql = "INSERT INTO products (name, hargabeli, stock, kategori, merk) VALUES ('$name', '$hargabeli', '$stock', '$kategori', '$merk')";
         if ($conn->query($sql) === TRUE) {
@@ -144,6 +144,20 @@ if (isset($_POST['add_product'])) {
         </tbody>
     </table>
 <script>
+    function validateForm() {
+        const name = document.getElementById('name').value;
+        const hargabeli = document.getElementById('hargabeli').value;
+        const stock = document.getElementById('stock').value;
+        const kategori = document.getElementById('kategori').value;
+        const merk = document.getElementById('merk').value;
+
+        if (!name || !hargabeli || !stock || !kategori || !merk) {
+            alert('All fields are required');
+            return false;
+        }
+        return true;
+    }
+
     function addProduct() {
         const form = document.getElementById('addProductForm');
         const formData = new FormData(form);
@@ -164,7 +178,7 @@ if (isset($_POST['add_product'])) {
 <div class="container">
 <div class="container mt-4">
     <h2>Add New Product</h2>
-    <form id="addProductForm">
+    <form id="addProductForm" onsubmit="return validateForm()">
         <div class="form-group">
             <label for="name">Name:</label>
             <input type="text" class="form-control" id="name" name="name" required>

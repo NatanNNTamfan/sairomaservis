@@ -2,7 +2,7 @@
 include 'config.php';
 
 if (isset($_POST['name']) && isset($_POST['hargabeli']) && isset($_POST['stock']) && isset($_POST['kategori']) && isset($_POST['merk'])) {
-    $name = $_POST['name'];
+    $name = $_POST['merk'] . ' ' . $_POST['name'] . ' ' . $_POST['kategori'];
     $hargabeli = str_replace(['Rp ', '.'], '', $_POST['hargabeli']);
     $stock = $_POST['stock'];
     $kategori = $_POST['kategori'];
@@ -13,17 +13,17 @@ if (isset($_POST['name']) && isset($_POST['hargabeli']) && isset($_POST['stock']
     $check_result = $conn->query($check_sql);
 
     if ($check_result->num_rows > 0) {
-        echo "Product already exists";
+        echo "<div class='alert alert-warning'>Product already exists</div>";
     } else {
         $sql = "INSERT INTO products (name, hargabeli, stock, kategori, merk) VALUES ('$name', '$hargabeli', '$stock', '$kategori', '$merk')";
         if ($conn->query($sql) === TRUE) {
-            echo "New product added successfully";
+            echo "<div class='alert alert-success'>New product added successfully</div>";
         } else {
-            echo "Error: " . $conn->error;
+            echo "<div class='alert alert-danger'>Error: " . $conn->error . "</div>";
         }
     }
 } else {
-    echo "All fields are required";
+    echo "<div class='alert alert-warning'>All fields are required</div>";
 }
 
 $conn->close();
