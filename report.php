@@ -52,10 +52,10 @@
         </thead>
         <tbody>
             <?php
-            $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : '1970-01-01';
-            $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : date('Y-m-d');
-            $start_time = isset($_GET['start_time']) ? $_GET['start_time'] : '00:00:00';
-            $end_time = isset($_GET['end_time']) ? $_GET['end_time'] : '23:59:59';
+            $start_date = isset($_GET['start_date']) && !empty($_GET['start_date']) ? $_GET['start_date'] : '1970-01-01';
+            $end_date = isset($_GET['end_date']) && !empty($_GET['end_date']) ? $_GET['end_date'] : date('Y-m-d');
+            $start_time = isset($_GET['start_time']) && !empty($_GET['start_time']) ? $_GET['start_time'] : '00:00:00';
+            $end_time = isset($_GET['end_time']) && !empty($_GET['end_time']) ? $_GET['end_time'] : '23:59:59';
             $search = isset($_GET['search']) ? $_GET['search'] : '';
             $search = str_replace(' ', '', $search);
             $sql = "SELECT p.merk, p.name, p.hargabeli, s.quantity, s.price, s.discount, s.total, DATE(s.date) as date, TIME(s.date) as time, (s.price - p.hargabeli) * s.quantity - s.discount as profit 
