@@ -1,6 +1,8 @@
 <?php
 include 'config.php';
 
+header('Content-Type: application/json');
+
 if (!empty($_POST['name']) && !empty($_POST['hargabeli']) && !empty($_POST['stock']) && !empty($_POST['kategori']) && !empty($_POST['merk'])) {
     $name = $_POST['merk'] . ' ' . $_POST['name'] . ' ' . $_POST['kategori'];
     $hargabeli = str_replace(['Rp ', '.'], '', $_POST['hargabeli']);
@@ -13,53 +15,33 @@ if (!empty($_POST['name']) && !empty($_POST['hargabeli']) && !empty($_POST['stoc
     $check_result = $conn->query($check_sql);
 
     if ($check_result->num_rows > 0) {
-        echo "<script>
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Warning',
-                    text: 'Product already exists'
-                }).then(function() {
-                    window.location = 'inventory.php';
-                });
-              </script>";
+        echo json_encode([
+            'icon' => 'warning',
+            'title' => 'Warning',
+            'text' => 'Product already exists'
+        ]);
     } else {
         $sql = "INSERT INTO products (name, hargabeli, stock, kategori, merk) VALUES ('$name', '$hargabeli', '$stock', '$kategori', '$merk')";
         if ($conn->query($sql) === TRUE) {
-            echo "<script>
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success',
-                        text: 'New product added successfully'
-                    }).then(function() {
-                        window.location = 'inventory.php';
-                    });
-                  </script>";
-            exit();
+            echo json_encode([
+                'icon' => 'success',
+                'title' => 'Success',
+                'text' => 'New product added successfully'
+            ]);
         } else {
-            echo "<script>
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Error: " . $conn->error . "'
-                    }).then(function() {
-                        window.location = 'inventory.php';
-                    });
-                  </script>";
-            exit();
+            echo json_encode([
+                'icon' => 'error',
+                'title' => 'Error',
+                'text' => 'Error: ' . $conn->error
+            ]);
         }
     }
 } else {
-    echo "<script>
-            Swal.fire({
-                icon: 'warning',
-                title: 'Warning',
-                text: 'All fields are required'
-            }).then(function() {
-                window.history.back();
-            });
-          </script>";
-    exit();
+    echo json_encode([
+        'icon' => 'warning',
+        'title' => 'Warning',
+        'text' => 'All fields are required'
+    ]);
 }
 
 $conn->close();
-?>
