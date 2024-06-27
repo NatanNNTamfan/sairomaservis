@@ -45,3 +45,4 @@ if (!empty($_POST['name']) && !empty($_POST['hargabeli']) && !empty($_POST['stoc
 }
 
 $conn->close();
+exit();

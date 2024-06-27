@@ -327,14 +327,6 @@ if (isset($_POST['add_product'])) {
             title: 'Error',
             text: 'An unexpected error occurred'
         });
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'An unexpected error occurred'
-        });
     });
 
     return false; // Prevent default form submission
