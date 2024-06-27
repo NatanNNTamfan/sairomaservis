@@ -28,6 +28,29 @@ $total_sales = $result->fetch_assoc()['total_sales'];
     <h2>Add Customer</h2>
     <form method="post" action="process_add_customer.php">
         <div class="form-group">
+            <label for="update_status">Update Status:</label>
+            <select class="form-control" id="update_status" name="update_status">
+                <option value="">Select Status</option>
+                <option value="Pending">Pending</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+            </select>
+        </div>
+            <label for="used_products">Used Products:</label>
+            <select class="form-control" id="used_products" name="used_products[]" multiple>
+                <?php
+                $sql = "SELECT id, name FROM products";
+                $result = $conn->query($sql);
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
+                    }
+                } else {
+                    echo "<option value=''>No products available</option>";
+                }
+                ?>
+            </select>
+        </div>
             <label for="customer_name">Name:</label>
             <input type="text" class="form-control" id="customer_name" name="customer_name" required>
         </div>
@@ -102,6 +125,7 @@ $total_sales = $result->fetch_assoc()['total_sales'];
                     echo "<td>" . $row["phone"] . "</td>";
                     echo "<td>" . $row["email"] . "</td>";
                     echo "<td>" . $row["created_at"] . "</td>";
+                    echo "<td><a href='edit_service.php?id=" . $row['id'] . "' class='btn btn-primary btn-sm'>Edit</a></td>";
                     echo "</tr>";
                 }
             } else {
