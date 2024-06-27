@@ -73,10 +73,7 @@ if (isset($_POST['add_product'])) {
                                 <input type='hidden' name='id' value='" . $row['id'] . "'>
                                 <button type='submit' class='btn btn-danger btn-sm'>Delete</button>
                             </form>
-                            <form method='post' action='edit_product.php' style='display:inline;'>
-                                <input type='hidden' name='id' value='" . $row['id'] . "'>
-                                <button type='submit' class='btn btn-primary btn-sm'>Edit</button>
-                            </form>
+                            <a href='edit_product.php?id=" . $row['id'] . "' class='btn btn-primary btn-sm'>Edit</a>
                           </td>";
                     echo "</tr>";
                 }
