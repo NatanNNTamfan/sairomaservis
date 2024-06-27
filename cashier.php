@@ -12,66 +12,38 @@
     <h2>Process Payment</h2>
     <form method="post" action="">
         <div class="form-group">
-            <label for="category">Category:</label>
-            <select class="form-control" id="category" name="category" required>
-                <option value="">Select Category</option>
-                <?php
-                $sql = "SELECT DISTINCT kategori FROM products";
-                $result = $conn->query($sql);
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        echo "<option value='" . $row['kategori'] . "'>" . $row['kategori'] . "</option>";
-                    }
-                }
-                ?>
-            </select>
-        </div>
-        <div class="form-group">
             <label for="product_id">Product:</label>
             <select class="form-control" id="product_id" name="product_id" required>
                 <option value="">Select Product</option>
             </select>
         </div>
         <script>
-            document.getElementById('category').addEventListener('change', function() {
-                var category = this.value;
+            document.addEventListener('DOMContentLoaded', function() {
                 var productSelect = document.getElementById('product_id');
-                productSelect.innerHTML = '<option value="">Select Product</option>';
-
-                if (category) {
-                    fetch('get_product.php?category=' + category)
-                        .then(response => response.text())
-                        .then(text => {
-                            try {
-                                if (isValidJSON(text)) {
-                                    const data = JSON.parse(text);
-                                    productSelect.innerHTML = '<option value="">Select Product</option>'; // Clear previous options
-                                    data.forEach(product => {
-                                        var option = document.createElement('option');
-                                        option.value = product.id;
-                                        option.text = product.merk + ' ' + product.name + ' ' + product.kategori;
-                                        productSelect.appendChild(option);
-                                    });
-                                } else {
-                                    console.error('Invalid JSON:', text);
-                                }
-                            } catch (error) {
-
-            function isValidJSON(text) {
-                try {
-                    JSON.parse(text);
-                    return true;
-                } catch (error) {
-                    return false;
-                }
-                                console.error('Error parsing JSON:', error, text);
+                fetch('get_product.php')
+                    .then(response => response.text())
+                    .then(text => {
+                        try {
+                            if (isValidJSON(text)) {
+                                const data = JSON.parse(text);
+                                productSelect.innerHTML = '<option value="">Select Product</option>'; // Clear previous options
+                                data.forEach(product => {
+                                    var option = document.createElement('option');
+                                    option.value = product.id;
+                                    option.text = product.merk + ' ' + product.name + ' ' + product.kategori;
+                                    productSelect.appendChild(option);
+                                });
+                            } else {
+                                console.error('Invalid JSON:', text);
                             }
-                        })
-                        .catch(error => {
-                            console.error('Error fetching products:', error);
-                            return response.text().then(text => console.log('Raw response text:', text));
-                        });
-                }
+                        } catch (error) {
+                            console.error('Error parsing JSON:', error, text);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching products:', error);
+                        return response.text().then(text => console.log('Raw response text:', text));
+                    });
             });
 
             function isValidJSON(text) {
