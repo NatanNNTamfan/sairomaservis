@@ -84,8 +84,9 @@ if (isset($_POST['add_product'])) {
                 <th>Stock</th>
                 <th>Kategori</th>
                 <th>Merk</th>
+                <th>Action</th>                
                 <th>Tambah Stok</th>
-                <th>Action</th>
+
             </tr>
 
         </thead>
