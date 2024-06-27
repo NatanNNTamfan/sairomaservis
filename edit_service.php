@@ -33,6 +33,17 @@ if (isset($_POST['edit_service'])) {
     // Update service
     $sql = "UPDATE services SET description='$description', status='$status', cost='$cost' WHERE id='$id'";
     if ($conn->query($sql) === TRUE) {
+        // Update used products
+        $sql = "DELETE FROM service_products WHERE service_id='$id'";
+        $conn->query($sql);
+        if (!empty($_POST['used_products'])) {
+            foreach ($_POST['used_products'] as $product_id) {
+                $sql = "INSERT INTO service_products (service_id, product_id) VALUES ('$id', '$product_id')";
+                $conn->query($sql);
+                $sql = "UPDATE products SET stock = stock - 1 WHERE id='$product_id'";
+                $conn->query($sql);
+            }
+        }
         echo "<script>
                 Swal.fire({
                     icon: 'success',
@@ -70,6 +81,29 @@ $conn->close();
     <form method="post" action="">
         <input type="hidden" name="id" value="<?php echo $service['id']; ?>">
         <div class="form-group">
+            <label for="used_products">Used Products:</label>
+            <select class="form-control" id="used_products" name="used_products[]" multiple>
+                <?php
+                $sql = "SELECT id, name FROM products";
+                $result = $conn->query($sql);
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
+                    }
+                } else {
+                    echo "<option value=''>No products available</option>";
+                }
+                ?>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="status">Status:</label>
+            <select class="form-control" id="status" name="status" required>
+                <option value="Pending" <?php if ($service['status'] == 'Pending') echo 'selected'; ?>>Pending</option>
+                <option value="In Progress" <?php if ($service['status'] == 'In Progress') echo 'selected'; ?>>In Progress</option>
+                <option value="Completed" <?php if ($service['status'] == 'Completed') echo 'selected'; ?>>Completed</option>
+            </select>
+        </div>
             <label for="description">Description:</label>
             <textarea class="form-control" id="description" name="description" required><?php echo $service['description']; ?></textarea>
         </div>
