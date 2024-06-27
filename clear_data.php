@@ -2,10 +2,10 @@
 include 'config.php';
 
 // Clear all data from products and sales tables
-$sql = "TRUNCATE TABLE products";
+$sql = "DELETE FROM products";
 $conn->query($sql);
 
-$sql = "TRUNCATE TABLE sales";
+$sql = "DELETE FROM sales";
 $conn->query($sql);
 
 $conn->close();
