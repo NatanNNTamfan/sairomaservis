@@ -1,15 +1,15 @@
 <?php
- include 'config.php';
+include 'config.php';
 
- if (!empty($_POST['customer_id']) && !empty($_POST['description']) && !empty($_POST['status'])) {        
-     $customer_id = $_POST['customer_id'];
-     $description = $_POST['description'];
-     $status = $_POST['status'];
-     $cost = !empty($_POST['cost']) ? $_POST['cost'] : null;
+if (!empty($_POST['customer_id']) && !empty($_POST['description']) && !empty($_POST['status'])) {
+    $customer_id = $_POST['customer_id'];
+    $description = $_POST['description'];
+    $status = $_POST['status'];
+    $cost = !empty($_POST['cost']) ? $_POST['cost'] : null;
 
-     $sql = "INSERT INTO services (customer_id, description, status, cost, created_at, updated_at) VALUES ('$customer_id', '$description', '$status', '$cost', NOW(), NOW())";
-     if ($conn->query($sql) === TRUE) {
-         $service_id = $conn->insert_id;
+    $sql = "INSERT INTO services (customer_id, description, status, cost, created_at, updated_at) VALUES ('$customer_id', '$description', '$status', '$cost', NOW(), NOW())";
+    if ($conn->query($sql) === TRUE) {
+        $service_id = $conn->insert_id;
         if (!empty($_POST['product_cart'])) {
             $productCart = json_decode($_POST['product_cart'], true);
             foreach ($productCart as $product) {
@@ -20,45 +20,45 @@
                 $conn->query($sql);
             }
         }
-         echo "<script>
-                 Swal.fire({
-                     icon: 'success',
-                     title: 'Success',
-                     text: 'Service added successfully'
-                 }).then(function() {
-                     window.location = 'index.php';
-                 });
-               </script>";
-     } else {
-         echo "<script>
-                 Swal.fire({
-                     icon: 'error',
-                     title: 'Error',
-                     text: 'Error: " . $conn->error . "'
-                 }).then(function() {
-                     window.location = 'index.php';
-                 });
-               </script>";
-     }
- } else {
-     if (!empty($_POST['update_status'])) {
-         $status = $_POST['update_status'];
-         $sql = "UPDATE services SET status='$status' WHERE id='$service_id'";
-         $conn->query($sql);
-     }
-     echo "<script>
-             Swal.fire({
-                 icon: 'warning',
-                 title: 'Warning',
-                 text: 'All fields are required'
-             }).then(function() {
-                 window.location = 'index.php';
-             });
-           </script>";
- }
+        echo "<script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Service added successfully'
+                }).then(function() {
+                    window.location = 'index.php';
+                });
+              </script>";
+    } else {
+        echo "<script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error: " . $conn->error . "'
+                }).then(function() {
+                    window.location = 'index.php';
+                });
+              </script>";
+    }
+} else {
+    if (!empty($_POST['update_status'])) {
+        $status = $_POST['update_status'];
+        $sql = "UPDATE services SET status='$status' WHERE id='$service_id'";
+        $conn->query($sql);
+    }
+    echo "<script>
+            Swal.fire({
+                icon: 'warning',
+                title: 'Warning',
+                text: 'All fields are required'
+            }).then(function() {
+                window.location = 'index.php';
+            });
+          </script>";
+}
 
- $conn->close();
- exit();
+$conn->close();
+exit();
 include 'config.php';
 
 if (!empty($_POST['customer_id']) && !empty($_POST['description']) && !empty($_POST['status'])) {
