@@ -106,7 +106,7 @@
             ?>
         </tbody>
     </table>
-    <h3>Total Profit: Rp <?php echo number_format($total_profit, 0, ',', '.'); ?></h3>
+    <h3>Total Profit: Rp <?php echo $total_profit !== null ? number_format($total_profit, 0, ',', '.') : '0'; ?></h3>
 </div>
 </body>
 </html>
