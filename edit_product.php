@@ -57,7 +57,7 @@ $conn->close();
         </div>
         <div class="form-group">
             <label for="hargabeli">Harga Beli:</label>
-            <input type="text" class="form-control" id="edit_hargabeli" name="hargabeli" value="<?php echo $product['hargabeli']; ?>" required>
+            <input type="text" class="form-control" id="edit_hargabeli" name="hargabeli" value="<?php echo number_format($product['hargabeli'], 0, ',', '.'); ?>" required>
         </div>
         <div class="form-group">
             <label for="stock">Stock:</label>
@@ -147,7 +147,10 @@ $conn->close();
         });
 
         // Ensure the initial value is formatted correctly
-        editHargabeli.value = formatRupiah(editHargabeli.value, 'Rp ');
+        // Ensure the initial value is formatted correctly only if it's not already formatted
+        if (!editHargabeli.value.startsWith('Rp ')) {
+            editHargabeli.value = formatRupiah(editHargabeli.value, 'Rp ');
+        }
     }
 </script>
 </body>
