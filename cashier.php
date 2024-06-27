@@ -5,19 +5,20 @@
 if (isset($_POST['process_payment'])) {
     $product_id = $_POST['product_id'];
     $quantity = $_POST['quantity'];
+    $price = $_POST['price'];
+    $discount = $_POST['discount'];
 
-    $sql = "SELECT hargajual, stock FROM products WHERE id='$product_id'";
+    $sql = "SELECT stock FROM products WHERE id='$product_id'";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        $price = $row['hargajual'];
         $stock = $row['stock'];
 
         if ($stock >= $quantity) {
-            $total_price = $price * $quantity;
+            $total_price = ($price * $quantity) - $discount;
             $new_stock = $stock - $quantity;
 
-            $sql = "INSERT INTO sales (product_id, quantity, total_price) VALUES ('$product_id', '$quantity', '$total_price')";
+            $sql = "INSERT INTO sales (product_id, quantity, total_price, discount) VALUES ('$product_id', '$quantity', '$total_price', '$discount')";
             if ($conn->query($sql) === TRUE) {
                 $sql = "UPDATE products SET stock='$new_stock' WHERE id='$product_id'";
                 $conn->query($sql);
@@ -55,6 +56,14 @@ $conn->close();
         <div class="form-group">
             <label for="quantity">Quantity:</label>
             <input type="number" class="form-control" id="quantity" name="quantity" min="1" required>
+        </div>
+        <div class="form-group">
+            <label for="price">Harga Jual:</label>
+            <input type="number" class="form-control" id="price" name="price" required>
+        </div>
+        <div class="form-group">
+            <label for="discount">Discount:</label>
+            <input type="number" class="form-control" id="discount" name="discount" value="0" required>
         </div>
         <button type="submit" class="btn btn-primary" name="process_payment">Process Payment</button>
     </form>
