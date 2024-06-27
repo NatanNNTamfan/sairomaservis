@@ -27,9 +27,16 @@ if (isset($_POST['add_product'])) {
 }
 ?>
 
-<!-- Display products -->
+<!-- Search form -->
 <div class="container mt-4">
     <h2>Product Inventory</h2>
+    <form method="get" action="">
+        <div class="form-group">
+            <label for="search">Search:</label>
+            <input type="text" class="form-control" id="search" name="search" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -44,7 +51,8 @@ if (isset($_POST['add_product'])) {
         </thead>
         <tbody>
             <?php
-            $sql = "SELECT * FROM products";
+            $search = isset($_GET['search']) ? $_GET['search'] : '';
+            $sql = "SELECT * FROM products WHERE name LIKE '%$search%' OR kategori LIKE '%$search%' OR merk LIKE '%$search%'";
             $result = $conn->query($sql);
 
             if ($result->num_rows > 0) {
