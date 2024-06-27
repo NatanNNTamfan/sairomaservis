@@ -84,6 +84,7 @@ if (isset($_POST['add_product'])) {
                 <th>Stock</th>
                 <th>Kategori</th>
                 <th>Merk</th>
+                <th>Tambah Stok</th>
                 <th>Action</th>
             </tr>
 
@@ -111,6 +112,13 @@ if (isset($_POST['add_product'])) {
                                 <button type='submit' class='btn btn-danger btn-sm'>Delete</button>
                             </form>
                             <a href='edit_product.php?id=" . $row['id'] . "' class='btn btn-primary btn-sm'>Edit</a>
+                          </td>
+                          <td>
+                            <form method='post' action='add_stock.php' style='display:inline;'>
+                                <input type='hidden' name='id' value='" . $row['id'] . "'>
+                                <input type='number' name='add_stock' min='1' required>
+                                <button type='submit' class='btn btn-success btn-sm'>Tambah</button>
+                            </form>
                           </td>";
                     echo "</tr>";
                 }
