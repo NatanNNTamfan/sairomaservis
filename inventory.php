@@ -288,28 +288,32 @@ if (isset($_POST['add_product'])) {
         method: 'POST',
         body: formData
     })
-    .then(response => response.text())
-    .then(data => {
-        try {
-            const result = JSON.parse(data);
-            Swal.fire({
-                icon: result.icon,
-                title: result.title,
-                text: result.text
-            }).then(function() {
-                if (result.icon === 'success') {
-                    window.location = 'inventory.php';
-                }
-            });
-        } catch (e) {
-            console.error('Error parsing JSON:', e);
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'An unexpected error occurred'
-            });
+    .then(response => {
+        if (response.headers.get('content-type')?.includes('application/json')) {
+            return response.json();
+        } else {
+            throw new Error('Invalid content type');
         }
     })
+    .then(result => {
+        Swal.fire({
+            icon: result.icon,
+            title: result.title,
+            text: result.text
+        }).then(function() {
+            if (result.icon === 'success') {
+                window.location = 'inventory.php';
+            }
+        });
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'An unexpected error occurred'
+        });
+    });
     .catch(error => console.error('Error:', error));
 
     return false; // Prevent default form submission
