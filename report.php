@@ -82,8 +82,18 @@
             }
             $conn->close();
             ?>
+            <?php
+            $sql_profit = "SELECT SUM((s.price - p.hargabeli) * s.quantity - s.discount) as total_profit 
+                           FROM sales s 
+                           JOIN products p ON s.product_id = p.id 
+                           WHERE (s.date BETWEEN '$start_date $start_time' AND '$end_date $end_time')
+                           AND (REPLACE(p.name, ' ', '') LIKE '%$search%' OR REPLACE(p.merk, ' ', '') LIKE '%$search%')";
+            $result_profit = $conn->query($sql_profit);
+            $total_profit = $result_profit->fetch_assoc()['total_profit'];
+            ?>
         </tbody>
     </table>
+    <h3>Total Profit: Rp <?php echo number_format($total_profit, 0, ',', '.'); ?></h3>
 </div>
 </body>
 </html>
