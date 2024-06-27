@@ -3,7 +3,7 @@
 <!-- Add product -->
 <?php
 if (isset($_POST['add_product'])) {
-    $name = $_POST['name'];
+    $name = $_POST['merk'] . ' ' . $_POST['name'] . ' ' . $_POST['kategori'];
     $hargajual = $_POST['hargajual'];
     $hargabeli = $_POST['hargabeli'];
     $stock = $_POST['stock'];
