@@ -33,7 +33,7 @@ if (isset($_POST['edit_service'])) {
     $cost = $_POST['cost'];
 
     // Fetch current used products
-    $service_products = array();
+    $service_products = [];
     if (isset($_POST['used_products'])) {
         $service_products = $_POST['used_products'];
     } else {
@@ -114,6 +114,7 @@ if (isset($_POST['edit_service'])) {
         <div class="form-group">
             <label for="used_products">Used Products:</label>
             <select class="form-control" id="used_products" name="used_products[]" multiple>
+                <?php $service_products = isset($service_products) ? $service_products : []; ?>
                 <?php
                 $sql = "SELECT id, name FROM products";
                 $result = $conn->query($sql);
