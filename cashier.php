@@ -77,6 +77,7 @@
             fetch('get_product.php?category=' + category)
                 .then(response => response.json())
                 .then(data => {
+                    productSelect.innerHTML = '<option value="">Select Product</option>'; // Clear previous options
                     data.forEach(product => {
                         var option = document.createElement('option');
                         option.value = product.id;
