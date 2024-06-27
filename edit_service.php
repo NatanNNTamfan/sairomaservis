@@ -33,14 +33,18 @@ if (isset($_POST['edit_service'])) {
     $cost = $_POST['cost'];
 
     // Fetch current used products
-    $stmt = $conn->prepare("SELECT product_id FROM service_products WHERE service_id=?");
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-    $result = $stmt->get_result();
     $service_products = array();
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $service_products[] = $row['product_id'];
+    if (isset($_POST['used_products'])) {
+        $service_products = $_POST['used_products'];
+    } else {
+        $stmt = $conn->prepare("SELECT product_id FROM service_products WHERE service_id=?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $service_products[] = $row['product_id'];
+            }
         }
     }
 
