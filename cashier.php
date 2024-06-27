@@ -32,6 +32,27 @@
                 <option value="">Select Product</option>
             </select>
         </div>
+        <script>
+            document.getElementById('category').addEventListener('change', function() {
+                var category = this.value;
+                var productSelect = document.getElementById('product_id');
+                productSelect.innerHTML = '<option value="">Select Product</option>';
+
+                if (category) {
+                    fetch('get_product.php?category=' + category)
+                        .then(response => response.json())
+                        .then(data => {
+                            productSelect.innerHTML = '<option value="">Select Product</option>'; // Clear previous options
+                            data.forEach(product => {
+                                var option = document.createElement('option');
+                                option.value = product.id;
+                                option.text = product.merk + ' ' + product.name + ' ' + product.kategori;
+                                productSelect.appendChild(option);
+                            });
+                        });
+                }
+            });
+        </script>
         <div class="form-group">
             <label for="quantity">Quantity:</label>
             <input type="number" class="form-control" id="quantity" name="quantity" min="1" required>
