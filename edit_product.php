@@ -19,7 +19,7 @@ if (isset($_GET['id'])) {
 if (isset($_POST['edit_product'])) {
     $id = $_POST['id'];
     $name = $_POST['name'];
-    $hargabeli = $_POST['hargabeli'];
+    $hargabeli = str_replace(['Rp ', '.'], '', $_POST['hargabeli']);
     $stock = $_POST['stock'];
     $kategori = $_POST['kategori'];
     $merk = $_POST['merk'];
