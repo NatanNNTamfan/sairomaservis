@@ -107,6 +107,7 @@ $total_sales = $result->fetch_assoc()['total_sales'];
                     echo "<td><a href='edit_service.php?id=" . $row['id'] . "' class='btn btn-primary btn-sm'>Edit</a></td>";
                     echo "<td><a href='edit_service.php?id=" . $row['id'] . "' class='btn btn-primary btn-sm'>Edit</a></td>";
                     echo "<td><a href='edit_service.php?id=" . $row['id'] . "' class='btn btn-primary btn-sm'>Edit</a></td>";
+                    echo "<td><a href='edit_service.php?id=" . $row['id'] . "' class='btn btn-primary btn-sm'>Edit</a></td>";
                     echo "</tr>";
                 }
             } else {
@@ -127,6 +128,7 @@ $total_sales = $result->fetch_assoc()['total_sales'];
                 <th>Cost</th>
                 <th>Created At</th>
                 <th>Updated At</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
