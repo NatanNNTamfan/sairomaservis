@@ -18,9 +18,9 @@ if (isset($_POST['add_product'])) {
     } else {
         $sql = "INSERT INTO products (name, hargabeli, stock, kategori, merk) VALUES ('$name', '$hargabeli', '$stock', '$kategori', '$merk')";
         if ($conn->query($sql) === TRUE) {
-            echo "New product added successfully";
+            echo "<div class='alert alert-success'>New product added successfully</div>";
         } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
+            echo "<div class='alert alert-danger'>Error: " . $conn->error . "</div>";
         }
     }
 }
@@ -143,12 +143,28 @@ if (isset($_POST['add_product'])) {
             ?>
         </tbody>
     </table>
-</div>
+<script>
+    function addProduct() {
+        const form = document.getElementById('addProductForm');
+        const formData = new FormData(form);
+
+        fetch('add_product.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('addProductForm').reset();
+            alert(data);
+        })
+        .catch(error => console.error('Error:', error));
+    }
+</script>
 
 <div class="container">
 <div class="container mt-4">
     <h2>Add New Product</h2>
-    <form method="post" action="">
+    <form id="addProductForm">
         <div class="form-group">
             <label for="name">Name:</label>
             <input type="text" class="form-control" id="name" name="name" required>
@@ -213,7 +229,7 @@ if (isset($_POST['add_product'])) {
                 <option value="Wiko">Wiko</option>
             </select>
         </div>
-        <button type="submit" class="btn btn-primary" name="add_product">Add Product</button>
+        <button type="button" class="btn btn-primary" onclick="addProduct()">Add Product</button>
     </form>
 </div>
 </div>

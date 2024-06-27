@@ -11,8 +11,10 @@ if (isset($_POST['products'])) {
         $discount = !empty($product['discount']) ? $product['discount'] : 0;
         $total = $product['total'];
 
-        $sql = "SELECT stock FROM products WHERE id='$product_id'";
-        $result = $conn->query($sql);
+        $stmt = $conn->prepare("SELECT stock FROM products WHERE id=?");
+        $stmt->bind_param("i", $product_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             $stock = $row['stock'];
@@ -20,12 +22,14 @@ if (isset($_POST['products'])) {
             if ($stock >= $quantity) {
                 $new_stock = $stock - $quantity;
 
-                $sql = "INSERT INTO sales (product_id, quantity, price, discount, total, date) VALUES ('$product_id', '$quantity', '$price', '$discount', '$total', NOW())";
-                if ($conn->query($sql) === TRUE) {
-                    $sql = "UPDATE products SET stock='$new_stock' WHERE id='$product_id'";
-                    $conn->query($sql);
+                $stmt = $conn->prepare("INSERT INTO sales (product_id, quantity, price, discount, total, date) VALUES (?, ?, ?, ?, ?, NOW())");
+                $stmt->bind_param("iiiii", $product_id, $quantity, $price, $discount, $total);
+                if ($stmt->execute() === TRUE) {
+                    $stmt = $conn->prepare("UPDATE products SET stock=? WHERE id=?");
+                    $stmt->bind_param("ii", $new_stock, $product_id);
+                    $stmt->execute();
                 } else {
-                    echo "<div class='alert alert-danger'>Error: " . $sql . "<br>" . $conn->error . "</div>";
+                    echo "<div class='alert alert-danger'>Error: " . $stmt->error . "</div>";
                 }
             } else {
                 echo "<div class='alert alert-warning'>Not enough stock for product ID: $product_id</div>";
