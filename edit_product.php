@@ -11,8 +11,15 @@ if (isset($_GET['id'])) {
     if ($result->num_rows > 0) {
         $product = $result->fetch_assoc();
     } else {
-        echo "Product not found";
-        exit();
+        echo "<script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Product not found'
+                }).then(function() {
+                    window.location = 'inventory.php';
+                });
+              </script>";
         exit();
     }
 }
