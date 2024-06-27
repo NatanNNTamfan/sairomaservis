@@ -12,17 +12,24 @@
     <h2>Process Payment</h2>
     <form method="post" action="">
         <div class="form-group">
-            <label for="product_id">Product:</label>
-            <select class="form-control" id="product_id" name="product_id" required>
+            <label for="category">Category:</label>
+            <select class="form-control" id="category" name="category" required>
+                <option value="">Select Category</option>
                 <?php
-                $sql = "SELECT * FROM products";
+                $sql = "SELECT DISTINCT kategori FROM products";
                 $result = $conn->query($sql);
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
-                        echo "<option value='" . $row['id'] . "'>" . $row['merk'] . " " . $row['name'] . " " . $row['kategori'] . "</option>";
+                        echo "<option value='" . $row['kategori'] . "'>" . $row['kategori'] . "</option>";
                     }
                 }
                 ?>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="product_id">Product:</label>
+            <select class="form-control" id="product_id" name="product_id" required>
+                <option value="">Select Product</option>
             </select>
         </div>
         <div class="form-group">
@@ -60,6 +67,26 @@
         <button type="submit" class="btn btn-primary">Process Payment</button>
     </form>
 </div>
+<script>
+    document.getElementById('category').addEventListener('change', function() {
+        var category = this.value;
+        var productSelect = document.getElementById('product_id');
+        productSelect.innerHTML = '<option value="">Select Product</option>';
+
+        if (category) {
+            fetch('get_product.php?category=' + category)
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(product => {
+                        var option = document.createElement('option');
+                        option.value = product.id;
+                        option.text = product.merk + ' ' + product.name + ' ' + product.kategori;
+                        productSelect.appendChild(option);
+                    });
+                });
+        }
+    });
+</script>
 </body>
 </html>
 <script>

@@ -1,14 +1,23 @@
 <?php
 include 'config.php';
 
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
+if (isset($_GET['id']) || isset($_GET['category'])) {
+    if (isset($_GET['id'])) {
+        $id = $_GET['id'];
+        $sql = "SELECT * FROM products WHERE id='$id'";
+    } else {
+        $category = $_GET['category'];
+        $sql = "SELECT * FROM products WHERE kategori='$category'";
+    }
 
-    $sql = "SELECT * FROM products WHERE id='$id'";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
-        echo json_encode($result->fetch_assoc());
+        $products = [];
+        while ($row = $result->fetch_assoc()) {
+            $products[] = $row;
+        }
+        echo json_encode($products);
     } else {
         echo json_encode([]);
     }
