@@ -1,6 +1,7 @@
 <?php include 'config.php'; ?>
 
 <!-- Display sales -->
+<?php
 $sql = "SELECT sales.id, products.name, sales.quantity, sales.total_price, sales.sale_date FROM sales JOIN products ON sales.product_id = products.id";
 $result = $conn->query($sql);
 
