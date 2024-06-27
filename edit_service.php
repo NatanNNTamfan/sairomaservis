@@ -5,8 +5,10 @@ if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
     // Fetch service details
-    $sql = "SELECT * FROM services WHERE id='$id'";
-    $result = $conn->query($sql);
+    $stmt = $conn->prepare("SELECT * FROM services WHERE id=?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
         $service = $result->fetch_assoc();
@@ -31,34 +33,34 @@ if (isset($_POST['edit_service'])) {
     $cost = $_POST['cost'];
 
     // Fetch current used products
-    $sql = "SELECT product_id FROM service_products WHERE service_id='$id'";
-    $result = $conn->query($sql);
+    $stmt = $conn->prepare("SELECT product_id FROM service_products WHERE service_id=?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
     $service_products = [];
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
             $service_products[] = $row;
         }
     }
-    $id = $_POST['id'];
-    $description = $_POST['description'];
-    $status = $_POST['status'];
-    $cost = $_POST['cost'];
 
     // Update service
-    $sql = "UPDATE services SET description='$description', status='$status', cost='$cost', updated_at=NOW() WHERE id='$id'";
-    if ($conn->query($sql) === TRUE) {
+    $stmt = $conn->prepare("UPDATE services SET description=?, status=?, cost=?, updated_at=NOW() WHERE id=?");
+    $stmt->bind_param("ssdi", $description, $status, $cost, $id);
+    if ($stmt->execute() === TRUE) {
         // Update used products
-        $sql = "DELETE FROM service_products WHERE service_id='$id'";
-        $conn->query($sql);
-        // Update used products
-        $sql = "DELETE FROM service_products WHERE service_id='$id'";
-        $conn->query($sql);
+        $stmt = $conn->prepare("DELETE FROM service_products WHERE service_id=?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        
         if (!empty($_POST['used_products'])) {
             foreach ($_POST['used_products'] as $product_id) {
-                $sql = "INSERT INTO service_products (service_id, product_id) VALUES ('$id', '$product_id')";
-                $conn->query($sql);
-                $sql = "UPDATE products SET stock = stock - 1 WHERE id='$product_id'";
-                $conn->query($sql);
+                $stmt = $conn->prepare("INSERT INTO service_products (service_id, product_id) VALUES (?, ?)");
+                $stmt->bind_param("ii", $id, $product_id);
+                $stmt->execute();
+                $stmt = $conn->prepare("UPDATE products SET stock = stock - 1 WHERE id=?");
+                $stmt->bind_param("i", $product_id);
+                $stmt->execute();
             }
         }
         echo "<script>
@@ -75,7 +77,7 @@ if (isset($_POST['edit_service'])) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: 'Error: " . $sql . "<br>" . $conn->error . "'
+                    text: 'Error: " . $stmt->error . "'
                 }).then(function() {
                     window.location = 'index.php';
                 });
@@ -91,19 +93,20 @@ $conn->close();
 <head>
     <title>Edit Service</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 <div class="container mt-4">
     <h2>Edit Service</h2>
     <form method="post" action="">
-        <input type="hidden" name="id" value="<?php echo $service['id']; ?>">
+        <input type="hidden" name="id" value="<?php echo htmlspecialchars($service['id']); ?>">
         <div class="form-group">
             <label for="description">Description:</label>
-            <textarea class="form-control" id="description" name="description" required><?php echo $service['description']; ?></textarea>
+            <textarea class="form-control" id="description" name="description" required><?php echo htmlspecialchars($service['description']); ?></textarea>
         </div>
         <div class="form-group">
             <label for="cost">Cost:</label>
-            <input type="number" class="form-control" id="cost" name="cost" value="<?php echo $service['cost']; ?>" step="0.01">
+            <input type="number" class="form-control" id="cost" name="cost" value="<?php echo htmlspecialchars($service['cost']); ?>" step="0.01">
         </div>
         <div class="form-group">
             <label for="used_products">Used Products:</label>
@@ -114,7 +117,7 @@ $conn->close();
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
                         $selected = in_array($row['id'], array_column($service_products, 'product_id')) ? 'selected' : '';
-                        echo "<option value='" . $row['id'] . "' $selected>" . $row['name'] . "</option>";
+                        echo "<option value='" . htmlspecialchars($row['id']) . "' $selected>" . htmlspecialchars($row['name']) . "</option>";
                     }
                 } else {
                     echo "<option value=''>No products available</option>";
