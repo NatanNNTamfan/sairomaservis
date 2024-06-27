@@ -20,7 +20,7 @@ if (isset($_POST['products'])) {
             if ($stock >= $quantity) {
                 $new_stock = $stock - $quantity;
 
-                $sql = "INSERT INTO sales (product_id, quantity, total_price, discount) VALUES ('$product_id', '$quantity', '$total_price', '$discount')";
+                $sql = "INSERT INTO sales (product_id, quantity, price, discount, total, date) VALUES ('$product_id', '$quantity', '$price', '$discount', '$total', NOW())";
                 if ($conn->query($sql) === TRUE) {
                     $sql = "UPDATE products SET stock='$new_stock' WHERE id='$product_id'";
                     $conn->query($sql);
