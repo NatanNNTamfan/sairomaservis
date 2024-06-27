@@ -30,9 +30,26 @@ if (isset($_POST['edit_service'])) {
     $status = $_POST['status'];
     $cost = $_POST['cost'];
 
+    // Fetch current used products
+    $sql = "SELECT product_id FROM service_products WHERE service_id='$id'";
+    $result = $conn->query($sql);
+    $service_products = [];
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $service_products[] = $row;
+        }
+    }
+    $id = $_POST['id'];
+    $description = $_POST['description'];
+    $status = $_POST['status'];
+    $cost = $_POST['cost'];
+
     // Update service
     $sql = "UPDATE services SET description='$description', status='$status', cost='$cost', updated_at=NOW() WHERE id='$id'";
     if ($conn->query($sql) === TRUE) {
+        // Update used products
+        $sql = "DELETE FROM service_products WHERE service_id='$id'";
+        $conn->query($sql);
         // Update used products
         $sql = "DELETE FROM service_products WHERE service_id='$id'";
         $conn->query($sql);
@@ -96,7 +113,8 @@ $conn->close();
                 $result = $conn->query($sql);
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
-                        echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
+                        $selected = in_array($row['id'], array_column($service_products, 'product_id')) ? 'selected' : '';
+                        echo "<option value='" . $row['id'] . "' $selected>" . $row['name'] . "</option>";
                     }
                 } else {
                     echo "<option value=''>No products available</option>";
