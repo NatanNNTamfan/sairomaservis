@@ -11,8 +11,7 @@ $sql = "SELECT COUNT(*) as total_transactions FROM sales";
 $result = $conn->query($sql);
 $total_transactions = $result->fetch_assoc()['total_transactions'];
 
-// Get total sales
-$sql = "SELECT SUM(total_price) as total_sales FROM sales";
+$sql = "SELECT SUM(total) as total_sales FROM sales";
 $result = $conn->query($sql);
 $total_sales = $result->fetch_assoc()['total_sales'];
 
