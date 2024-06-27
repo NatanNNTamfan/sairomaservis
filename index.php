@@ -128,7 +128,8 @@ $total_sales = $result->fetch_assoc()['total_sales'];
             <?php
             $sql = "SELECT s.id, c.name as customer_name, s.description, s.status, s.cost, s.created_at, s.updated_at 
                     FROM services s 
-                    JOIN customers c ON s.customer_id = c.id";
+                    JOIN customers c ON s.customer_id = c.id
+                    ORDER BY s.created_at DESC";
             $result = $conn->query($sql);
 
             if ($result->num_rows > 0) {
