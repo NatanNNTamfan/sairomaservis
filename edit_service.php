@@ -116,12 +116,12 @@ if (isset($_POST['edit_service'])) {
             <select class="form-control" id="used_products" name="used_products[]" multiple>
                 <?php $service_products = isset($service_products) ? $service_products : []; ?>
                 <?php
-                $sql = "SELECT id, name, hargajual FROM products";
+                $sql = "SELECT id, name, hargabeli FROM products";
                 $result = $conn->query($sql);
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
                         $selected = in_array($row['id'], $service_products) ? 'selected' : '';
-                        echo "<option value='" . htmlspecialchars($row['id']) . "' data-price='" . $row['hargajual'] . "' $selected>" . htmlspecialchars($row['name']) . " - Rp " . number_format($row['hargajual'], 0, ',', '.') . "</option>";
+                        echo "<option value='" . htmlspecialchars($row['id']) . "' data-price='" . $row['hargabeli'] . "' $selected>" . htmlspecialchars($row['name']) . " - Rp " . number_format($row['hargabeli'], 0, ',', '.') . "</option>";
                     }
                 } else {
                     echo "<option value=''>No products available</option>";
