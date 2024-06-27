@@ -89,7 +89,7 @@
                            AND (REPLACE(p.name, ' ', '') LIKE '%$search%' OR REPLACE(p.merk, ' ', '') LIKE '%$search%')";
             $result_profit = $conn->query($sql_profit);
             $total_profit = $result_profit->fetch_assoc()['total_profit'];
-            $conn->close();
+            ?>
             <?php
             $sql_profit = "SELECT SUM((s.price - p.hargabeli) * s.quantity - s.discount) as total_profit 
                            FROM sales s 
@@ -98,6 +98,7 @@
                            AND (REPLACE(p.name, ' ', '') LIKE '%$search%' OR REPLACE(p.merk, ' ', '') LIKE '%$search%')";
             $result_profit = $conn->query($sql_profit);
             $total_profit = $result_profit->fetch_assoc()['total_profit'];
+            $conn->close();
             ?>
         </tbody>
     </table>
