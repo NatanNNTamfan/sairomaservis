@@ -104,16 +104,13 @@ $conn->close();
                 <option value="Completed" <?php if ($service['status'] == 'Completed') echo 'selected'; ?>>Completed</option>
             </select>
         </div>
+        <div class="form-group">
             <label for="description">Description:</label>
             <textarea class="form-control" id="description" name="description" required><?php echo $service['description']; ?></textarea>
         </div>
         <div class="form-group">
-            <label for="status">Status:</label>
-            <select class="form-control" id="status" name="status" required>
-                <option value="Pending" <?php if ($service['status'] == 'Pending') echo 'selected'; ?>>Pending</option>
-                <option value="In Progress" <?php if ($service['status'] == 'In Progress') echo 'selected'; ?>>In Progress</option>
-                <option value="Completed" <?php if ($service['status'] == 'Completed') echo 'selected'; ?>>Completed</option>
-            </select>
+            <label for="cost">Cost:</label>
+            <input type="number" class="form-control" id="cost" name="cost" value="<?php echo $service['cost']; ?>" step="0.01">
         </div>
         <div class="form-group">
             <label for="cost">Cost:</label>
