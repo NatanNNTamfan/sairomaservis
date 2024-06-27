@@ -85,7 +85,6 @@ if (isset($_POST['edit_service'])) {
     }
 }
 
-$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -136,5 +135,6 @@ $conn->close();
         <button type="submit" class="btn btn-primary" name="edit_service">Save Changes</button>
     </form>
 </div>
+<?php $conn->close(); ?>
 </body>
 </html>
