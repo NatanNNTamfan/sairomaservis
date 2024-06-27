@@ -82,7 +82,15 @@
                     echo "</tr>";
                 }
             } else {
-                echo "<tr><td colspan='7'>No sales found</td></tr>";
+                echo "<script>
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'No Data',
+                            text: 'No sales found for the selected criteria.'
+                        }).then(function() {
+                            window.location = 'report.php';
+                        });
+                      </script>";
             }
             ?>
             <?php
