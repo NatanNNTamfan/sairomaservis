@@ -52,7 +52,8 @@ if (isset($_POST['add_product'])) {
         <tbody>
             <?php
             $search = isset($_GET['search']) ? $_GET['search'] : '';
-            $sql = "SELECT * FROM products WHERE name LIKE '%$search%' OR kategori LIKE '%$search%' OR merk LIKE '%$search%'";
+            $search = str_replace(' ', '', $search);
+            $sql = "SELECT * FROM products WHERE REPLACE(name, ' ', '') LIKE '%$search%' OR REPLACE(kategori, ' ', '') LIKE '%$search%' OR REPLACE(merk, ' ', '') LIKE '%$search%'";
             $result = $conn->query($sql);
 
             if ($result->num_rows > 0) {
