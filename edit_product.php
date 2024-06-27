@@ -135,16 +135,20 @@ $conn->close();
         return prefix == undefined ? rupiah : (rupiah ? 'Rp ' + rupiah : '');
     }
 
-    document.getElementById('edit_hargabeli').addEventListener('keyup', function(e) {
-        this.value = formatRupiah(this.value, 'Rp ');
-    });
+    const editHargabeli = document.getElementById('edit_hargabeli');
 
-    document.getElementById('edit_hargabeli').addEventListener('blur', function(e) {
-        this.value = formatRupiah(this.value, 'Rp ');
-    });
+    if (editHargabeli) {
+        editHargabeli.addEventListener('keyup', function(e) {
+            this.value = formatRupiah(this.value, 'Rp ');
+        });
 
-    // Ensure the initial value is formatted correctly
-    document.getElementById('edit_hargabeli').value = formatRupiah(document.getElementById('edit_hargabeli').value, 'Rp ');
+        editHargabeli.addEventListener('blur', function(e) {
+            this.value = formatRupiah(this.value, 'Rp ');
+        });
+
+        // Ensure the initial value is formatted correctly
+        editHargabeli.value = formatRupiah(editHargabeli.value, 'Rp ');
+    }
 </script>
 </body>
 </html>
