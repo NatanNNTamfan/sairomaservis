@@ -105,7 +105,8 @@
                         option.text = product.merk + ' ' + product.name + ' ' + product.kategori;
                         productSelect.appendChild(option);
                     });
-                });
+                })
+                .catch(error => console.error('Error fetching products:', error));
         }
     });
 </script>
