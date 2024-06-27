@@ -20,7 +20,7 @@ if (isset($_GET['id']) || isset($_GET['category'])) {
         }
         echo json_encode($products);
     } else {
-        echo json_encode([]);
+        echo json_encode(["error" => "No products found"]);
     }
 } else {
     echo json_encode([]);
