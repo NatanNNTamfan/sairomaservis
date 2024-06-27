@@ -1,6 +1,7 @@
 <?php include 'config.php'; ?>
 
 <!-- Process payment -->
+<?php
 if (isset($_POST['process_payment'])) {
     $product_id = $_POST['product_id'];
     $quantity = $_POST['quantity'];
