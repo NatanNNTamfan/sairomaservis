@@ -1,5 +1,12 @@
 
 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cashier</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
 <div class="container mt-4">
     <h2>Process Payment</h2>
     <form method="post" action="">
@@ -52,6 +59,8 @@
         <button type="submit" class="btn btn-primary">Process Payment</button>
     </form>
 </div>
+</body>
+</html>
 <script>
     let products = [];
 
