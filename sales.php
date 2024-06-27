@@ -7,7 +7,7 @@ $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
-        echo "Sale ID: " . $row["id"]. " - Product: " . $row["name"]. " - Quantity: " . $row["quantity"]. " - Total Price: " . $row["total_price"]. " - Date: " . $row["sale_date"]. "<br>";
+        echo "Sale ID: " . $row["id"]. " - Product: " . $row["name"]. " - Quantity: " . $row["quantity"]. " - Total Price: Rp " . number_format($row["total_price"], 0, ',', '.') . " - Date: " . $row["sale_date"]. "<br>";
     }
 } else {
     echo "0 results";

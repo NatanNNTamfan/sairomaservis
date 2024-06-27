@@ -63,8 +63,8 @@ if (isset($_POST['add_product'])) {
                     echo "<tr>";
                     echo "<td>" . $row["id"] . "</td>";
                     echo "<td>" . $row["name"] . "</td>";
-                    echo "<td>" . $row["hargajual"] . "</td>";
-                    echo "<td>" . $row["hargabeli"] . "</td>";
+                    echo "<td>Rp " . number_format($row["hargajual"], 0, ',', '.') . "</td>";
+                    echo "<td>Rp " . number_format($row["hargabeli"], 0, ',', '.') . "</td>";
                     echo "<td>" . $row["stock"] . "</td>";
                     echo "<td>" . $row["kategori"] . "</td>";
                     echo "<td>" . $row["merk"] . "</td>";

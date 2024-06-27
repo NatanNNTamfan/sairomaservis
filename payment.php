@@ -21,7 +21,7 @@ if (isset($_POST['process_payment'])) {
             if ($conn->query($sql) === TRUE) {
                 $sql = "UPDATE products SET stock='$new_stock' WHERE id='$product_id'";
                 $conn->query($sql);
-                echo "Payment processed successfully";
+                echo "Payment processed successfully. Total Price: Rp " . number_format($total_price, 0, ',', '.');
             } else {
                 echo "Error: " . $sql . "<br>" . $conn->error;
             }

@@ -7,7 +7,7 @@ $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
-    echo "Total Revenue: " . $row["total_revenue"]. "<br>";
+    echo "Total Revenue: Rp " . number_format($row["total_revenue"], 0, ',', '.') . "<br>";
 } else {
     echo "0 results";
 }
