@@ -43,11 +43,11 @@
                 <th>Harga Beli</th>
                 <th>Harga Jual</th>
                 <th>Discount</th>
-                <th>Keuntungan</th>
                 <th>Total</th>
                 <th>Profit</th>
                 <th>Date</th>
                 <th>Time</th>
+                <th>Keuntungan</th>
             </tr>
         </thead>
         <tbody>
@@ -74,11 +74,11 @@
                     echo "<td>Rp " . number_format($row["hargabeli"], 0, ',', '.') . "</td>";
                     echo "<td>Rp " . number_format($row["price"], 0, ',', '.') . "</td>";
                     echo "<td>Rp " . number_format($row["discount"], 0, ',', '.') . "</td>";
-                    echo "<td>Rp " . number_format($row["profit"], 0, ',', '.') . "</td>";
                     echo "<td>Rp " . number_format($row["total"], 0, ',', '.') . "</td>";
                     echo "<td>Rp " . number_format($row["profit"], 0, ',', '.') . "</td>";
                     echo "<td>" . $row["date"] . "</td>";
                     echo "<td>" . $row["time"] . "</td>";
+                    echo "<td>Rp " . number_format($row["profit"], 0, ',', '.') . "</td>";
                     echo "</tr>";
                 }
             } else {
