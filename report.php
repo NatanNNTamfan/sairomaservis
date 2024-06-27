@@ -2,7 +2,7 @@
 
 <!-- Display financial report -->
 <?php
-$sql = "SELECT SUM(total_price) as total_revenue FROM sales";
+$sql = "SELECT SUM(total) as total_revenue FROM sales";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
