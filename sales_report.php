@@ -22,7 +22,7 @@
         </thead>
         <tbody>
             <?php
-            $sql = "SELECT p.merk, p.name, s.quantity, s.sale_price, s.discount, s.total, s.date 
+            $sql = "SELECT p.merk, p.name, s.quantity, s.price, s.discount, s.total, s.date 
                     FROM sales s 
                     JOIN products p ON s.product_id = p.id 
                     ORDER BY s.date DESC";
