@@ -116,18 +116,26 @@ if (isset($_POST['edit_service'])) {
             <select class="form-control" id="used_products" name="used_products[]" multiple>
                 <?php $service_products = isset($service_products) ? $service_products : []; ?>
                 <?php
-                $sql = "SELECT id, name FROM products";
+                $sql = "SELECT id, name, hargajual FROM products";
                 $result = $conn->query($sql);
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
                         $selected = in_array($row['id'], $service_products) ? 'selected' : '';
-                        echo "<option value='" . htmlspecialchars($row['id']) . "' $selected>" . htmlspecialchars($row['name']) . "</option>";
+                        echo "<option value='" . htmlspecialchars($row['id']) . "' data-price='" . $row['hargajual'] . "' $selected>" . htmlspecialchars($row['name']) . " - Rp " . number_format($row['hargajual'], 0, ',', '.') . "</option>";
                     }
                 } else {
                     echo "<option value=''>No products available</option>";
                 }
                 ?>
             </select>
+        </div>
+        <div class="form-group">
+            <label for="total_cost">Total Cost:</label>
+            <input type="text" class="form-control" id="total_cost" name="total_cost" readonly>
+        </div>
+        <div class="form-group">
+            <label for="profit">Profit:</label>
+            <input type="text" class="form-control" id="profit" name="profit" readonly>
         </div>
         <div class="form-group">
             <label for="status">Status:</label>
@@ -140,6 +148,26 @@ if (isset($_POST['edit_service'])) {
         <button type="submit" class="btn btn-primary" name="edit_service">Save Changes</button>
     </form>
 </div>
+<script>
+    document.getElementById('used_products').addEventListener('change', function() {
+        let totalCost = 0;
+        let selectedOptions = this.selectedOptions;
+        for (let i = 0; i < selectedOptions.length; i++) {
+            totalCost += parseFloat(selectedOptions[i].getAttribute('data-price'));
+        }
+        document.getElementById('total_cost').value = 'Rp ' + totalCost.toLocaleString('id-ID');
+        calculateProfit();
+    });
+
+    document.getElementById('cost').addEventListener('input', calculateProfit);
+
+    function calculateProfit() {
+        let totalCost = parseFloat(document.getElementById('total_cost').value.replace(/[^0-9.-]+/g,""));
+        let serviceCost = parseFloat(document.getElementById('cost').value);
+        let profit = serviceCost - totalCost;
+        document.getElementById('profit').value = 'Rp ' + profit.toLocaleString('id-ID');
+    }
+</script>
 <?php $conn->close(); ?>
 </body>
 </html>
