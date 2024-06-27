@@ -8,7 +8,7 @@ if (isset($_POST['products'])) {
         $product_id = $product['productId'];
         $quantity = $product['quantity'];
         $price = $product['price'];
-        $discount = $product['discount'];
+        $discount = !empty($product['discount']) ? $product['discount'] : 0;
         $total = $product['total'];
 
         $sql = "SELECT stock FROM products WHERE id='$product_id'";
