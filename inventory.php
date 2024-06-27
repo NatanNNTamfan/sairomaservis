@@ -158,7 +158,13 @@ if (isset($_POST['add_product'])) {
         return true;
     }
 
-    function addProduct() {
+    function addProduct(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        if (!validateForm()) {
+            return false;
+        }
+
         const form = document.getElementById('addProductForm');
         const formData = new FormData(form);
 
@@ -192,6 +198,8 @@ if (isset($_POST['add_product'])) {
                 text: 'An unexpected error occurred'
             });
         });
+
+        return false; // Prevent default form submission
     }
 </script>
 
