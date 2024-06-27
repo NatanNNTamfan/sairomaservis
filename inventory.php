@@ -148,7 +148,7 @@ if (isset($_POST['add_product'])) {
         const form = document.getElementById('addProductForm');
         const formData = new FormData(form);
 
-        fetch('add_product.php', {
+        fetch('process_add_product.php', {
             method: 'POST',
             body: formData
         })
