@@ -17,6 +17,7 @@ if (isset($_POST['id']) && isset($_POST['add_stock'])) {
                     window.location = 'inventory.php';
                 });
               </script>";
+        exit();
     } else {
         echo "<script>
                 Swal.fire({
@@ -27,6 +28,7 @@ if (isset($_POST['id']) && isset($_POST['add_stock'])) {
                     window.location = 'inventory.php';
                 });
               </script>";
+        exit();
     }
 }
 

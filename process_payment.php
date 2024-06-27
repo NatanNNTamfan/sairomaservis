@@ -28,6 +28,7 @@ if (isset($_POST['products'])) {
                     $stmt = $conn->prepare("UPDATE products SET stock=? WHERE id=?");
                     $stmt->bind_param("ii", $new_stock, $product_id);
                     $stmt->execute();
+                    exit();
                 } else {
                     echo "<script>
                             Swal.fire({
@@ -39,6 +40,7 @@ if (isset($_POST['products'])) {
                             });
                           </script>";
                 }
+                exit();
             } else {
                 echo "<script>
                         Swal.fire({
@@ -50,6 +52,7 @@ if (isset($_POST['products'])) {
                         });
                       </script>";
             }
+            exit();
         } else {
             echo "<script>
                     Swal.fire({
@@ -61,6 +64,7 @@ if (isset($_POST['products'])) {
                     });
                   </script>";
         }
+        exit();
     }
 
     echo "<script>
@@ -72,6 +76,7 @@ if (isset($_POST['products'])) {
                 window.location = 'cashier.php';
             });
           </script>";
+    exit();
 }
 $conn->close();
 ?>

@@ -34,6 +34,7 @@ if (!empty($_POST['name']) && !empty($_POST['hargabeli']) && !empty($_POST['stoc
                         window.location = 'inventory.php';
                     });
                   </script>";
+            exit();
         } else {
             echo "<script>
                     Swal.fire({
@@ -44,6 +45,7 @@ if (!empty($_POST['name']) && !empty($_POST['hargabeli']) && !empty($_POST['stoc
                         window.location = 'inventory.php';
                     });
                   </script>";
+            exit();
         }
     }
 } else {
@@ -56,6 +58,7 @@ if (!empty($_POST['name']) && !empty($_POST['hargabeli']) && !empty($_POST['stoc
                 window.history.back();
             });
           </script>";
+    exit();
 }
 
 $conn->close();
