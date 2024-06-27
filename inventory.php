@@ -4,7 +4,6 @@
 <?php
 if (isset($_POST['add_product'])) {
     $name = $_POST['merk'] . ' ' . $_POST['name'] . ' ' . $_POST['kategori'];
-    $hargajual = $_POST['hargajual'];
     $hargabeli = $_POST['hargabeli'];
     $stock = $_POST['stock'];
     $kategori = $_POST['kategori'];
@@ -17,7 +16,7 @@ if (isset($_POST['add_product'])) {
     if ($check_result->num_rows > 0) {
         echo "Product already exists";
     } else {
-        $sql = "INSERT INTO products (name, hargajual, hargabeli, stock, kategori, merk) VALUES ('$name', '$hargajual', '$hargabeli', '$stock', '$kategori', '$merk')";
+        $sql = "INSERT INTO products (name, hargabeli, stock, kategori, merk) VALUES ('$name', '$hargabeli', '$stock', '$kategori', '$merk')";
         if ($conn->query($sql) === TRUE) {
             echo "New product added successfully";
         } else {
@@ -48,21 +47,9 @@ if (isset($_POST['add_product'])) {
                 return prefix == undefined ? rupiah : (rupiah ? 'Rp ' + rupiah : '');
             }
 
-            const hargajual = document.getElementById('hargajual');
             const hargabeli = document.getElementById('hargabeli');
 
-            if (hargajual) {
-                hargajual.addEventListener('keyup', function(e) {
-                    this.value = formatRupiah(this.value, 'Rp ');
-                });
-
-                hargajual.addEventListener('blur', function(e) {
-                    this.value = formatRupiah(this.value, 'Rp ');
-                });
-
-                // Ensure the initial value is formatted correctly
-                hargajual.value = formatRupiah(hargajual.value, 'Rp ');
-            }
+        
 
             if (hargabeli) {
                 hargabeli.addEventListener('keyup', function(e) {
@@ -88,7 +75,6 @@ if (isset($_POST['add_product'])) {
             <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Harga Jual</th>
                 <th>Harga Beli</th>
                 <th>Stock</th>
                 <th>Kategori</th>
@@ -111,7 +97,6 @@ if (isset($_POST['add_product'])) {
                     echo "<tr>";
                     echo "<td>" . $row["id"] . "</td>";
                     echo "<td>" . $row["name"] . "</td>";
-                    echo "<td>Rp " . number_format($row["hargajual"], 0, ',', '.') . "</td>";
                     echo "<td>Rp " . number_format($row["hargabeli"], 0, ',', '.') . "</td>";
                     echo "<td>" . $row["stock"] . "</td>";
                     echo "<td>" . $row["kategori"] . "</td>";
@@ -146,7 +131,6 @@ if (isset($_POST['add_product'])) {
                         .then(data => {
                             document.getElementById('edit_id').value = data.id;
                             document.getElementById('edit_name').value = data.name;
-                            document.getElementById('edit_hargajual').value = data.hargajual;
                             document.getElementById('edit_hargabeli').value = data.hargabeli;
                             document.getElementById('edit_stock').value = data.stock;
                             document.getElementById('edit_kategori').value = data.kategori;
@@ -168,10 +152,6 @@ if (isset($_POST['add_product'])) {
         <div class="form-group">
             <label for="name">Name:</label>
             <input type="text" class="form-control" id="name" name="name" required>
-        </div>
-        <div class="form-group">
-            <label for="hargajual">Harga Jual:</label>
-            <input type="number" class="form-control" id="hargajual" name="hargajual" required>
         </div>
         <div class="form-group">
             <label for="hargabeli">Harga Beli:</label>
