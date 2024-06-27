@@ -57,7 +57,7 @@
                         })
                         .catch(error => {
                             console.error('Error fetching products:', error);
-                            response.text().then(text => console.log('Raw response text:', text));
+                            console.log('Raw response text:', text);
                         });
                 }
             });
