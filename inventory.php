@@ -48,25 +48,34 @@ if (isset($_POST['add_product'])) {
                 return prefix == undefined ? rupiah : (rupiah ? 'Rp ' + rupiah : '');
             }
 
-            document.getElementById('hargajual').addEventListener('keyup', function(e) {
-                this.value = formatRupiah(this.value, 'Rp ');
-            });
+            const hargajual = document.getElementById('hargajual');
+            const hargabeli = document.getElementById('hargabeli');
 
-            document.getElementById('hargabeli').addEventListener('keyup', function(e) {
-                this.value = formatRupiah(this.value, 'Rp ');
-            });
+            if (hargajual) {
+                hargajual.addEventListener('keyup', function(e) {
+                    this.value = formatRupiah(this.value, 'Rp ');
+                });
 
-            document.getElementById('hargajual').addEventListener('blur', function(e) {
-                this.value = formatRupiah(this.value, 'Rp ');
-            });
+                hargajual.addEventListener('blur', function(e) {
+                    this.value = formatRupiah(this.value, 'Rp ');
+                });
 
-            document.getElementById('hargabeli').addEventListener('blur', function(e) {
-                this.value = formatRupiah(this.value, 'Rp ');
-            });
+                // Ensure the initial value is formatted correctly
+                hargajual.value = formatRupiah(hargajual.value, 'Rp ');
+            }
 
-            // Ensure the initial value is formatted correctly
-            document.getElementById('hargajual').value = formatRupiah(document.getElementById('hargajual').value, 'Rp ');
-            document.getElementById('hargabeli').value = formatRupiah(document.getElementById('hargabeli').value, 'Rp ');
+            if (hargabeli) {
+                hargabeli.addEventListener('keyup', function(e) {
+                    this.value = formatRupiah(this.value, 'Rp ');
+                });
+
+                hargabeli.addEventListener('blur', function(e) {
+                    this.value = formatRupiah(this.value, 'Rp ');
+                });
+
+                // Ensure the initial value is formatted correctly
+                hargabeli.value = formatRupiah(hargabeli.value, 'Rp ');
+            }
         </script>
         <div class="form-group">
             <label for="search">Search:</label>
