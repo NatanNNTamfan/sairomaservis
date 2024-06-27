@@ -20,19 +20,45 @@ if (isset($_POST['add_product'])) {
 ?>
 
 <!-- Display products -->
-<?php
-$sql = "SELECT * FROM products";
-$result = $conn->query($sql);
+<div class="container mt-4">
+    <h2>Product Inventory</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Harga Jual</th>
+                <th>Harga Beli</th>
+                <th>Stock</th>
+                <th>Kategori</th>
+                <th>Merk</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            $sql = "SELECT * FROM products";
+            $result = $conn->query($sql);
 
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        echo "id: " . $row["id"]. " - Name: " . $row["name"]. " - Harga Jual: " . $row["hargajual"]. " - Harga Beli: " . $row["hargabeli"]. " - Stock: " . $row["stock"]. " - Kategori: " . $row["kategori"]. " - Merk: " . $row["merk"]. "<br>";
-    }
-} else {
-    echo "0 results";
-}
-$conn->close();
-?>
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    echo "<tr>";
+                    echo "<td>" . $row["id"] . "</td>";
+                    echo "<td>" . $row["name"] . "</td>";
+                    echo "<td>" . $row["hargajual"] . "</td>";
+                    echo "<td>" . $row["hargabeli"] . "</td>";
+                    echo "<td>" . $row["stock"] . "</td>";
+                    echo "<td>" . $row["kategori"] . "</td>";
+                    echo "<td>" . $row["merk"] . "</td>";
+                    echo "</tr>";
+                }
+            } else {
+                echo "<tr><td colspan='7'>0 results</td></tr>";
+            }
+            $conn->close();
+            ?>
+        </tbody>
+    </table>
+</div>
 
 <div class="container">
 <form method="post" action="">
