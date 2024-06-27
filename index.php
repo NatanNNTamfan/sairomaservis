@@ -54,6 +54,8 @@ $total_sales = $result->fetch_assoc()['total_sales'];
                     while ($row = $result->fetch_assoc()) {
                         echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
                     }
+                } else {
+                    echo "<option value=''>No customers available</option>";
                 }
                 ?>
             </select>
