@@ -17,17 +17,17 @@
                 <option value="">Select Product</option>
             </select>
         </div>
-        <script>
-
-            function isValidJSON(text) {
-                try {
-                    JSON.parse(text);
-                    return true;
-                } catch (error) {
-                    return false;
-                }
+        <?php
+        $sql = "SELECT id, merk, name, kategori FROM products";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                echo '<option value="' . $row['id'] . '">' . $row['merk'] . ' ' . $row['name'] . ' ' . $row['kategori'] . '</option>';
             }
-        </script>
+        } else {
+            echo '<option value="">No products available</option>';
+        }
+        ?>
         <div class="form-group">
             <label for="quantity">Quantity:</label>
             <input type="number" class="form-control" id="quantity" name="quantity" min="1" required>
