@@ -43,7 +43,7 @@
  }
 
  $conn->close();
- exit();<?php
+ exit();
 include 'config.php';
 
 if (!empty($_POST['customer_id']) && !empty($_POST['description']) && !empty($_POST['status'])) {
