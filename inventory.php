@@ -31,6 +31,31 @@ if (isset($_POST['add_product'])) {
 <div class="container mt-4">
     <h2>Product Inventory</h2>
     <form method="get" action="">
+        <script>
+            function formatRupiah(angka, prefix) {
+                var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                    split = number_string.split(','),
+                    sisa = split[0].length % 3,
+                    rupiah = split[0].substr(0, sisa),
+                    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+                if (ribuan) {
+                    separator = sisa ? '.' : '';
+                    rupiah += separator + ribuan.join('.');
+                }
+
+                rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+                return prefix == undefined ? rupiah : (rupiah ? 'Rp ' + rupiah : '');
+            }
+
+            document.getElementById('hargajual').addEventListener('keyup', function(e) {
+                this.value = formatRupiah(this.value, 'Rp ');
+            });
+
+            document.getElementById('hargabeli').addEventListener('keyup', function(e) {
+                this.value = formatRupiah(this.value, 'Rp ');
+            });
+        </script>
         <div class="form-group">
             <label for="search">Search:</label>
             <input type="text" class="form-control" id="search" name="search" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">

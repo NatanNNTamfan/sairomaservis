@@ -52,6 +52,31 @@ $conn->close();
     <h2>Edit Product</h2>
     <form method="post" action="">
         <input type="hidden" name="id" value="<?php echo $product['id']; ?>">
+        <script>
+            function formatRupiah(angka, prefix) {
+                var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                    split = number_string.split(','),
+                    sisa = split[0].length % 3,
+                    rupiah = split[0].substr(0, sisa),
+                    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+                if (ribuan) {
+                    separator = sisa ? '.' : '';
+                    rupiah += separator + ribuan.join('.');
+                }
+
+                rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+                return prefix == undefined ? rupiah : (rupiah ? 'Rp ' + rupiah : '');
+            }
+
+            document.getElementById('edit_hargajual').addEventListener('keyup', function(e) {
+                this.value = formatRupiah(this.value, 'Rp ');
+            });
+
+            document.getElementById('edit_hargabeli').addEventListener('keyup', function(e) {
+                this.value = formatRupiah(this.value, 'Rp ');
+            });
+        </script>
         <div class="form-group">
             <label for="name">Name:</label>
             <input type="text" class="form-control" id="name" name="name" value="<?php echo $product['name']; ?>" required>
