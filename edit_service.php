@@ -101,17 +101,17 @@ if (isset($_POST['edit_service'])) {
 <body>
 <div class="container mt-4">
     <h2>Edit Service</h2>
-    <form method="post" action="">
+    <form method="post" action="" class="needs-validation" novalidate>
         <input type="hidden" name="id" value="<?php echo htmlspecialchars($service['id']); ?>">
-        <div class="form-group">
+        <div class="form-group was-validated">
             <label for="description">Description:</label>
             <textarea class="form-control" id="description" name="description" required><?php echo htmlspecialchars($service['description']); ?></textarea>
         </div>
-        <div class="form-group">
+        <div class="form-group was-validated">
             <label for="cost">Cost:</label>
             <input type="number" class="form-control" id="cost" name="cost" value="<?php echo htmlspecialchars($service['cost']); ?>" step="0.01">
         </div>
-        <div class="form-group">
+        <div class="form-group was-validated">
             <label for="used_products">Used Products:</label>
             <select class="form-control" id="used_products" name="used_products[]" multiple>
                 <?php $service_products = isset($service_products) ? $service_products : []; ?>
@@ -129,7 +129,7 @@ if (isset($_POST['edit_service'])) {
                 ?>
             </select>
         </div>
-        <div class="form-group">
+        <div class="form-group was-validated">
             <label for="total_cost">Total Cost:</label>
             <input type="text" class="form-control" id="total_cost" name="total_cost" readonly>
         </div>
@@ -146,6 +146,27 @@ if (isset($_POST['edit_service'])) {
             </select>
         </div>
         <button type="submit" class="btn btn-primary" name="edit_service">Save Changes</button>
+    </form>
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
     </form>
 </div>
 <script>
