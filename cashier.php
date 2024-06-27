@@ -15,19 +15,19 @@
             <label for="product_id">Product:</label>
             <select class="form-control" id="product_id" name="product_id" required>
                 <option value="">Select Product</option>
+                <?php
+                $sql = "SELECT id, merk, name, kategori FROM products";
+                $result = $conn->query($sql);
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        echo '<option value="' . $row['id'] . '">' . $row['merk'] . ' ' . $row['name'] . ' ' . $row['kategori'] . '</option>';
+                    }
+                } else {
+                    echo '<option value="">No products available</option>';
+                }
+                ?>
             </select>
         </div>
-        <?php
-        $sql = "SELECT id, merk, name, kategori FROM products";
-        $result = $conn->query($sql);
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                echo '<option value="' . $row['id'] . '">' . $row['merk'] . ' ' . $row['name'] . ' ' . $row['kategori'] . '</option>';
-            }
-        } else {
-            echo '<option value="">No products available</option>';
-        }
-        ?>
         <div class="form-group">
             <label for="quantity">Quantity:</label>
             <input type="number" class="form-control" id="quantity" name="quantity" min="1" required>
