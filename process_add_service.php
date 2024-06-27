@@ -10,14 +10,14 @@
      $sql = "INSERT INTO services (customer_id, description, status, cost, created_at, updated_at) VALUES ('$customer_id', '$description', '$status', '$cost', NOW(), NOW())";
      if ($conn->query($sql) === TRUE) {
          $service_id = $conn->insert_id;
-         if (!empty($_POST['used_products'])) {
-             foreach ($_POST['used_products'] as $product_id) {
-                 $sql = "INSERT INTO service_products (service_id, product_id) VALUES ('$service_id', '$product_id')";
-                 $conn->query($sql);
-                 $sql = "UPDATE products SET stock = stock - 1 WHERE id='$product_id'";
-                 $conn->query($sql);
-             }
-         }
+        if (!empty($_POST['used_products'])) {
+            foreach ($_POST['used_products'] as $product_id) {
+                $sql = "INSERT INTO service_products (service_id, product_id) VALUES ('$service_id', '$product_id')";
+                $conn->query($sql);
+                $sql = "UPDATE products SET stock = stock - 1 WHERE id='$product_id'";
+                $conn->query($sql);
+            }
+        }
          echo "<script>
                  Swal.fire({
                      icon: 'success',
