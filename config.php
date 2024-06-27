@@ -16,10 +16,10 @@
         <a class="nav-link" href="inventory.php">Inventory</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="payment.php">Payment</a>
+        <a class="nav-link" href="cashier.php">Cashier</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="sales.php">Sales</a>
+        <a class="nav-link" href="sales_report.php">Sales</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="report.php">Report</a>
