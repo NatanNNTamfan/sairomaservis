@@ -280,7 +280,13 @@ if (isset($_POST['add_product'])) {
         .then(response => response.text())
         .then(data => {
             document.getElementById('addProductForm').reset();
-            alert(data);
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: data
+            }).then(function() {
+                window.location = 'inventory.php';
+            });
         })
         .catch(error => console.error('Error:', error));
     }
