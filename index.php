@@ -23,6 +23,9 @@ $conn->close();
     <p>Total Stock: <?php echo $total_stock; ?></p>
     <p>Total Transactions: <?php echo $total_transactions; ?></p>
     <p>Total Sales: <?php echo $total_sales; ?></p>
+    <form method="post" action="clear_data.php">
+        <button type="submit" class="btn btn-danger mt-4">Clear All Data</button>
+    </form>
 </div>
 </body>
 </html>
