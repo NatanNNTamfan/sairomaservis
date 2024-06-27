@@ -87,6 +87,7 @@ $total_sales = $result->fetch_assoc()['total_sales'];
                 <th>Phone</th>
                 <th>Email</th>
                 <th>Created At</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -102,6 +103,7 @@ $total_sales = $result->fetch_assoc()['total_sales'];
                     echo "<td>" . $row["phone"] . "</td>";
                     echo "<td>" . $row["email"] . "</td>";
                     echo "<td>" . $row["created_at"] . "</td>";
+                    echo "<td><a href='edit_service.php?id=" . $row['id'] . "' class='btn btn-primary btn-sm'>Edit</a></td>";
                     echo "<td><a href='edit_service.php?id=" . $row['id'] . "' class='btn btn-primary btn-sm'>Edit</a></td>";
                     echo "</tr>";
                 }
