@@ -40,8 +40,10 @@
             <tr>
                 <th>Product</th>
                 <th>Quantity</th>
+                <th>Harga Beli</th>
                 <th>Harga Jual</th>
                 <th>Discount</th>
+                <th>Keuntungan</th>
                 <th>Total</th>
                 <th>Profit</th>
                 <th>Date</th>
@@ -56,7 +58,7 @@
             $end_time = isset($_GET['end_time']) ? $_GET['end_time'] : '23:59:59';
             $search = isset($_GET['search']) ? $_GET['search'] : '';
             $search = str_replace(' ', '', $search);
-            $sql = "SELECT p.merk, p.name, s.quantity, s.price, s.discount, s.total, DATE(s.date) as date, TIME(s.date) as time, (s.price - p.hargabeli) * s.quantity - s.discount as profit 
+            $sql = "SELECT p.merk, p.name, p.hargabeli, s.quantity, s.price, s.discount, s.total, DATE(s.date) as date, TIME(s.date) as time, (s.price - p.hargabeli) * s.quantity - s.discount as profit 
                     FROM sales s 
                     JOIN products p ON s.product_id = p.id 
                     WHERE (s.date BETWEEN '$start_date $start_time' AND '$end_date $end_time')
@@ -69,8 +71,10 @@
                     echo "<tr>";
                     echo "<td>" . $row["merk"] . " " . $row["name"] . "</td>";
                     echo "<td>" . $row["quantity"] . "</td>";
+                    echo "<td>Rp " . number_format($row["hargabeli"], 0, ',', '.') . "</td>";
                     echo "<td>Rp " . number_format($row["price"], 0, ',', '.') . "</td>";
                     echo "<td>Rp " . number_format($row["discount"], 0, ',', '.') . "</td>";
+                    echo "<td>Rp " . number_format($row["profit"], 0, ',', '.') . "</td>";
                     echo "<td>Rp " . number_format($row["total"], 0, ',', '.') . "</td>";
                     echo "<td>Rp " . number_format($row["profit"], 0, ',', '.') . "</td>";
                     echo "<td>" . $row["date"] . "</td>";
