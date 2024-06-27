@@ -10,11 +10,19 @@ if (isset($_POST['add_product'])) {
     $kategori = $_POST['kategori'];
     $merk = $_POST['merk'];
 
-    $sql = "INSERT INTO products (name, hargajual, hargabeli, stock, kategori, merk) VALUES ('$name', '$hargajual', '$hargabeli', '$stock', '$kategori', '$merk')";
-    if ($conn->query($sql) === TRUE) {
-        echo "New product added successfully";
+    // Check for duplicate product
+    $check_sql = "SELECT * FROM products WHERE name='$name' AND kategori='$kategori' AND merk='$merk'";
+    $check_result = $conn->query($check_sql);
+
+    if ($check_result->num_rows > 0) {
+        echo "Product already exists";
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        $sql = "INSERT INTO products (name, hargajual, hargabeli, stock, kategori, merk) VALUES ('$name', '$hargajual', '$hargabeli', '$stock', '$kategori', '$merk')";
+        if ($conn->query($sql) === TRUE) {
+            echo "New product added successfully";
+        } else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
     }
 }
 ?>
@@ -61,13 +69,34 @@ if (isset($_POST['add_product'])) {
 </div>
 
 <div class="container">
-<form method="post" action="">
-    Name: <input type="text" name="name"><br>
-    Harga Jual: <input type="text" name="hargajual"><br>
-    Harga Beli: <input type="text" name="hargabeli"><br>
-    Stock: <input type="text" name="stock"><br>
-    Kategori: <input type="text" name="kategori"><br>
-    Merk: <input type="text" name="merk"><br>
-    <input type="submit" name="add_product" value="Add Product">
-</form>
+<div class="container mt-4">
+    <h2>Add New Product</h2>
+    <form method="post" action="">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="hargajual">Harga Jual:</label>
+            <input type="number" class="form-control" id="hargajual" name="hargajual" required>
+        </div>
+        <div class="form-group">
+            <label for="hargabeli">Harga Beli:</label>
+            <input type="number" class="form-control" id="hargabeli" name="hargabeli" required>
+        </div>
+        <div class="form-group">
+            <label for="stock">Stock:</label>
+            <input type="number" class="form-control" id="stock" name="stock" required>
+        </div>
+        <div class="form-group">
+            <label for="kategori">Kategori:</label>
+            <input type="text" class="form-control" id="kategori" name="kategori" required>
+        </div>
+        <div class="form-group">
+            <label for="merk">Merk:</label>
+            <input type="text" class="form-control" id="merk" name="merk" required>
+        </div>
+        <button type="submit" class="btn btn-primary" name="add_product">Add Product</button>
+    </form>
+</div>
 </div>
