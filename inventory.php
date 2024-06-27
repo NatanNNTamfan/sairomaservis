@@ -1,5 +1,4 @@
-<?php
-include 'config.php';
+<?php include 'config.php'; ?>
 
 // Add product
 if (isset($_POST['add_product'])) {
@@ -29,9 +28,11 @@ if ($result->num_rows > 0) {
 $conn->close();
 ?>
 
+<div class="container">
 <form method="post" action="">
     Name: <input type="text" name="name"><br>
     Price: <input type="text" name="price"><br>
     Stock: <input type="text" name="stock"><br>
     <input type="submit" name="add_product" value="Add Product">
 </form>
+</div>

@@ -1,5 +1,4 @@
-<?php
-include 'config.php';
+<?php include 'config.php'; ?>
 
 // Display financial report
 $sql = "SELECT SUM(total_price) as total_revenue FROM sales";

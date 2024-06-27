@@ -1,5 +1,4 @@
-<?php
-include 'config.php';
+<?php include 'config.php'; ?>
 
 // Process payment
 if (isset($_POST['process_payment'])) {
@@ -35,8 +34,10 @@ if (isset($_POST['process_payment'])) {
 $conn->close();
 ?>
 
+<div class="container">
 <form method="post" action="">
     Product ID: <input type="text" name="product_id"><br>
     Quantity: <input type="text" name="quantity"><br>
     <input type="submit" name="process_payment" value="Process Payment">
 </form>
+</div>
