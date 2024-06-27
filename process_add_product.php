@@ -1,7 +1,7 @@
 <?php
 include 'config.php';
 
-if (isset($_POST['name']) && isset($_POST['hargabeli']) && isset($_POST['stock']) && isset($_POST['kategori']) && isset($_POST['merk'])) {
+if (!empty($_POST['name']) && !empty($_POST['hargabeli']) && !empty($_POST['stock']) && !empty($_POST['kategori']) && !empty($_POST['merk'])) {
     $name = $_POST['merk'] . ' ' . $_POST['name'] . ' ' . $_POST['kategori'];
     $hargabeli = str_replace(['Rp ', '.'], '', $_POST['hargabeli']);
     $stock = $_POST['stock'];
@@ -53,7 +53,7 @@ if (isset($_POST['name']) && isset($_POST['hargabeli']) && isset($_POST['stock']
                 title: 'Warning',
                 text: 'All fields are required'
             }).then(function() {
-                window.location = 'inventory.php';
+                window.history.back();
             });
           </script>";
 }
