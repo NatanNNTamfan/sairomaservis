@@ -19,14 +19,13 @@ if (isset($_GET['id'])) {
 if (isset($_POST['edit_product'])) {
     $id = $_POST['id'];
     $name = $_POST['name'];
-    $hargajual = $_POST['hargajual'];
     $hargabeli = $_POST['hargabeli'];
     $stock = $_POST['stock'];
     $kategori = $_POST['kategori'];
     $merk = $_POST['merk'];
 
     // Update product
-    $sql = "UPDATE products SET name='$name', hargajual='$hargajual', hargabeli='$hargabeli', stock='$stock', kategori='$kategori', merk='$merk' WHERE id='$id'";
+    $sql = "UPDATE products SET name='$name', hargabeli='$hargabeli', stock='$stock', kategori='$kategori', merk='$merk' WHERE id='$id'";
     if ($conn->query($sql) === TRUE) {
         echo "Product updated successfully";
     } else {
@@ -55,10 +54,6 @@ $conn->close();
         <div class="form-group">
             <label for="name">Name:</label>
             <input type="text" class="form-control" id="name" name="name" value="<?php echo $product['name']; ?>" required>
-        </div>
-        <div class="form-group">
-            <label for="hargajual">Harga Jual:</label>
-            <input type="number" class="form-control" id="edit_hargajual" name="hargajual" value="<?php echo $product['hargajual']; ?>" required>
         </div>
         <div class="form-group">
             <label for="hargabeli">Harga Beli:</label>
@@ -138,32 +133,21 @@ $conn->close();
                 return prefix == undefined ? rupiah : (rupiah ? 'Rp ' + rupiah : '');
             }
 
-            document.getElementById('edit_hargajual').addEventListener('keyup', function(e) {
-                this.value = formatRupiah(this.value, 'Rp ');
-            });
-
             document.getElementById('edit_hargabeli').addEventListener('keyup', function(e) {
                 this.value = formatRupiah(this.value, 'Rp ');
             });
-            document.getElementById('edit_hargajual').addEventListener('blur', function(e) {
-                this.value = formatRupiah(this.value, 'Rp ');
-            });
+
 
             document.getElementById('edit_hargabeli').addEventListener('blur', function(e) {
                 this.value = formatRupiah(this.value, 'Rp ');
             });
 
             // Ensure the initial value is formatted correctly
-            document.getElementById('edit_hargajual').value = formatRupiah(document.getElementById('edit_hargajual').value, 'Rp ');
             document.getElementById('edit_hargabeli').value = formatRupiah(document.getElementById('edit_hargabeli').value, 'Rp ');
         </script>
         <div class="form-group">
             <label for="name">Name:</label>
             <input type="text" class="form-control" id="name" name="name" value="<?php echo $product['name']; ?>" required>
-        </div>
-        <div class="form-group">
-            <label for="hargajual">Harga Jual:</label>
-            <input type="number" class="form-control" id="hargajual" name="hargajual" value="<?php echo $product['hargajual']; ?>" required>
         </div>
         <div class="form-group">
             <label for="hargabeli">Harga Beli:</label>
