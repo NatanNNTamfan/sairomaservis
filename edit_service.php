@@ -116,7 +116,7 @@ $conn->close();
                 $result = $conn->query($sql);
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
-                        $selected = in_array($row['id'], array_column($service_products, 'product_id')) ? 'selected' : '';
+                        $selected = in_array($row['id'], $service_products) ? 'selected' : '';
                         echo "<option value='" . htmlspecialchars($row['id']) . "' $selected>" . htmlspecialchars($row['name']) . "</option>";
                     }
                 } else {
