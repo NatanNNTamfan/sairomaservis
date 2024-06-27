@@ -41,11 +41,6 @@ if (!empty($_POST['customer_id']) && !empty($_POST['description']) && !empty($_P
               </script>";
     }
 } else {
-    if (!empty($_POST['update_status'])) {
-        $status = $_POST['update_status'];
-        $sql = "UPDATE services SET status='$status' WHERE id='$service_id'";
-        $conn->query($sql);
-    }
     echo "<script>
             Swal.fire({
                 icon: 'warning',
