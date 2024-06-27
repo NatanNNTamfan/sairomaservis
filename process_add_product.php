@@ -27,4 +27,6 @@ if (isset($_POST['name']) && isset($_POST['hargabeli']) && isset($_POST['stock']
 }
 
 $conn->close();
+header("Location: inventory.php");
+exit();
 ?>

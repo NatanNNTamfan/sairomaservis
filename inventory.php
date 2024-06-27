@@ -233,3 +233,21 @@ if (isset($_POST['add_product'])) {
     </form>
 </div>
 </div>
+
+<script>
+    function addProduct() {
+        const form = document.getElementById('addProductForm');
+        const formData = new FormData(form);
+
+        fetch('process_add_product.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('addProductForm').reset();
+            alert(data);
+        })
+        .catch(error => console.error('Error:', error));
+    }
+</script>
