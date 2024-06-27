@@ -114,7 +114,40 @@ if (isset($_POST['add_product'])) {
         </div>
         <div class="form-group">
             <label for="merk">Merk:</label>
-            <input type="text" class="form-control" id="merk" name="merk" required>
+            <select class="form-control" id="merk" name="merk" required>
+                <option value="Samsung">Samsung</option>
+                <option value="Apple">Apple</option>
+                <option value="Xiaomi">Xiaomi</option>
+                <option value="Oppo">Oppo</option>
+                <option value="Vivo">Vivo</option>
+                <option value="Realme">Realme</option>
+                <option value="Asus">Asus</option>
+                <option value="Huawei">Huawei</option>
+                <option value="Nokia">Nokia</option>
+                <option value="Sony">Sony</option>
+                <option value="LG">LG</option>
+                <option value="OnePlus">OnePlus</option>
+                <option value="Lenovo">Lenovo</option>
+                <option value="Motorola">Motorola</option>
+                <option value="Infinix">Infinix</option>
+                <option value="Tecno">Tecno</option>
+                <option value="Advan">Advan</option>
+                <option value="Evercoss">Evercoss</option>
+                <option value="Mito">Mito</option>
+                <option value="Polytron">Polytron</option>
+                <option value="Sharp">Sharp</option>
+                <option value="ZTE">ZTE</option>
+                <option value="Meizu">Meizu</option>
+                <option value="Google">Google</option>
+                <option value="Honor">Honor</option>
+                <option value="iQOO">iQOO</option>
+                <option value="Itel">Itel</option>
+                <option value="Luna">Luna</option>
+                <option value="Maxtron">Maxtron</option>
+                <option value="Nexian">Nexian</option>
+                <option value="Treq">Treq</option>
+                <option value="Wiko">Wiko</option>
+            </select>
         </div>
         <button type="submit" class="btn btn-primary" name="add_product">Add Product</button>
     </form>
