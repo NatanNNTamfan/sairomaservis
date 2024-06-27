@@ -21,6 +21,8 @@ if (isset($_GET['id']) || isset($_GET['category'])) {
     } else {
         echo json_encode([]);
     }
+} else {
+    echo json_encode([]);
 }
 
 $conn->close();

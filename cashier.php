@@ -56,15 +56,6 @@
                                     console.error('Invalid JSON:', text);
                                 }
                             } catch (error) {
-                                console.error('Error parsing JSON:', error, text);
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error fetching products:', error);
-                            return response.text().then(text => console.log('Raw response text:', text));
-                        });
-                }
-            });
 
             function isValidJSON(text) {
                 try {
