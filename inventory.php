@@ -166,18 +166,32 @@ if (isset($_POST['add_product'])) {
             method: 'POST',
             body: formData
         })
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('addProductForm').reset();
+        .then(response => {
+            if (response.headers.get('content-type')?.includes('application/json')) {
+                return response.json();
+            } else {
+                throw new Error('Invalid content type');
+            }
+        })
+        .then(result => {
             Swal.fire({
-                icon: 'success',
-                title: 'Success',
-                text: data
+                icon: result.icon,
+                title: result.title,
+                text: result.text
             }).then(function() {
-                window.location = 'inventory.php';
+                if (result.icon === 'success') {
+                    window.location = 'inventory.php';
+                }
             });
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'An unexpected error occurred'
+            });
+        });
     }
 </script>
 
