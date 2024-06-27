@@ -56,93 +56,6 @@ if (isset($_POST['add_product'])) {
                 </td>
             </tr>
 
-            <!-- Edit Modal -->
-            <div class="modal fade" id="editModal<?php echo $row['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel<?php echo $row['id']; ?>" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editModalLabel<?php echo $row['id']; ?>">Edit Product</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form method="post" action="edit_product.php">
-                                <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                                <div class="form-group">
-                                    <label for="name">Name:</label>
-                                    <input type="text" class="form-control" id="name" name="name" value="<?php echo $row['name']; ?>" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="hargajual">Harga Jual:</label>
-                                    <input type="number" class="form-control" id="hargajual" name="hargajual" value="<?php echo $row['hargajual']; ?>" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="hargabeli">Harga Beli:</label>
-                                    <input type="number" class="form-control" id="hargabeli" name="hargabeli" value="<?php echo $row['hargabeli']; ?>" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="stock">Stock:</label>
-                                    <input type="number" class="form-control" id="stock" name="stock" value="<?php echo $row['stock']; ?>" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="kategori">Kategori:</label>
-                                    <select class="form-control" id="kategori" name="kategori" required>
-                                        <option value="Connector" <?php if($row['kategori'] == 'Connector') echo 'selected'; ?>>Connector</option>
-                                        <option value="Backdoor" <?php if($row['kategori'] == 'Backdoor') echo 'selected'; ?>>Backdoor</option>
-                                        <option value="LCD" <?php if($row['kategori'] == 'LCD') echo 'selected'; ?>>LCD</option>
-                                        <option value="Baterai" <?php if($row['kategori'] == 'Baterai') echo 'selected'; ?>>Baterai</option>
-                                        <option value="Kamera" <?php if($row['kategori'] == 'Kamera') echo 'selected'; ?>>Kamera</option>
-                                        <option value="Speaker" <?php if($row['kategori'] == 'Speaker') echo 'selected'; ?>>Speaker</option>
-                                        <option value="Mikrofon" <?php if($row['kategori'] == 'Mikrofon') echo 'selected'; ?>>Mikrofon</option>
-                                        <option value="Charger" <?php if($row['kategori'] == 'Charger') echo 'selected'; ?>>Charger</option>
-                                        <option value="Headset" <?php if($row['kategori'] == 'Headset') echo 'selected'; ?>>Headset</option>
-                                        <option value="Casing" <?php if($row['kategori'] == 'Casing') echo 'selected'; ?>>Casing</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="merk">Merk:</label>
-                                    <select class="form-control" id="merk" name="merk" required>
-                                        <option value="Samsung" <?php if($row['merk'] == 'Samsung') echo 'selected'; ?>>Samsung</option>
-                                        <option value="Apple" <?php if($row['merk'] == 'Apple') echo 'selected'; ?>>Apple</option>
-                                        <option value="Xiaomi" <?php if($row['merk'] == 'Xiaomi') echo 'selected'; ?>>Xiaomi</option>
-                                        <option value="Oppo" <?php if($row['merk'] == 'Oppo') echo 'selected'; ?>>Oppo</option>
-                                        <option value="Vivo" <?php if($row['merk'] == 'Vivo') echo 'selected'; ?>>Vivo</option>
-                                        <option value="Realme" <?php if($row['merk'] == 'Realme') echo 'selected'; ?>>Realme</option>
-                                        <option value="Asus" <?php if($row['merk'] == 'Asus') echo 'selected'; ?>>Asus</option>
-                                        <option value="Huawei" <?php if($row['merk'] == 'Huawei') echo 'selected'; ?>>Huawei</option>
-                                        <option value="Nokia" <?php if($row['merk'] == 'Nokia') echo 'selected'; ?>>Nokia</option>
-                                        <option value="Sony" <?php if($row['merk'] == 'Sony') echo 'selected'; ?>>Sony</option>
-                                        <option value="LG" <?php if($row['merk'] == 'LG') echo 'selected'; ?>>LG</option>
-                                        <option value="OnePlus" <?php if($row['merk'] == 'OnePlus') echo 'selected'; ?>>OnePlus</option>
-                                        <option value="Lenovo" <?php if($row['merk'] == 'Lenovo') echo 'selected'; ?>>Lenovo</option>
-                                        <option value="Motorola" <?php if($row['merk'] == 'Motorola') echo 'selected'; ?>>Motorola</option>
-                                        <option value="Infinix" <?php if($row['merk'] == 'Infinix') echo 'selected'; ?>>Infinix</option>
-                                        <option value="Tecno" <?php if($row['merk'] == 'Tecno') echo 'selected'; ?>>Tecno</option>
-                                        <option value="Advan" <?php if($row['merk'] == 'Advan') echo 'selected'; ?>>Advan</option>
-                                        <option value="Evercoss" <?php if($row['merk'] == 'Evercoss') echo 'selected'; ?>>Evercoss</option>
-                                        <option value="Mito" <?php if($row['merk'] == 'Mito') echo 'selected'; ?>>Mito</option>
-                                        <option value="Polytron" <?php if($row['merk'] == 'Polytron') echo 'selected'; ?>>Polytron</option>
-                                        <option value="Sharp" <?php if($row['merk'] == 'Sharp') echo 'selected'; ?>>Sharp</option>
-                                        <option value="ZTE" <?php if($row['merk'] == 'ZTE') echo 'selected'; ?>>ZTE</option>
-                                        <option value="Meizu" <?php if($row['merk'] == 'Meizu') echo 'selected'; ?>>Meizu</option>
-                                        <option value="Google" <?php if($row['merk'] == 'Google') echo 'selected'; ?>>Google</option>
-                                        <option value="Honor" <?php if($row['merk'] == 'Honor') echo 'selected'; ?>>Honor</option>
-                                        <option value="iQOO" <?php if($row['merk'] == 'iQOO') echo 'selected'; ?>>iQOO</option>
-                                        <option value="Itel" <?php if($row['merk'] == 'Itel') echo 'selected'; ?>>Itel</option>
-                                        <option value="Luna" <?php if($row['merk'] == 'Luna') echo 'selected'; ?>>Luna</option>
-                                        <option value="Maxtron" <?php if($row['merk'] == 'Maxtron') echo 'selected'; ?>>Maxtron</option>
-                                        <option value="Nexian" <?php if($row['merk'] == 'Nexian') echo 'selected'; ?>>Nexian</option>
-                                        <option value="Treq" <?php if($row['merk'] == 'Treq') echo 'selected'; ?>>Treq</option>
-                                        <option value="Wiko" <?php if($row['merk'] == 'Wiko') echo 'selected'; ?>>Wiko</option>
-                                    </select>
-                                </div>
-                                <button type="submit" class="btn btn-primary" name="edit_product">Save changes</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </thead>
         <tbody>
             <?php
@@ -161,6 +74,13 @@ if (isset($_POST['add_product'])) {
                     echo "<td>" . $row["stock"] . "</td>";
                     echo "<td>" . $row["kategori"] . "</td>";
                     echo "<td>" . $row["merk"] . "</td>";
+                    echo "<td>
+                            <form method='post' action='delete_product.php' style='display:inline;'>
+                                <input type='hidden' name='id' value='" . $row['id'] . "'>
+                                <button type='submit' class='btn btn-danger btn-sm'>Delete</button>
+                            </form>
+                            <button class='btn btn-primary btn-sm' data-toggle='modal' data-target='#editModal" . $row['id'] . "'>Edit</button>
+                          </td>";
                     echo "</tr>";
                 }
             } else {
