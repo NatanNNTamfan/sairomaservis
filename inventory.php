@@ -91,10 +91,16 @@ if (isset($_POST['add_product'])) {
         <div class="form-group">
             <label for="kategori">Kategori:</label>
             <select class="form-control" id="kategori" name="kategori" required>
-                <option value="Aksesoris">Aksesoris</option>
-                <option value="Sparepart">Sparepart</option>
-                <option value="Servis">Servis</option>
-                <option value="Software">Software</option>
+                <option value="Connector">Connector</option>
+                <option value="Backdoor">Backdoor</option>
+                <option value="LCD">LCD</option>
+                <option value="Baterai">Baterai</option>
+                <option value="Kamera">Kamera</option>
+                <option value="Speaker">Speaker</option>
+                <option value="Mikrofon">Mikrofon</option>
+                <option value="Charger">Charger</option>
+                <option value="Headset">Headset</option>
+                <option value="Casing">Casing</option>
             </select>
         </div>
         <div class="form-group">
