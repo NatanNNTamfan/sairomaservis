@@ -113,21 +113,36 @@ if (isset($_POST['edit_service'])) {
         </div>
         <div class="form-group was-validated">
             <label for="used_products">Used Products:</label>
-            <select class="form-control" id="used_products" name="used_products[]" multiple>
-                <?php $service_products = isset($service_products) ? $service_products : []; ?>
+            <select class="form-control" id="used_products">
+                <option value="">Select Product</option>
                 <?php
                 $sql = "SELECT id, name, hargabeli FROM products";
                 $result = $conn->query($sql);
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
-                        $selected = in_array($row['id'], $service_products) ? 'selected' : '';
-                        echo "<option value='" . htmlspecialchars($row['id']) . "' data-price='" . $row['hargabeli'] . "' $selected>" . htmlspecialchars($row['name']) . " - Rp " . number_format($row['hargabeli'], 0, ',', '.') . "</option>";
+                        echo "<option value='" . htmlspecialchars($row['id']) . "' data-price='" . $row['hargabeli'] . "'>" . htmlspecialchars($row['name']) . " - Rp " . number_format($row['hargabeli'], 0, ',', '.') . "</option>";
                     }
                 } else {
                     echo "<option value=''>No products available</option>";
                 }
                 ?>
             </select>
+            <button type="button" class="btn btn-success mt-2" onclick="addProduct()">Add Product</button>
+        </div>
+        <div class="form-group">
+            <label for="product_cart">Product Cart:</label>
+            <table class="table table-bordered" id="product_cart">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Products will be added here dynamically -->
+                </tbody>
+            </table>
         </div>
         <div class="form-group was-validated">
             <label for="total_cost">Total Cost:</label>
@@ -148,6 +163,52 @@ if (isset($_POST['edit_service'])) {
         <button type="submit" class="btn btn-primary" name="edit_service">Save Changes</button>
     </form>
     <script>
+        let productCart = [];
+
+        function addProduct() {
+            const productSelect = document.getElementById('used_products');
+            const selectedOption = productSelect.options[productSelect.selectedIndex];
+            const productId = selectedOption.value;
+            const productName = selectedOption.text;
+            const productPrice = selectedOption.getAttribute('data-price');
+
+            if (productId && !productCart.some(product => product.id === productId)) {
+                productCart.push({ id: productId, name: productName, price: productPrice });
+                updateProductCart();
+            }
+        }
+
+        function removeProduct(productId) {
+            productCart = productCart.filter(product => product.id !== productId);
+            updateProductCart();
+        }
+
+        function updateProductCart() {
+            const productCartTable = document.getElementById('product_cart').getElementsByTagName('tbody')[0];
+            productCartTable.innerHTML = '';
+
+            productCart.forEach(product => {
+                const row = productCartTable.insertRow();
+                row.innerHTML = `
+                    <td>${product.name}</td>
+                    <td>Rp ${parseFloat(product.price).toLocaleString('id-ID')}</td>
+                    <td><button type="button" class="btn btn-danger btn-sm" onclick="removeProduct('${product.id}')">Remove</button></td>
+                `;
+            });
+
+            document.getElementById('total_cost').value = 'Rp ' + productCart.reduce((total, product) => total + parseFloat(product.price), 0).toLocaleString('id-ID');
+            calculateProfit();
+        }
+
+        document.getElementById('cost').addEventListener('input', calculateProfit);
+
+        function calculateProfit() {
+            let totalCost = productCart.reduce((total, product) => total + parseFloat(product.price), 0);
+            let serviceCost = parseFloat(document.getElementById('cost').value);
+            let profit = serviceCost - totalCost;
+            document.getElementById('profit').value = 'Rp ' + profit.toLocaleString('id-ID');
+        }
+
         // Example starter JavaScript for disabling form submissions if there are invalid fields
         (function() {
             'use strict';
@@ -167,8 +228,12 @@ if (isset($_POST['edit_service'])) {
             }, false);
         })();
     </script>
-    </form>
-</div>
+    <input type="hidden" name="product_cart" id="product_cart_input">
+    <script>
+        document.querySelector('form').addEventListener('submit', function() {
+            document.getElementById('product_cart_input').value = JSON.stringify(productCart);
+        });
+    </script>
 <script>
     document.getElementById('used_products').addEventListener('change', function() {
         let totalCost = 0;
