@@ -228,7 +228,7 @@ if (isset($_POST['edit_service'])) {
             }, false);
         })();
     </script>
-    <input type="hidden" name="product_cart" id="product_cart_input">
+    <input type="hidden" name="product_cart" id="product_cart_input" value='<?php echo json_encode($service_products); ?>'>
     <script>
         document.querySelector('form').addEventListener('submit', function() {
             document.getElementById('product_cart_input').value = JSON.stringify(productCart);
