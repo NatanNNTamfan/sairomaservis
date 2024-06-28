@@ -159,14 +159,6 @@ if (isset($_POST['edit_service'])) {
                         </tr>
                         <?php } ?>
                         <?php endforeach; ?>
-                            $product = $product_result->fetch_assoc();
-                            echo "<tr>
-                                    <td>" . htmlspecialchars($product['name']) . "</td>
-                                    <td>Rp " . number_format($product['hargabeli'], 0, ',', '.') . "</td>
-                                    <td><button type='button' class='btn btn-danger btn-sm' onclick='removeProduct(" . $product_id . ")'>Remove</button></td>
-                                  </tr>";
-                        }
-                    }
                     <?php endif; ?>
                 </tbody>
             </table>
@@ -199,21 +191,6 @@ if (isset($_POST['edit_service'])) {
         }, $service_products)); ?> || [];
 
 
-            const productCartTable = document.getElementById('product_cart').getElementsByTagName('tbody')[0];
-            productCartTable.innerHTML = '';
-
-            productCart.forEach(product => {
-                const row = productCartTable.insertRow();
-                row.innerHTML = `
-                    <td>${product.name}</td>
-                    <td>Rp ${parseFloat(product.price).toLocaleString('id-ID')}</td>
-                    <td><button type="button" class="btn btn-danger btn-sm" onclick="removeProduct('${product.id}')">Remove</button></td>
-                `;
-            });
-
-            document.getElementById('total_cost').value = 'Rp ' + productCart.reduce((total, product) => total + parseFloat(product.price), 0).toLocaleString('id-ID');
-            calculateProfit();
-        }
 
         document.getElementById('cost').addEventListener('input', calculateProfit);
 
