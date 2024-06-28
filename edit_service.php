@@ -143,7 +143,23 @@ if (isset($_POST['edit_service'])) {
                 </thead>
                 <tbody>
                     <?php if (!empty($service_products)): ?>
-                    foreach ($service_products as $product_id) {
+                    <?php foreach ($service_products as $product_id): ?>
+                        <?php
+                        $stmt = $conn->prepare("SELECT name, hargabeli FROM products WHERE id=?");
+                        $stmt->bind_param("i", $product_id);
+                        $stmt->execute();
+                        $product_result = $stmt->get_result();
+                        if ($product_result->num_rows > 0) {
+                            $product = $product_result->fetch_assoc();
+                        ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($product['name']); ?></td>
+                            <td>Rp <?php echo number_format($product['hargabeli'], 0, ',', '.'); ?></td>
+                            <td><button type="button" class="btn btn-danger btn-sm" onclick="removeProduct(<?php echo $product_id; ?>)">Remove</button></td>
+                        </tr>
+                        <?php } ?>
+                    <?php endforeach; ?>
+                    <?php foreach ($service_products as $product_id): ?>
                         $stmt = $conn->prepare("SELECT name, hargabeli FROM products WHERE id=?");
                         $stmt->bind_param("i", $product_id);
                         $stmt->execute();
@@ -158,38 +174,6 @@ if (isset($_POST['edit_service'])) {
                         }
                     }
                     <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
-            <label for="used_products">Used Products:</label>
-            <select class="form-control" id="used_products" name="used_products[]" multiple>
-                <option value="">Select Product</option>
-                <?php
-                $sql = "SELECT id, name, hargabeli FROM products";
-                $result = $conn->query($sql);
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        $selected = in_array($row['id'], $service_products) ? 'selected' : '';
-                        echo "<option value='" . htmlspecialchars($row['id']) . "' data-price='" . $row['hargabeli'] . "' $selected>" . htmlspecialchars($row['name']) . " - Rp " . number_format($row['hargabeli'], 0, ',', '.') . "</option>";
-                    }
-                } else {
-                    echo "<option value=''>No products available</option>";
-                }
-                ?>
-            </select>
-            <button type="button" class="btn btn-success mt-2" onclick="addProduct()">Add Product</button>
-        </div>
-            <label for="product_cart">Product Cart:</label>
-            <table class="table table-bordered" id="product_cart">
-                <thead>
-                    <tr>
-                        <th>Product</th>
-                        <th>Price</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Products will be added here dynamically -->
                 </tbody>
             </table>
         </div>
