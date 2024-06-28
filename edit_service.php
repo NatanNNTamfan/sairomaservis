@@ -158,8 +158,6 @@ if (isset($_POST['edit_service'])) {
                             <td><button type="button" class="btn btn-danger btn-sm" onclick="removeProduct(<?php echo $product_id; ?>)">Remove</button></td>
                         </tr>
                         <?php } ?>
-                    <?php endforeach; ?>
-                    <?php foreach ($service_products as $product_id): ?>
                         $stmt = $conn->prepare("SELECT name, hargabeli FROM products WHERE id=?");
                         $stmt->bind_param("i", $product_id);
                         $stmt->execute();
