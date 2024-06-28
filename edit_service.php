@@ -158,11 +158,7 @@ if (isset($_POST['edit_service'])) {
                             <td><button type="button" class="btn btn-danger btn-sm" onclick="removeProduct(<?php echo $product_id; ?>)">Remove</button></td>
                         </tr>
                         <?php } ?>
-                        $stmt = $conn->prepare("SELECT name, hargabeli FROM products WHERE id=?");
-                        $stmt->bind_param("i", $product_id);
-                        $stmt->execute();
-                        $product_result = $stmt->get_result();
-                        if ($product_result->num_rows > 0) {
+                        <?php endforeach; ?>
                             $product = $product_result->fetch_assoc();
                             echo "<tr>
                                     <td>" . htmlspecialchars($product['name']) . "</td>
