@@ -250,6 +250,53 @@ if (isset($_POST['edit_service'])) {
         });
     </script>
 <script>
+    let productCart = <?php echo json_encode(array_map(function($product_id) use ($conn) {
+        $stmt = $conn->prepare("SELECT id, name, hargabeli FROM products WHERE id=?");
+        $stmt->bind_param("i", $product_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_assoc();
+    }, $service_products)); ?> || [];
+
+    function addProduct() {
+        const productSelect = document.getElementById('used_products');
+        const selectedOption = productSelect.options[productSelect.selectedIndex];
+        const productId = selectedOption.value;
+        const productName = selectedOption.text;
+        const productPrice = selectedOption.getAttribute('data-price');
+
+        if (productId && !productCart.some(product => product.id === productId)) {
+            productCart.push({ id: productId, name: productName, price: productPrice });
+            updateProductCart();
+        }
+    }
+
+    function removeProduct(productId) {
+        productCart = productCart.filter(product => product.id !== productId);
+        updateProductCart();
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        updateProductCart();
+    });
+
+    function updateProductCart() {
+        const productCartTable = document.getElementById('product_cart').getElementsByTagName('tbody')[0];
+        productCartTable.innerHTML = '';
+
+        productCart.forEach(product => {
+            const row = productCartTable.insertRow();
+            row.innerHTML = `
+                <td>${product.name}</td>
+                <td>Rp ${parseFloat(product.price).toLocaleString('id-ID')}</td>
+                <td><button type="button" class="btn btn-danger btn-sm" onclick="removeProduct('${product.id}')">Remove</button></td>
+            `;
+        });
+
+        document.getElementById('total_cost').value = 'Rp ' + productCart.reduce((total, product) => total + parseFloat(product.price), 0).toLocaleString('id-ID');
+        calculateProfit();
+    }
+
     document.getElementById('used_products').addEventListener('change', function() {
         let totalCost = 0;
         let selectedOptions = this.selectedOptions;
