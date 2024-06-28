@@ -190,7 +190,13 @@ if (isset($_POST['edit_service'])) {
         <button type="submit" class="btn btn-primary" name="edit_service">Save Changes</button>
     </form>
     <script>
-        let productCart = <?php echo json_encode($service_products); ?>;
+        let productCart = <?php echo json_encode(array_map(function($product_id) use ($conn) {
+            $stmt = $conn->prepare("SELECT id, name, hargabeli FROM products WHERE id=?");
+            $stmt->bind_param("i", $product_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_assoc();
+        }, $service_products)); ?>;
 
         function addProduct() {
             const productSelect = document.getElementById('used_products');
@@ -218,26 +224,16 @@ if (isset($_POST['edit_service'])) {
             const productCartTable = document.getElementById('product_cart').getElementsByTagName('tbody')[0];
             productCartTable.innerHTML = '';
 
-            productCart.forEach(productId => {
-                const productSelect = document.getElementById('used_products');
-                const selectedOption = Array.from(productSelect.options).find(option => option.value == productId);
-                if (selectedOption) {
-                    const productName = selectedOption.text;
-                    const productPrice = selectedOption.getAttribute('data-price');
-                    const row = productCartTable.insertRow();
-                    row.innerHTML = `
-                        <td>${productName}</td>
-                        <td>Rp ${parseFloat(productPrice).toLocaleString('id-ID')}</td>
-                        <td><button type="button" class="btn btn-danger btn-sm" onclick="removeProduct('${productId}')">Remove</button></td>
-                    `;
-                }
+            productCart.forEach(product => {
+                const row = productCartTable.insertRow();
+                row.innerHTML = `
+                    <td>${product.name}</td>
+                    <td>Rp ${parseFloat(product.hargabeli).toLocaleString('id-ID')}</td>
+                    <td><button type="button" class="btn btn-danger btn-sm" onclick="removeProduct(${product.id})">Remove</button></td>
+                `;
             });
 
-            document.getElementById('total_cost').value = 'Rp ' + productCart.reduce((total, productId) => {
-                const productSelect = document.getElementById('used_products');
-                const selectedOption = Array.from(productSelect.options).find(option => option.value == productId);
-                return total + parseFloat(selectedOption.getAttribute('data-price'));
-            }, 0).toLocaleString('id-ID');
+            document.getElementById('total_cost').value = 'Rp ' + productCart.reduce((total, product) => total + parseFloat(product.hargabeli), 0).toLocaleString('id-ID');
             calculateProfit();
         }
             const productCartTable = document.getElementById('product_cart').getElementsByTagName('tbody')[0];
