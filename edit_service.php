@@ -196,7 +196,7 @@ if (isset($_POST['edit_service'])) {
             $stmt->execute();
             $result = $stmt->get_result();
             return $result->fetch_assoc();
-        }, $service_products)); ?>;
+        }, $service_products)); ?> || [];
 
         function addProduct() {
             const productSelect = document.getElementById('used_products');
