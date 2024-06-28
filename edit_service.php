@@ -190,7 +190,7 @@ if (isset($_POST['edit_service'])) {
         <button type="submit" class="btn btn-primary" name="edit_service">Save Changes</button>
     </form>
     <script>
-        let productCart = [];
+        let productCart = <?php echo json_encode($service_products); ?>;
 
         function addProduct() {
             const productSelect = document.getElementById('used_products');
@@ -210,7 +210,36 @@ if (isset($_POST['edit_service'])) {
             updateProductCart();
         }
 
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProductCart();
+        });
+
         function updateProductCart() {
+            const productCartTable = document.getElementById('product_cart').getElementsByTagName('tbody')[0];
+            productCartTable.innerHTML = '';
+
+            productCart.forEach(productId => {
+                const productSelect = document.getElementById('used_products');
+                const selectedOption = Array.from(productSelect.options).find(option => option.value == productId);
+                if (selectedOption) {
+                    const productName = selectedOption.text;
+                    const productPrice = selectedOption.getAttribute('data-price');
+                    const row = productCartTable.insertRow();
+                    row.innerHTML = `
+                        <td>${productName}</td>
+                        <td>Rp ${parseFloat(productPrice).toLocaleString('id-ID')}</td>
+                        <td><button type="button" class="btn btn-danger btn-sm" onclick="removeProduct('${productId}')">Remove</button></td>
+                    `;
+                }
+            });
+
+            document.getElementById('total_cost').value = 'Rp ' + productCart.reduce((total, productId) => {
+                const productSelect = document.getElementById('used_products');
+                const selectedOption = Array.from(productSelect.options).find(option => option.value == productId);
+                return total + parseFloat(selectedOption.getAttribute('data-price'));
+            }, 0).toLocaleString('id-ID');
+            calculateProfit();
+        }
             const productCartTable = document.getElementById('product_cart').getElementsByTagName('tbody')[0];
             productCartTable.innerHTML = '';
 
