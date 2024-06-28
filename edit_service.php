@@ -143,7 +143,7 @@ if (isset($_POST['edit_service'])) {
                 </thead>
                 <tbody>
                     <?php if (!empty($service_products)): ?>
-                    <?php foreach ($service_products as $product_id): ?>
+                    <?php endforeach; ?>
                         <?php
                         $stmt = $conn->prepare("SELECT name, hargabeli FROM products WHERE id=?");
                         $stmt->bind_param("i", $product_id);
