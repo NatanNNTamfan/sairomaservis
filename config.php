@@ -54,5 +54,6 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 header('X-Content-Type-Options: nosniff');
-header('Cache-Control: public, max-age=31536000, immutable');
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
 ?>

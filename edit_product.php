@@ -25,13 +25,13 @@ if (isset($_GET['id'])) {
 }
 
 if (isset($_POST['edit_product'])) {
-    $id = isset($_POST['id']) ? $_POST['id'] : '';
-    $name = isset($_POST['name']) ? $_POST['name'] : '';
-    $hargabeli = isset($_POST['hargabeli']) ? str_replace(['Rp ', '.'], '', $_POST['hargabeli']) : '';
+    $id = $_POST['id'];
+    $name = $_POST['name'];
+    $hargabeli = str_replace(['Rp ', '.'], '', $_POST['hargabeli']);
     $hargabeli = intval($hargabeli); // Ensure hargabeli is an integer
-    $stock = isset($_POST['stock']) ? $_POST['stock'] : '';
-    $kategori = isset($_POST['kategori']) ? $_POST['kategori'] : '';
-    $merk = isset($_POST['merk']) ? $_POST['merk'] : '';
+    $stock = $_POST['stock'];
+    $kategori = $_POST['kategori'];
+    $merk = $_POST['merk'];
 
     // Update product
     $sql = "UPDATE products SET name='$name', hargabeli='$hargabeli', stock='$stock', kategori='$kategori', merk='$merk' WHERE id='$id'";
@@ -70,7 +70,7 @@ $conn->close();
 <body>
 <div class="container mt-4">
     <h2>Edit Product</h2>
-    <form method="post" action="edit_product.php?id=<?php echo isset($product['id']) ? $product['id'] : ''; ?>">
+    <form method="post" action="edit_product.php?id=<?php echo $product['id']; ?>">
         <input type="hidden" name="id" value="<?php echo isset($product['id']) ? $product['id'] : ''; ?>">
         <div class="form-group">
             <label for="name">Name:</label>
