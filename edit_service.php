@@ -181,14 +181,6 @@ if (isset($_POST['edit_service'])) {
         </div>
         <button type="submit" class="btn btn-primary" name="edit_service">Save Changes</button>
     </form>
-    <script>
-        let productCart = <?php echo json_encode(array_map(function($product_id) use ($conn) {
-            $stmt = $conn->prepare("SELECT id, name, hargabeli FROM products WHERE id=?");
-            $stmt->bind_param("i", $product_id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            return $result->fetch_assoc();
-        }, $service_products)); ?> || [];
 
 
 
@@ -227,14 +219,6 @@ if (isset($_POST['edit_service'])) {
         });
     </script>
 <script>
-    let productCart = <?php echo json_encode(array_map(function($product_id) use ($conn) {
-        $stmt = $conn->prepare("SELECT id, name, hargabeli FROM products WHERE id=?");
-        $stmt->bind_param("i", $product_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        return $result->fetch_assoc();
-    }, $service_products)); ?> || [];
-
     function addProduct() {
         const productSelect = document.getElementById('used_products');
         const selectedOption = productSelect.options[productSelect.selectedIndex];
