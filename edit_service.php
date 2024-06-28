@@ -183,6 +183,8 @@ if (isset($_POST['edit_service'])) {
     </form>
 
     <script>
+        let productCart = <?php echo json_encode($service_products); ?>;
+
         document.getElementById('cost').addEventListener('input', calculateProfit);
 
         function calculateProfit() {
@@ -210,13 +212,65 @@ if (isset($_POST['edit_service'])) {
                 });
             }, false);
         })();
-    </script>
 
+        function addProduct() {
+            const productSelect = document.getElementById('used_products');
+            const selectedOption = productSelect.options[productSelect.selectedIndex];
+            const productId = selectedOption.value;
+            const productName = selectedOption.text;
+            const productPrice = selectedOption.getAttribute('data-price');
 
+            if (productId && !productCart.some(product => product.id === productId)) {
+                productCart.push({ id: productId, name: productName, price: productPrice });
+                updateProductCart();
+            }
+        }
 
-    </script>
-    <input type="hidden" name="product_cart" id="product_cart_input" value='<?php echo json_encode($service_products); ?>'>
-    <script>
+        function removeProduct(productId) {
+            productCart = productCart.filter(product => product.id !== productId);
+            updateProductCart();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProductCart();
+        });
+
+        function updateProductCart() {
+            const productCartTable = document.getElementById('product_cart').getElementsByTagName('tbody')[0];
+            productCartTable.innerHTML = '';
+
+            productCart.forEach(product => {
+                const row = productCartTable.insertRow();
+                row.innerHTML = `
+                    <td>${product.name}</td>
+                    <td>Rp ${parseFloat(product.price).toLocaleString('id-ID')}</td>
+                    <td><button type="button" class="btn btn-danger btn-sm" onclick="removeProduct('${product.id}')">Remove</button></td>
+                `;
+            });
+
+            document.getElementById('total_cost').value = 'Rp ' + productCart.reduce((total, product) => total + parseFloat(product.price), 0).toLocaleString('id-ID');
+            calculateProfit();
+        }
+
+        document.getElementById('used_products').addEventListener('change', function() {
+            let totalCost = 0;
+            let selectedOptions = this.selectedOptions;
+            for (let i = 0; i < selectedOptions.length; i++) {
+                totalCost += parseFloat(selectedOptions[i].getAttribute('data-price'));
+            }
+            document.getElementById('total_cost').value = 'Rp ' + totalCost.toLocaleString('id-ID');
+            calculateProfit();
+        });
+
+        document.getElementById('cost').addEventListener('input', calculateProfit);
+
+        function calculateProfit() {
+            let totalCost = parseFloat(document.getElementById('total_cost').value.replace(/[^0-9.-]+/g,""));
+            let serviceCost = parseFloat(document.getElementById('cost').value);
+            let profit = serviceCost - totalCost;
+            document.getElementById('profit').value = 'Rp ' + profit.toLocaleString('id-ID');
+        }
+
         document.querySelector('form').addEventListener('submit', function() {
             document.getElementById('product_cart_input').value = JSON.stringify(productCart);
         });
