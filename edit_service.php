@@ -182,8 +182,7 @@ if (isset($_POST['edit_service'])) {
         <button type="submit" class="btn btn-primary" name="edit_service">Save Changes</button>
     </form>
 
-
-
+    <script>
         document.getElementById('cost').addEventListener('input', calculateProfit);
 
         function calculateProfit() {
@@ -211,6 +210,10 @@ if (isset($_POST['edit_service'])) {
                 });
             }, false);
         })();
+    </script>
+
+
+
     </script>
     <input type="hidden" name="product_cart" id="product_cart_input" value='<?php echo json_encode($service_products); ?>'>
     <script>
