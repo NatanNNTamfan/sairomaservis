@@ -101,7 +101,7 @@ if (isset($_POST['edit_service'])) {
 <body>
 <div class="container mt-4">
     <h2>Edit Service</h2>
-    <form method="post" action="" class="needs-validation" novalidate>
+    <form method="post" action="edit_service.php?id=<?php echo $service['id']; ?>" class="needs-validation" novalidate>
         <input type="hidden" name="id" value="<?php echo htmlspecialchars($service['id']); ?>">
         <div class="form-group was-validated">
             <label for="description">Description:</label>
