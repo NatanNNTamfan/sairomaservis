@@ -1,6 +1,8 @@
 <?php
 include 'config.php';
 
+$service_products = [];
+
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
@@ -140,7 +142,7 @@ if (isset($_POST['edit_service'])) {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php
+                    <?php if (!empty($service_products)): ?>
                     foreach ($service_products as $product_id) {
                         $stmt = $conn->prepare("SELECT name, hargabeli FROM products WHERE id=?");
                         $stmt->bind_param("i", $product_id);
@@ -155,7 +157,7 @@ if (isset($_POST['edit_service'])) {
                                   </tr>";
                         }
                     }
-                    ?>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
