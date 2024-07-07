@@ -121,7 +121,7 @@ if (isset($_POST['edit_service'])) {
                 $result = $conn->query($sql);
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
-                        echo "<option value='" . htmlspecialchars($row['id']) . "' data-price='" . $row['hargabeli'] . "'>" . htmlspecialchars($row['name']) . " - Rp " . number_format($row['hargabeli'], 0, ',', '.') . "</option>";
+                        echo "<option value='" . htmlspecialchars($row['id']) . "' data-price='" . $row['hargabeli'] . "'>" . htmlspecialchars($row['name']) . " - Rp " . number_format($row['hargabeli'], 0, ',', '') . "</option>";
                     }
                 } else {
                     echo "<option value=''>No products available</option>";
@@ -160,7 +160,7 @@ if (isset($_POST['edit_service'])) {
                         ?>
                         <tr>
                             <td><?php echo htmlspecialchars($product['name']); ?></td>
-                            <td>Rp <?php echo number_format($product['hargabeli'], 0, ',', '.'); ?></td>
+                            <td>Rp <?php echo number_format($product['hargabeli'], 0, ',', ''); ?></td>
                             <td><button type="button" class="btn btn-danger btn-sm" onclick="removeProduct(<?php echo $product_id; ?>)">Remove</button></td>
                         </tr>
                         <?php } ?>
@@ -230,13 +230,13 @@ if (isset($_POST['edit_service'])) {
             const row = productCartTable.insertRow();
             row.innerHTML = `
                 <td>${product.name}</td>
-                <td>Rp ${parseFloat(product.price).toLocaleString('id-ID')}</td>
+                <td>Rp ${parseFloat(product.price).toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</td>
                 <td><button type="button" class="btn btn-danger btn-sm" onclick="removeProduct('${product.id}')">Remove</button></td>
             `;
         });
 
         let totalCost = productCart.reduce((total, product) => total + product.price, 0);
-        document.getElementById('total_cost').value = 'Rp ' + totalCost.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        document.getElementById('total_cost').value = 'Rp ' + totalCost.toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
         calculateProfit();
     }
 
@@ -244,7 +244,7 @@ if (isset($_POST['edit_service'])) {
         let totalCost = parseFloat(document.getElementById('total_cost').value.replace(/[^\d,.-]/g, '').replace(',', '.')) || 0;
         let serviceCost = parseFloat(document.getElementById('cost').value.replace(/[^\d,.-]/g, '').replace(',', '.')) || 0;
         let profit = serviceCost - totalCost;
-        document.getElementById('profit').value = 'Rp ' + profit.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        document.getElementById('profit').value = 'Rp ' + profit.toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
     }
 
     document.getElementById('cost').addEventListener('input', calculateProfit);
