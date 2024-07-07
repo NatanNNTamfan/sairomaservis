@@ -99,4 +99,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['import_file'])) {
 }
 $conn->close();
 ?>
-?>
