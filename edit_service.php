@@ -235,13 +235,14 @@ if (isset($_POST['edit_service'])) {
             `;
         });
 
-        document.getElementById('total_cost').value = 'Rp ' + productCart.reduce((total, product) => total + product.price, 0).toLocaleString('id-ID');
+        let totalCost = productCart.reduce((total, product) => total + product.price, 0);
+        document.getElementById('total_cost').value = 'Rp ' + totalCost.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         calculateProfit();
     }
 
     function calculateProfit() {
-        let totalCost = parseFloat(document.getElementById('total_cost').value.replace(/[^\d.-]/g, '')) || 0;
-        let serviceCost = parseFloat(document.getElementById('cost').value.replace(/[^\d.-]/g, '')) || 0;
+        let totalCost = parseFloat(document.getElementById('total_cost').value.replace(/[^\d,.-]/g, '').replace(',', '.')) || 0;
+        let serviceCost = parseFloat(document.getElementById('cost').value.replace(/[^\d,.-]/g, '').replace(',', '.')) || 0;
         let profit = serviceCost - totalCost;
         document.getElementById('profit').value = 'Rp ' + profit.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
