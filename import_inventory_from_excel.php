@@ -27,8 +27,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     log_message("POST request received");
     if (isset($_FILES['import_file'])) {
         log_message("File upload detected");
-    $file = $_FILES['import_file']['tmp_name'];
-    log_message("File uploaded: " . $file);
+        $file = $_FILES['import_file']['tmp_name'];
+        log_message("File uploaded: " . $file);
+
         if (!file_exists($file)) {
             log_message("File not found: " . $file);
             echo "<script>
@@ -42,20 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                   </script>";
             exit;
         }
-        log_message("File not found: " . $file);
-        echo "<script>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'File Not Found',
-                    text: 'Please upload a valid Excel file.'
-                }).then(function() {
-                    window.location = 'inventory.php';
-                });
-              </script>";
-        exit;
-    }
-}
-    
+
         try {
             $spreadsheet = IOFactory::load($file);
             log_message("Spreadsheet loaded successfully");
@@ -72,6 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                   </script>";
             exit;
         }
+
         $sheet = $spreadsheet->getActiveSheet();
         $highestRow = $sheet->getHighestRow();
 
@@ -124,18 +113,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     window.location = 'inventory.php';
                 });
               </script>";
-        } else {
-            log_message("No file uploaded or invalid request");
-            echo "<script>
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Import Failed',
-                        text: 'No file uploaded or invalid request.'
-                    }).then(function() {
-                        window.location = 'inventory.php';
-                    });
-                  </script>";
-        }
+    } else {
+        log_message("No file uploaded or invalid request");
+        echo "<script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Import Failed',
+                    text: 'No file uploaded or invalid request.'
+                }).then(function() {
+                    window.location = 'inventory.php';
+                });
+              </script>";
     }
-    $conn->close();
+} else {
+    log_message("Invalid request method");
+    echo "<script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Import Failed',
+                text: 'Invalid request method.'
+            }).then(function() {
+                window.location = 'inventory.php';
+            });
+          </script>";
+}
+
+$conn->close();
 ?>
