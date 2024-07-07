@@ -67,7 +67,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['import_file'])) {
         }
     }
 
-    if ($conn->query($sql) === TRUE) {
+    echo "<script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Import Successful',
+                text: 'Data has been imported successfully.'
+            }).then(function() {
+                window.location = 'inventory.php';
+            });
+          </script>";
         echo "<script>
                 Swal.fire({
                     icon: 'success',
