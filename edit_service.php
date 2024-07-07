@@ -59,8 +59,8 @@ if (isset($_POST['edit_service'])) {
         $stmt->bind_param("i", $id);
         $stmt->execute();
         
-        if (!empty($_POST['used_products'])) {
-            foreach ($_POST['used_products'] as $product_id) {
+        if (!empty($service_products)) {
+            foreach ($service_products as $product_id) {
                 $stmt = $conn->prepare("INSERT INTO service_products (service_id, product_id) VALUES (?, ?)");
                 $stmt->bind_param("ii", $id, $product_id);
                 $stmt->execute();
@@ -103,7 +103,7 @@ if (isset($_POST['edit_service'])) {
 <body>
 <div class="container mt-4">
     <h2>Edit Service</h2>
-    <form method="post" action="edit_service.php?id=<?php echo $service['id']; ?>" class="needs-validation" novalidate>
+    <form method="post" action="edit_service.php" class="needs-validation" novalidate>
         <input type="hidden" name="id" value="<?php echo htmlspecialchars($service['id']); ?>">
         <div class="form-group was-validated">
             <label for="description">Description:</label>
@@ -179,6 +179,7 @@ if (isset($_POST['edit_service'])) {
                 <option value="Completed" <?php if ($service['status'] == 'Completed') echo 'selected'; ?>>Completed</option>
             </select>
         </div>
+        <input type="hidden" name="product_cart" id="product_cart_input">
         <button type="submit" class="btn btn-primary" name="edit_service">Save Changes</button>
     </form>
 
@@ -271,7 +272,7 @@ if (isset($_POST['edit_service'])) {
             document.getElementById('profit').value = 'Rp ' + profit.toLocaleString('id-ID');
         }
 
-        document.querySelector('form').addEventListener('submit', function() {
+        document.querySelector('form').addEventListener('submit', function(event) {
             document.getElementById('product_cart_input').value = JSON.stringify(productCart);
         });
     </script>
