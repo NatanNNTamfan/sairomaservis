@@ -17,6 +17,18 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['import_file'])) {
     $file = $_FILES['import_file']['tmp_name'];
+    if (!file_exists($file)) {
+        echo "<script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'File Not Found',
+                    text: 'Please upload a valid Excel file.'
+                }).then(function() {
+                    window.location = 'inventory.php';
+                });
+              </script>";
+        exit;
+    }
     $spreadsheet = IOFactory::load($file);
     $sheet = $spreadsheet->getActiveSheet();
     $highestRow = $sheet->getHighestRow();
@@ -41,20 +53,41 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['import_file'])) {
             $sql = "INSERT INTO products (id, name, hargabeli, stock, kategori, merk) VALUES ('$id', '$name', '$hargabeli', '$stock', '$kategori', '$merk')";
         }
 
-        if (!$conn->query($sql)) {
-            echo "Error: " . $conn->error;
+        if ($conn->query($sql) !== TRUE) {
+            echo "<script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Import Failed',
+                        text: 'Error: " . $conn->error . "'
+                    }).then(function() {
+                        window.location = 'inventory.php';
+                    });
+                  </script>";
+            exit;
         }
     }
 
-    echo "<script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Import Successful',
-                text: 'Data has been imported successfully.'
-            }).then(function() {
-                window.location = 'inventory.php';
-            });
-          </script>";
+    if ($conn->query($sql) === TRUE) {
+        echo "<script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Import Successful',
+                    text: 'Data has been imported successfully.'
+                }).then(function() {
+                    window.location = 'inventory.php';
+                });
+              </script>";
+    } else {
+        echo "<script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Import Failed',
+                    text: 'Error: " . $conn->error . "'
+                }).then(function() {
+                    window.location = 'inventory.php';
+                });
+              </script>";
+    }
 }
 $conn->close();
 ?>
