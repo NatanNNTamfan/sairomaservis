@@ -41,6 +41,9 @@
                 </select>
             </div>
             <button type="submit" class="btn btn-primary btn-block">Filter</button>
+            <div class="form-group col-md-2">
+                <label>&nbsp;</label>
+                <a href="export_to_excel.php?start_date=<?php echo isset($_GET['start_date']) ? $_GET['start_date'] : ''; ?>&end_date=<?php echo isset($_GET['end_date']) ? $_GET['end_date'] : ''; ?>&start_time=<?php echo isset($_GET['start_time']) ? $_GET['start_time'] : '00:00'; ?>&end_time=<?php echo isset($_GET['end_time']) ? $_GET['end_time'] : '23:59'; ?>&search=<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>&status=<?php echo isset($_GET['status']) ? $_GET['status'] : 'all'; ?>" class="btn btn-success btn-block">Export to Excel</a>
             </div>
         </div>
     </form>
