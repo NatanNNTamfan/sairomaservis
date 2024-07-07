@@ -1,33 +1,4 @@
-<?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "sairoma";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-include 'config.php'; 
-
-// Calculate today's total profit
-$today_date = date('Y-m-d');
-$profit_sql = "SELECT SUM(s.cost - IFNULL(p.total_cost, 0)) as total_profit
-               FROM services s
-               LEFT JOIN (
-                   SELECT sp.service_id, SUM(p.hargabeli) as total_cost
-                   FROM service_products sp
-                   LEFT JOIN products p ON sp.product_id = p.id
-                   GROUP BY sp.service_id
-               ) p ON s.id = p.service_id
-               WHERE DATE(s.created_at) = '$today_date'";
-$profit_result = $conn->query($profit_sql);
-$total_profit = $profit_result->fetch_assoc()['total_profit'] ?? 0;
-?>
+<?php include 'config.php'; ?>
 
 <!DOCTYPE html>
 <html>
@@ -38,16 +9,13 @@ $total_profit = $profit_result->fetch_assoc()['total_profit'] ?? 0;
 <body>
 <div class="container mt-4">
     <h2>Service Report</h2>
-    <div class="alert alert-info">
-        <strong>Total Profit Hari Ini:</strong> Rp <?php echo number_format($total_profit, 0, ',', '.'); ?>
-    </div>
     <form method="get" action="">
         <div class="form-row">
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-5">
                 <label for="start_date">Start Date:</label>
                 <input type="date" class="form-control" id="start_date" name="start_date" value="<?php echo isset($_GET['start_date']) ? $_GET['start_date'] : ''; ?>">
             </div>
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-5">
                 <label for="end_date">End Date:</label>
                 <input type="date" class="form-control" id="end_date" name="end_date" value="<?php echo isset($_GET['end_date']) ? $_GET['end_date'] : ''; ?>">
             </div>
@@ -59,13 +27,11 @@ $total_profit = $profit_result->fetch_assoc()['total_profit'] ?? 0;
                 <label for="end_time">End Time:</label>
                 <input type="time" class="form-control" id="end_time" name="end_time" value="<?php echo isset($_GET['end_time']) ? $_GET['end_time'] : '23:59'; ?>">
             </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-5">
                 <label for="search">Search:</label>
                 <input type="text" class="form-control" id="search" name="search" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-5">
                 <label for="status">Status:</label>
                 <select class="form-control" id="status" name="status">
                     <option value="all" <?php if (isset($_GET['status']) && $_GET['status'] == 'all') echo 'selected'; ?>>All</option>
@@ -74,15 +40,11 @@ $total_profit = $profit_result->fetch_assoc()['total_profit'] ?? 0;
                     <option value="Cancel" <?php if (isset($_GET['status']) && $_GET['status'] == 'Cancel') echo 'selected'; ?>>Cancel</option>
                 </select>
             </div>
-            <div class="form-group col-md-4 align-self-end">
-                <button type="submit" class="btn btn-primary btn-block">Filter</button>
-            </div>
-            <div class="form-group col-md-4 align-self-end">
-                <button type="submit" class="btn btn-success btn-block" formaction="export_to_excel.php">Export to Excel</button>
+            <button type="submit" class="btn btn-primary btn-block">Filter</button>
             </div>
         </div>
     </form>
-    <table class="table table-bordered mt-4">
+    <table class="table table-bordered">
         <thead>
             <tr>
                 <th>Service ID</th>
@@ -94,7 +56,7 @@ $total_profit = $profit_result->fetch_assoc()['total_profit'] ?? 0;
                 <th>Created At</th>
                 <th>Updated At</th>
                 <th>Profit</th>
-
+                
             </tr>
         </thead>
         <tbody>
@@ -148,7 +110,9 @@ $total_profit = $profit_result->fetch_assoc()['total_profit'] ?? 0;
                       </script>";
             }
             ?>
-            <?php $conn->close(); ?>
+            <?php
+            $conn->close();
+            ?>
         </tbody>
     </table>
 </div>
