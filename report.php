@@ -16,10 +16,14 @@ include 'config.php';
 
 // Calculate today's total profit
 $today_date = date('Y-m-d');
-$profit_sql = "SELECT SUM(s.cost - IFNULL(SUM(p.hargabeli), 0)) as total_profit
+$profit_sql = "SELECT SUM(s.cost - IFNULL(p.total_cost, 0)) as total_profit
                FROM services s
-               LEFT JOIN service_products sp ON s.id = sp.service_id
-               LEFT JOIN products p ON sp.product_id = p.id
+               LEFT JOIN (
+                   SELECT sp.service_id, SUM(p.hargabeli) as total_cost
+                   FROM service_products sp
+                   LEFT JOIN products p ON sp.product_id = p.id
+                   GROUP BY sp.service_id
+               ) p ON s.id = p.service_id
                WHERE DATE(s.created_at) = '$today_date'";
 $profit_result = $conn->query($profit_sql);
 $total_profit = $profit_result->fetch_assoc()['total_profit'];
