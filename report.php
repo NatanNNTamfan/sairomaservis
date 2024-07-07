@@ -26,7 +26,7 @@ $profit_sql = "SELECT SUM(s.cost - IFNULL(p.total_cost, 0)) as total_profit
                ) p ON s.id = p.service_id
                WHERE DATE(s.created_at) = '$today_date'";
 $profit_result = $conn->query($profit_sql);
-$total_profit = $profit_result->fetch_assoc()['total_profit'];
+$total_profit = $profit_result->fetch_assoc()['total_profit'] ?? 0;
 ?>
 
 <!DOCTYPE html>
