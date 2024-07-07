@@ -200,8 +200,6 @@ if (isset($_POST['edit_service'])) {
             }
             return null;
         }, $service_products)); ?>;
-
-<script>
     function addProduct() {
         const productSelect = document.getElementById('used_products');
         const selectedOption = productSelect.options[productSelect.selectedIndex];
@@ -209,8 +207,8 @@ if (isset($_POST['edit_service'])) {
         const productName = selectedOption.text;
         const productPrice = selectedOption.getAttribute('data-price');
 
-        if (productId && !productCart.some(product => product.id === productId)) {
-            productCart.push({ id: productId, name: productName, price: productPrice });
+        if (productId && !productCart.some(product => product.id == productId)) {
+            productCart.push({ id: productId, name: productName, price: parseFloat(productPrice) });
             updateProductCart();
         }
     }
@@ -237,7 +235,7 @@ if (isset($_POST['edit_service'])) {
             `;
         });
 
-        document.getElementById('total_cost').value = 'Rp ' + productCart.reduce((total, product) => total + parseFloat(product.price), 0).toLocaleString('id-ID');
+        document.getElementById('total_cost').value = 'Rp ' + productCart.reduce((total, product) => total + product.price, 0).toLocaleString('id-ID');
         calculateProfit();
     }
 
