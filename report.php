@@ -50,19 +50,24 @@
     <?php
     $order_by = isset($_GET['order_by']) ? $_GET['order_by'] : 's.created_at';
     $order_dir = isset($_GET['order_dir']) && $_GET['order_dir'] == 'asc' ? 'asc' : 'desc';
+    $order_icons = [
+        'asc' => '▲',
+        'desc' => '▼',
+        'normal' => ''
+    ];
     ?>
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th><a href="?<?php echo http_build_query(array_merge($_GET, ['order_by' => 's.id', 'order_dir' => $order_dir == 'asc' ? 'desc' : 'asc'])); ?>">Service ID</a></th>
-                <th><a href="?<?php echo http_build_query(array_merge($_GET, ['order_by' => 'c.name', 'order_dir' => $order_dir == 'asc' ? 'desc' : 'asc'])); ?>">Customer Name</a></th>
-                <th><a href="?<?php echo http_build_query(array_merge($_GET, ['order_by' => 's.description', 'order_dir' => $order_dir == 'asc' ? 'desc' : 'asc'])); ?>">Description</a></th>
-                <th><a href="?<?php echo http_build_query(array_merge($_GET, ['order_by' => 's.status', 'order_dir' => $order_dir == 'asc' ? 'desc' : 'asc'])); ?>">Status</a></th>
-                <th><a href="?<?php echo http_build_query(array_merge($_GET, ['order_by' => 's.cost', 'order_dir' => $order_dir == 'asc' ? 'desc' : 'asc'])); ?>">Cost</a></th>
-                <th><a href="?<?php echo http_build_query(array_merge($_GET, ['order_by' => 'used_products', 'order_dir' => $order_dir == 'asc' ? 'desc' : 'asc'])); ?>">Used Products</a></th>
-                <th><a href="?<?php echo http_build_query(array_merge($_GET, ['order_by' => 's.created_at', 'order_dir' => $order_dir == 'asc' ? 'desc' : 'asc'])); ?>">Created At</a></th>
-                <th><a href="?<?php echo http_build_query(array_merge($_GET, ['order_by' => 's.updated_at', 'order_dir' => $order_dir == 'asc' ? 'desc' : 'asc'])); ?>">Updated At</a></th>
-                <th><a href="?<?php echo http_build_query(array_merge($_GET, ['order_by' => 'profit', 'order_dir' => $order_dir == 'asc' ? 'desc' : 'asc'])); ?>">Profit</a></th>
+                <th><a href="?<?php echo http_build_query(array_merge($_GET, ['order_by' => 's.id', 'order_dir' => $order_dir == 'asc' ? 'desc' : 'asc'])); ?>">Service ID <?php echo $order_by == 's.id' ? $order_icons[$order_dir] : $order_icons['normal']; ?></a></th>
+                <th><a href="?<?php echo http_build_query(array_merge($_GET, ['order_by' => 'c.name', 'order_dir' => $order_dir == 'asc' ? 'desc' : 'asc'])); ?>">Customer Name <?php echo $order_by == 'c.name' ? $order_icons[$order_dir] : $order_icons['normal']; ?></a></th>
+                <th><a href="?<?php echo http_build_query(array_merge($_GET, ['order_by' => 's.description', 'order_dir' => $order_dir == 'asc' ? 'desc' : 'asc'])); ?>">Description <?php echo $order_by == 's.description' ? $order_icons[$order_dir] : $order_icons['normal']; ?></a></th>
+                <th><a href="?<?php echo http_build_query(array_merge($_GET, ['order_by' => 's.status', 'order_dir' => $order_dir == 'asc' ? 'desc' : 'asc'])); ?>">Status <?php echo $order_by == 's.status' ? $order_icons[$order_dir] : $order_icons['normal']; ?></a></th>
+                <th><a href="?<?php echo http_build_query(array_merge($_GET, ['order_by' => 's.cost', 'order_dir' => $order_dir == 'asc' ? 'desc' : 'asc'])); ?>">Cost <?php echo $order_by == 's.cost' ? $order_icons[$order_dir] : $order_icons['normal']; ?></a></th>
+                <th><a href="?<?php echo http_build_query(array_merge($_GET, ['order_by' => 'used_products', 'order_dir' => $order_dir == 'asc' ? 'desc' : 'asc'])); ?>">Used Products <?php echo $order_by == 'used_products' ? $order_icons[$order_dir] : $order_icons['normal']; ?></a></th>
+                <th><a href="?<?php echo http_build_query(array_merge($_GET, ['order_by' => 's.created_at', 'order_dir' => $order_dir == 'asc' ? 'desc' : 'asc'])); ?>">Created At <?php echo $order_by == 's.created_at' ? $order_icons[$order_dir] : $order_icons['normal']; ?></a></th>
+                <th><a href="?<?php echo http_build_query(array_merge($_GET, ['order_by' => 's.updated_at', 'order_dir' => $order_dir == 'asc' ? 'desc' : 'asc'])); ?>">Updated At <?php echo $order_by == 's.updated_at' ? $order_icons[$order_dir] : $order_icons['normal']; ?></a></th>
+                <th><a href="?<?php echo http_build_query(array_merge($_GET, ['order_by' => 'profit', 'order_dir' => $order_dir == 'asc' ? 'desc' : 'asc'])); ?>">Profit <?php echo $order_by == 'profit' ? $order_icons[$order_dir] : $order_icons['normal']; ?></a></th>
                 
             </tr>
         </thead>
