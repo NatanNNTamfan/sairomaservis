@@ -11,11 +11,11 @@
     <h2>Service Report</h2>
     <form method="get" action="">
         <div class="form-row">
-            <div class="form-group col-md-5">
+            <div class="form-group col-md-3">
                 <label for="start_date">Start Date:</label>
                 <input type="date" class="form-control" id="start_date" name="start_date" value="<?php echo isset($_GET['start_date']) ? $_GET['start_date'] : ''; ?>">
             </div>
-            <div class="form-group col-md-5">
+            <div class="form-group col-md-3">
                 <label for="end_date">End Date:</label>
                 <input type="date" class="form-control" id="end_date" name="end_date" value="<?php echo isset($_GET['end_date']) ? $_GET['end_date'] : ''; ?>">
             </div>
@@ -27,11 +27,13 @@
                 <label for="end_time">End Time:</label>
                 <input type="time" class="form-control" id="end_time" name="end_time" value="<?php echo isset($_GET['end_time']) ? $_GET['end_time'] : '23:59'; ?>">
             </div>
-            <div class="form-group col-md-5">
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
                 <label for="search">Search:</label>
                 <input type="text" class="form-control" id="search" name="search" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
             </div>
-            <div class="form-group col-md-5">
+            <div class="form-group col-md-4">
                 <label for="status">Status:</label>
                 <select class="form-control" id="status" name="status">
                     <option value="all" <?php if (isset($_GET['status']) && $_GET['status'] == 'all') echo 'selected'; ?>>All</option>
@@ -40,11 +42,12 @@
                     <option value="Cancel" <?php if (isset($_GET['status']) && $_GET['status'] == 'Cancel') echo 'selected'; ?>>Cancel</option>
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary btn-block">Filter</button>
+            <div class="form-group col-md-4 align-self-end">
+                <button type="submit" class="btn btn-primary btn-block">Filter</button>
             </div>
         </div>
     </form>
-    <table class="table table-bordered">
+    <table class="table table-bordered mt-4">
         <thead>
             <tr>
                 <th>Service ID</th>
@@ -110,9 +113,7 @@
                       </script>";
             }
             ?>
-            <?php
-            $conn->close();
-            ?>
+            <?php $conn->close(); ?>
         </tbody>
     </table>
 </div>
