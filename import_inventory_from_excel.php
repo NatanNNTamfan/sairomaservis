@@ -99,7 +99,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['import_file'])) {
     }
 
     log_message("Import successful");
-    log_message("No file uploaded or invalid request");
     echo "<script>
             Swal.fire({
                 icon: 'success',
@@ -120,6 +119,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['import_file'])) {
             });
           </script>";
 }
-log_message("Script ended");
 $conn->close();
 ?>
