@@ -31,7 +31,16 @@
                 <label for="search">Search:</label>
                 <input type="text" class="form-control" id="search" name="search" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
             </div>
-                <button type="submit" class="btn btn-primary btn-block">Filter</button>
+            <div class="form-group col-md-5">
+                <label for="status">Status:</label>
+                <select class="form-control" id="status" name="status">
+                    <option value="all" <?php if (isset($_GET['status']) && $_GET['status'] == 'all') echo 'selected'; ?>>All</option>
+                    <option value="Completed" <?php if (isset($_GET['status']) && $_GET['status'] == 'Completed') echo 'selected'; ?>>Completed</option>
+                    <option value="Pending" <?php if (isset($_GET['status']) && $_GET['status'] == 'Pending') echo 'selected'; ?>>Pending</option>
+                    <option value="Cancel" <?php if (isset($_GET['status']) && $_GET['status'] == 'Cancel') echo 'selected'; ?>>Cancel</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Filter</button>
             </div>
         </div>
     </form>
@@ -56,6 +65,9 @@
             $end_time = isset($_GET['end_time']) && !empty($_GET['end_time']) ? $_GET['end_time'] : '23:59:59';
             $search = isset($_GET['search']) ? $_GET['search'] : '';
             $search = str_replace(' ', '', $search);
+            $status = isset($_GET['status']) ? $_GET['status'] : 'all';
+            $status_condition = $status !== 'all' ? "AND s.status = '$status'" : '';
+
             $sql = "SELECT s.id, c.name as customer_name, s.description, s.status, s.cost, s.created_at, s.updated_at, 
                            GROUP_CONCAT(p.name SEPARATOR ', ') as used_products
                     FROM services s
@@ -64,6 +76,7 @@
                     LEFT JOIN products p ON sp.product_id = p.id
                     WHERE (s.created_at BETWEEN '$start_date $start_time' AND '$end_date $end_time')
                     AND (REPLACE(c.name, ' ', '') LIKE '%$search%' OR REPLACE(s.description, ' ', '') LIKE '%$search%')
+                    $status_condition
                     GROUP BY s.id
                     ORDER BY s.created_at DESC";
             $result = $conn->query($sql);
