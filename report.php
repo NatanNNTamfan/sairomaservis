@@ -12,7 +12,18 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-include 'config.php'; ?>
+include 'config.php'; 
+
+// Calculate today's total profit
+$today_date = date('Y-m-d');
+$profit_sql = "SELECT SUM(s.cost - IFNULL(SUM(p.hargabeli), 0)) as total_profit
+               FROM services s
+               LEFT JOIN service_products sp ON s.id = sp.service_id
+               LEFT JOIN products p ON sp.product_id = p.id
+               WHERE DATE(s.created_at) = '$today_date'";
+$profit_result = $conn->query($profit_sql);
+$total_profit = $profit_result->fetch_assoc()['total_profit'];
+?>
 
 <!DOCTYPE html>
 <html>
@@ -23,6 +34,9 @@ include 'config.php'; ?>
 <body>
 <div class="container mt-4">
     <h2>Service Report</h2>
+    <div class="alert alert-info">
+        <strong>Total Profit Hari Ini:</strong> Rp <?php echo number_format($total_profit, 0, ',', '.'); ?>
+    </div>
     <form method="get" action="">
         <div class="form-row">
             <div class="form-group col-md-3">
