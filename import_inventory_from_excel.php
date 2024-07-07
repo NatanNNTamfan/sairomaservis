@@ -29,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['import_file'])) {
               </script>";
         exit;
     }
+    
     $spreadsheet = IOFactory::load($file);
     $sheet = $spreadsheet->getActiveSheet();
     $highestRow = $sheet->getHighestRow();
@@ -42,23 +43,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['import_file'])) {
         $merk = $sheet->getCell('F' . $row)->getValue();
 
         // Check if product exists
-        $check_sql = "SELECT * FROM products WHERE id='$id'";
-        $check_result = $conn->query($check_sql);
+        $check_sql = $conn->prepare("SELECT * FROM products WHERE id=?");
+        $check_sql->bind_param("s", $id);
+        $check_sql->execute();
+        $check_result = $check_sql->get_result();
 
         if ($check_result->num_rows > 0) {
             // Update existing product
-            $sql = "UPDATE products SET name='$name', hargabeli='$hargabeli', stock='$stock', kategori='$kategori', merk='$merk' WHERE id='$id'";
+            $sql = $conn->prepare("UPDATE products SET name=?, hargabeli=?, stock=?, kategori=?, merk=? WHERE id=?");
+            $sql->bind_param("ssisss", $name, $hargabeli, $stock, $kategori, $merk, $id);
         } else {
             // Insert new product
-            $sql = "INSERT INTO products (id, name, hargabeli, stock, kategori, merk) VALUES ('$id', '$name', '$hargabeli', '$stock', '$kategori', '$merk')";
+            $sql = $conn->prepare("INSERT INTO products (id, name, hargabeli, stock, kategori, merk) VALUES (?, ?, ?, ?, ?, ?)");
+            $sql->bind_param("ssisss", $id, $name, $hargabeli, $stock, $kategori, $merk);
         }
 
-        if ($conn->query($sql) !== TRUE) {
+        if ($sql->execute() !== TRUE) {
             echo "<script>
                     Swal.fire({
                         icon: 'error',
                         title: 'Import Failed',
-                        text: 'Error: " . $conn->error . "'
+                        text: 'Error: " . $sql->error . "'
                     }).then(function() {
                         window.location = 'inventory.php';
                     });
@@ -76,26 +81,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['import_file'])) {
                 window.location = 'inventory.php';
             });
           </script>";
-        echo "<script>
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Import Successful',
-                    text: 'Data has been imported successfully.'
-                }).then(function() {
-                    window.location = 'inventory.php';
-                });
-              </script>";
-    } else {
-        echo "<script>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Import Failed',
-                    text: 'Error: " . $conn->error . "'
-                }).then(function() {
-                    window.location = 'inventory.php';
-                });
-              </script>";
-    }
+} else {
+    echo "<script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Import Failed',
+                text: 'No file uploaded or invalid request.'
+            }).then(function() {
+                window.location = 'inventory.php';
+            });
+          </script>";
 }
 $conn->close();
 ?>
