@@ -30,6 +30,9 @@ if (isset($_POST['add_product'])) {
 <div class="container mt-4">
     <h2>Product Inventory</h2>
     <form method="get" action="">
+        <div class="form-group">
+            <a href="export_inventory_to_excel.php?search=<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>" class="btn btn-success">Export to Excel</a>
+        </div>
         <script>
             function formatRupiah(angka, prefix) {
                 var number_string = angka.replace(/[^,\d]/g, '').toString(),
