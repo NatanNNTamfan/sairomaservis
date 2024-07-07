@@ -40,20 +40,3 @@
     </ul>
   </div>
 </nav>
-<?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "sairoma";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-header('X-Content-Type-Options: nosniff');
-header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
-header('Pragma: no-cache');
-?>
