@@ -13,11 +13,21 @@ if ($conn->connect_error) {
 }
 require 'vendor/autoload.php';
 
+$log_file = 'import_log.txt';
+function log_message($message) {
+    global $log_file;
+    file_put_contents($log_file, date('Y-m-d H:i:s') . " - " . $message . "\n", FILE_APPEND);
+}
+
+log_message("Script started");
+
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['import_file'])) {
     $file = $_FILES['import_file']['tmp_name'];
+    log_message("File uploaded: " . $file);
     if (!file_exists($file)) {
+        log_message("File not found: " . $file);
         echo "<script>
                 Swal.fire({
                     icon: 'error',
@@ -30,7 +40,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['import_file'])) {
         exit;
     }
     
-    $spreadsheet = IOFactory::load($file);
+    try {
+        $spreadsheet = IOFactory::load($file);
+        log_message("Spreadsheet loaded successfully");
+    } catch (Exception $e) {
+        log_message("Error loading spreadsheet: " . $e->getMessage());
+        echo "<script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Import Failed',
+                    text: 'Error loading spreadsheet.'
+                }).then(function() {
+                    window.location = 'inventory.php';
+                });
+              </script>";
+        exit;
+    }
     $sheet = $spreadsheet->getActiveSheet();
     $highestRow = $sheet->getHighestRow();
 
@@ -59,6 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['import_file'])) {
         }
 
         if ($sql->execute() !== TRUE) {
+            log_message("Error executing SQL: " . $sql->error);
             echo "<script>
                     Swal.fire({
                         icon: 'error',
@@ -72,6 +98,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['import_file'])) {
         }
     }
 
+    log_message("Import successful");
+    log_message("No file uploaded or invalid request");
     echo "<script>
             Swal.fire({
                 icon: 'success',
@@ -92,5 +120,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['import_file'])) {
             });
           </script>";
 }
+log_message("Script ended");
 $conn->close();
 ?>
