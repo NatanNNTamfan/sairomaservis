@@ -34,20 +34,10 @@ if (isset($_POST['edit_service'])) {
     $status = $_POST['status'];
     $cost = $_POST['cost'];
 
-    // Fetch current used products
+    // Fetch current used products from product_cart
     $service_products = [];
-    if (isset($_POST['used_products'])) {
-        $service_products = $_POST['used_products'];
-    } else {
-        $stmt = $conn->prepare("SELECT product_id FROM service_products WHERE service_id=?");
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                $service_products[] = $row['product_id'];
-            }
-        }
+    if (!empty($_POST['product_cart'])) {
+        $service_products = json_decode($_POST['product_cart'], true);
     }
 
     // Update service
@@ -59,8 +49,9 @@ if (isset($_POST['edit_service'])) {
         $stmt->bind_param("i", $id);
         $stmt->execute();
         
-        if (!empty($_POST['used_products'])) {
-            foreach ($_POST['used_products'] as $product_id) {
+        if (!empty($service_products)) {
+            foreach ($service_products as $product) {
+                $product_id = $product['id'];
                 $stmt = $conn->prepare("INSERT INTO service_products (service_id, product_id) VALUES (?, ?)");
                 $stmt->bind_param("ii", $id, $product_id);
                 $stmt->execute();
@@ -186,96 +177,6 @@ if (isset($_POST['edit_service'])) {
     <script>
         let productCart = <?php echo json_encode($service_products); ?>;
 
-        document.getElementById('cost').addEventListener('input', calculateProfit);
-
-        function calculateProfit() {
-            let totalCost = productCart.reduce((total, product) => total + parseFloat(product.price), 0);
-            let serviceCost = parseFloat(document.getElementById('cost').value);
-            let profit = serviceCost - totalCost;
-            document.getElementById('profit').value = 'Rp ' + profit.toLocaleString('id-ID');
-        }
-
-        // Example starter JavaScript for disabling form submissions if there are invalid fields
-        (function() {
-            'use strict';
-            window.addEventListener('load', function() {
-                // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                var forms = document.getElementsByClassName('needs-validation');
-                // Loop over them and prevent submission
-                var validation = Array.prototype.filter.call(forms, function(form) {
-                    form.addEventListener('submit', function(event) {
-                        if (form.checkValidity() === false) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                        }
-                        form.classList.add('was-validated');
-                    }, false);
-                });
-            }, false);
-        })();
-
-        function addProduct() {
-            const productSelect = document.getElementById('used_products');
-            const selectedOption = productSelect.options[productSelect.selectedIndex];
-            const productId = selectedOption.value;
-            const productName = selectedOption.text;
-            const productPrice = selectedOption.getAttribute('data-price');
-
-            if (productId && !productCart.some(product => product.id === productId)) {
-                productCart.push({ id: productId, name: productName, price: productPrice });
-                updateProductCart();
-            }
-        }
-
-        function removeProduct(productId) {
-            productCart = productCart.filter(product => product.id !== productId);
-            updateProductCart();
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            updateProductCart();
-        });
-
-        function updateProductCart() {
-            const productCartTable = document.getElementById('product_cart').getElementsByTagName('tbody')[0];
-            productCartTable.innerHTML = '';
-
-            productCart.forEach(product => {
-                const row = productCartTable.insertRow();
-                row.innerHTML = `
-                    <td>${product.name}</td>
-                    <td>Rp ${parseFloat(product.price).toLocaleString('id-ID')}</td>
-                    <td><button type="button" class="btn btn-danger btn-sm" onclick="removeProduct('${product.id}')">Remove</button></td>
-                `;
-            });
-
-            document.getElementById('total_cost').value = 'Rp ' + productCart.reduce((total, product) => total + parseFloat(product.price), 0).toLocaleString('id-ID');
-            calculateProfit();
-        }
-
-        document.getElementById('used_products').addEventListener('change', function() {
-            let totalCost = 0;
-            let selectedOptions = this.selectedOptions;
-            for (let i = 0; i < selectedOptions.length; i++) {
-                totalCost += parseFloat(selectedOptions[i].getAttribute('data-price'));
-            }
-            document.getElementById('total_cost').value = 'Rp ' + totalCost.toLocaleString('id-ID');
-            calculateProfit();
-        });
-
-        document.getElementById('cost').addEventListener('input', calculateProfit);
-
-        function calculateProfit() {
-            let totalCost = parseFloat(document.getElementById('total_cost').value.replace(/[^0-9.-]+/g,""));
-            let serviceCost = parseFloat(document.getElementById('cost').value);
-            let profit = serviceCost - totalCost;
-            document.getElementById('profit').value = 'Rp ' + profit.toLocaleString('id-ID');
-        }
-
-        document.querySelector('form').addEventListener('submit', function(event) {
-            document.getElementById('product_cart_input').value = JSON.stringify(productCart);
-        });
-    </script>
 <script>
     function addProduct() {
         const productSelect = document.getElementById('used_products');
