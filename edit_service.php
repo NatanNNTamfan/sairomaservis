@@ -26,6 +26,7 @@ if (isset($_GET['id'])) {
               </script>";
         exit();
     }
+
     // Fetch used products for the service
     $stmt = $conn->prepare("SELECT product_id FROM service_products WHERE service_id=?");
     $stmt->bind_param("i", $id);
@@ -40,14 +41,14 @@ if (isset($_POST['edit_service'])) {
     $id = $_POST['id'];
     $description = $_POST['description'];
     $status = $_POST['status'];
-    $cost = $_POST['cost'];
+    
+    // Replace comma with dot and remove non-numeric characters for cost
+    $cost = str_replace(',', '.', preg_replace('/[^0-9,]/', '', $_POST['cost']));
 
     // Fetch current used products from product_cart
     $service_products = [];
     if (!empty($_POST['product_cart'])) {
         $service_products = json_decode($_POST['product_cart'], true);
-    } else {
-        $service_products = [];
     }
 
     // Update service
@@ -59,15 +60,19 @@ if (isset($_POST['edit_service'])) {
         $stmt->bind_param("i", $id);
         $stmt->execute();
         
-        foreach ($service_products as $product) {
-            $product_id = $product['id'];
-            $stmt = $conn->prepare("INSERT INTO service_products (service_id, product_id) VALUES (?, ?)");
-            $stmt->bind_param("ii", $id, $product_id);
-            $stmt->execute();
-            $stmt = $conn->prepare("UPDATE products SET stock = stock - 1 WHERE id=?");
-            $stmt->bind_param("i", $product_id);
-            $stmt->execute();
+        if (!empty($service_products)) {
+            $insert_stmt = $conn->prepare("INSERT INTO service_products (service_id, product_id) VALUES (?, ?)");
+            $update_stock_stmt = $conn->prepare("UPDATE products SET stock = stock - 1 WHERE id=?");
+            
+            foreach ($service_products as $product_id) {
+                $insert_stmt->bind_param("ii", $id, $product_id);
+                $insert_stmt->execute();
+                
+                $update_stock_stmt->bind_param("i", $product_id);
+                $update_stock_stmt->execute();
+            }
         }
+        
         echo "<script>
                 Swal.fire({
                     icon: 'success',
@@ -89,8 +94,8 @@ if (isset($_POST['edit_service'])) {
               </script>";
     }
 }
-
 ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -110,7 +115,7 @@ if (isset($_POST['edit_service'])) {
         </div>
         <div class="form-group was-validated">
             <label for="cost">Cost:</label>
-            <input type="number" class="form-control" id="cost" name="cost" value="<?php echo htmlspecialchars($service['cost']); ?>" step="0.01">
+            <input type="text" class="form-control" id="cost" name="cost" value="<?php echo htmlspecialchars(number_format($service['cost'], 2, ',', '.')); ?>" step="0.01">
         </div>
         <div class="form-group was-validated">
             <label for="used_products">Used Products:</label>
@@ -121,7 +126,7 @@ if (isset($_POST['edit_service'])) {
                 $result = $conn->query($sql);
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
-                        echo "<option value='" . htmlspecialchars($row['id']) . "' data-price='" . $row['hargabeli'] . "'>" . htmlspecialchars($row['name']) . " - Rp " . number_format($row['hargabeli'], 0, ',', '') . "</option>";
+                        echo "<option value='" . htmlspecialchars($row['id']) . "' data-price='" . $row['hargabeli'] . "'>" . htmlspecialchars($row['name']) . " - Rp " . number_format($row['hargabeli'], 0, ',', '.') . "</option>";
                     }
                 } else {
                     echo "<option value=''>No products available</option>";
@@ -150,21 +155,13 @@ if (isset($_POST['edit_service'])) {
                             if ($product_result->num_rows > 0) {
                                 $product = $product_result->fetch_assoc();
                         ?>
-                        <?php
-                        $stmt = $conn->prepare("SELECT name, hargabeli FROM products WHERE id=?");
-                        $stmt->bind_param("i", $product_id);
-                        $stmt->execute();
-                        $product_result = $stmt->get_result();
-                        if ($product_result->num_rows > 0) {
-                            $product = $product_result->fetch_assoc();
-                        ?>
                         <tr>
                             <td><?php echo htmlspecialchars($product['name']); ?></td>
-                            <td>Rp <?php echo number_format($product['hargabeli'], 0, ',', ''); ?></td>
+                            <td>Rp <?php echo number_format($product['hargabeli'], 0, ',', '.'); ?></td>
                             <td><button type="button" class="btn btn-danger btn-sm" onclick="removeProduct(<?php echo $product_id; ?>)">Remove</button></td>
                         </tr>
                         <?php } ?>
-                        <?php } endforeach; ?>
+                        <?php endforeach; ?>
                     <?php endif; ?>
                 </tbody>
             </table>
@@ -190,65 +187,107 @@ if (isset($_POST['edit_service'])) {
     </form>
 
     <script>
-        let productCart = <?php echo json_encode(array_map(function($product_id) use ($conn) {
-            $stmt = $conn->prepare("SELECT id, name, hargabeli FROM products WHERE id=?");
-            $stmt->bind_param("i", $product_id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows > 0) {
-                return $result->fetch_assoc();
-            }
-            return null;
-        }, $service_products)); ?>;
-    function addProduct() {
-        const productSelect = document.getElementById('used_products');
-        const selectedOption = productSelect.options[productSelect.selectedIndex];
-        const productId = selectedOption.value;
-        const productName = selectedOption.text;
-        const productPrice = selectedOption.getAttribute('data-price');
+    let productCart = <?php echo json_encode(array_map(function($product_id) use ($conn) {
+    $stmt = $conn->prepare("SELECT id, name, hargabeli FROM products WHERE id=?");
+    $stmt->bind_param("i", $product_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        return $result->fetch_assoc();
+    }
+    return null;
+}, $service_products)); ?>;
 
-        if (productId && !productCart.some(product => product.id == productId)) {
-            productCart.push({ id: productId, name: productName, price: parseFloat(productPrice) });
-            updateProductCart();
+function addProduct() {
+    console.log("addProduct function called");
+    const productSelect = document.getElementById('used_products');
+    const selectedOption = productSelect.options[productSelect.selectedIndex];
+    
+    if (!selectedOption) {
+        console.log("No product selected");
+        return;
+    }
+    
+    const productId = selectedOption.value;
+    const productName = selectedOption.text;
+    const productPrice = selectedOption.getAttribute('data-price');
+
+    console.log("Selected product:", { id: productId, name: productName, price: productPrice });
+
+    if (productId && !productCart.some(product => product && product.id == productId)) {
+        productCart.push({ id: productId, name: productName, price: productPrice });
+        console.log("Product added to cart:", productCart);
+        updateProductCart();
+        calculateProfit();
+    } else {
+        console.log("Product already in cart or invalid");
+    }
+}
+
+function removeProduct(productId) {
+    productCart = productCart.filter(product => product && product.id != productId);
+    updateProductCart();
+    calculateProfit();
+}
+
+function updateProductCart() {
+    console.log("Updating product cart");
+    const productCartTable = document.getElementById('product_cart').getElementsByTagName('tbody')[0];
+    productCartTable.innerHTML = '';
+
+    productCart.forEach(product => {
+        if (product && product.id && product.name && product.price) {
+            const row = productCartTable.insertRow();
+            row.insertCell(0).textContent = product.name;
+            row.insertCell(1).textContent = 'Rp ' + parseInt(product.price).toLocaleString('id-ID');
+            const removeCell = row.insertCell(2);
+            const removeButton = document.createElement('button');
+            removeButton.className = 'btn btn-danger btn-sm';
+            removeButton.textContent = 'Remove';
+            removeButton.onclick = () => removeProduct(product.id);
+            removeCell.appendChild(removeButton);
         }
-    }
-
-    function removeProduct(productId) {
-        productCart = productCart.filter(product => product.id !== productId);
-        updateProductCart();
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        updateProductCart();
     });
 
-    function updateProductCart() {
-        const productCartTable = document.getElementById('product_cart').getElementsByTagName('tbody')[0];
-        productCartTable.innerHTML = '';
+    const totalCost = productCart.reduce((total, product) => total + (product && product.price ? parseFloat(product.price) : 0), 0);
+    document.getElementById('total_cost').value = 'Rp ' + totalCost.toLocaleString('id-ID');
 
-        productCart.forEach(product => {
-            const row = productCartTable.insertRow();
-            row.innerHTML = `
-                <td>${product.name}</td>
-                <td>Rp ${parseFloat(product.price).toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</td>
-                <td><button type="button" class="btn btn-danger btn-sm" onclick="removeProduct('${product.id}')">Remove</button></td>
-            `;
-        });
+    document.getElementById('product_cart_input').value = JSON.stringify(productCart.filter(product => product !== null).map(product => product.id));
+    console.log("Product cart updated:", productCart);
+}
 
-        let totalCost = productCart.reduce((total, product) => total + parseFloat(product.price), 0);
-        document.getElementById('total_cost').value = 'Rp ' + totalCost.toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-        calculateProfit();
-    }
+function calculateProfit() {
+    let totalCost = parseFloat(document.getElementById('total_cost').value.replace('Rp ', '').replace(/\./g, '').replace(',', '.')) || 0;
+    let serviceCost = parseFloat(document.getElementById('cost').value.replace('Rp ', '').replace(/\./g, '').replace(',', '.')) || 0;
+    console.log('Total Cost:', totalCost);
+    console.log('Service Cost:', serviceCost);
+    let profit = serviceCost - totalCost;
+    document.getElementById('profit').value = 'Rp ' + profit.toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
 
-    function calculateProfit() {
-        let totalCost = parseFloat(document.getElementById('total_cost').value.replace(/[^\d.-]/g, '')) || 0;
-        let serviceCost = parseFloat(document.getElementById('cost').value.replace(/[^\d.-]/g, '')) || 0;
-        let profit = serviceCost - totalCost;
-        document.getElementById('profit').value = 'Rp ' + profit.toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-    }
-
+document.addEventListener('DOMContentLoaded', function() {
+    console.log("DOM fully loaded");
     document.getElementById('cost').addEventListener('input', calculateProfit);
-</script>
-<?php $conn->close(); ?>
+    document.getElementById('cost').addEventListener('blur', function() {
+        let costValue = parseFloat(this.value.replace('Rp ', '').replace(/\./g, '').replace(',', '.')) || 0;
+        this.value = 'Rp ' + costValue.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        calculateProfit();
+    });
+
+    const addProductButton = document.querySelector('button[onclick="addProduct()"]');
+    if (addProductButton) {
+        addProductButton.addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent form submission if it's inside a form
+            addProduct();
+        });
+    } else {
+        console.error("Add Product button not found");
+    }
+
+    updateProductCart();
+    calculateProfit();
+});
+    </script>
+</div>
 </body>
 </html>
