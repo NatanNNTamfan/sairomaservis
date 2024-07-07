@@ -46,6 +46,8 @@ if (isset($_POST['edit_service'])) {
     $service_products = [];
     if (!empty($_POST['product_cart'])) {
         $service_products = json_decode($_POST['product_cart'], true);
+    } else {
+        $service_products = [];
     }
 
     // Update service
@@ -57,16 +59,14 @@ if (isset($_POST['edit_service'])) {
         $stmt->bind_param("i", $id);
         $stmt->execute();
         
-        if (!empty($service_products)) {
-            foreach ($service_products as $product) {
-                $product_id = $product['id'];
-                $stmt = $conn->prepare("INSERT INTO service_products (service_id, product_id) VALUES (?, ?)");
-                $stmt->bind_param("ii", $id, $product_id);
-                $stmt->execute();
-                $stmt = $conn->prepare("UPDATE products SET stock = stock - 1 WHERE id=?");
-                $stmt->bind_param("i", $product_id);
-                $stmt->execute();
-            }
+        foreach ($service_products as $product) {
+            $product_id = $product['id'];
+            $stmt = $conn->prepare("INSERT INTO service_products (service_id, product_id) VALUES (?, ?)");
+            $stmt->bind_param("ii", $id, $product_id);
+            $stmt->execute();
+            $stmt = $conn->prepare("UPDATE products SET stock = stock - 1 WHERE id=?");
+            $stmt->bind_param("i", $product_id);
+            $stmt->execute();
         }
         echo "<script>
                 Swal.fire({
@@ -185,7 +185,7 @@ if (isset($_POST['edit_service'])) {
                 <option value="Completed" <?php if ($service['status'] == 'Completed') echo 'selected'; ?>>Completed</option>
             </select>
         </div>
-        <input type="hidden" name="product_cart" id="product_cart_input">
+        <input type="hidden" name="product_cart" id="product_cart_input" value='<?php echo json_encode($service_products); ?>'>
         <button type="submit" class="btn btn-primary" name="edit_service">Save Changes</button>
     </form>
 
