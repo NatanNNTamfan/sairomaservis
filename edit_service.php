@@ -59,8 +59,8 @@ if (isset($_POST['edit_service'])) {
         $stmt->bind_param("i", $id);
         $stmt->execute();
         
-        if (!empty($service_products)) {
-            foreach ($service_products as $product_id) {
+        if (!empty($_POST['used_products'])) {
+            foreach ($_POST['used_products'] as $product_id) {
                 $stmt = $conn->prepare("INSERT INTO service_products (service_id, product_id) VALUES (?, ?)");
                 $stmt->bind_param("ii", $id, $product_id);
                 $stmt->execute();
@@ -115,7 +115,7 @@ if (isset($_POST['edit_service'])) {
         </div>
         <div class="form-group was-validated">
             <label for="used_products">Used Products:</label>
-            <select class="form-control" id="used_products" name="used_products[]">
+            <select class="form-control" id="used_products" name="used_products[]" multiple>
                 <option value="">Select Product</option>
                 <?php
                 $sql = "SELECT id, name, hargabeli FROM products";

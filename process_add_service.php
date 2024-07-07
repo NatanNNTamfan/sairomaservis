@@ -12,8 +12,7 @@ if (!empty($_POST['customer_id']) && !empty($_POST['description']) && !empty($_P
         $service_id = $conn->insert_id;
         if (!empty($_POST['product_cart'])) {
             $productCart = json_decode($_POST['product_cart'], true);
-            foreach ($productCart as $product) {
-                $product_id = $product['id'];
+            foreach ($productCart as $product_id) {
                 $sql = "INSERT INTO service_products (service_id, product_id) VALUES ('$service_id', '$product_id')";
                 $conn->query($sql);
                 $sql = "UPDATE products SET stock = stock - 1 WHERE id='$product_id'";
