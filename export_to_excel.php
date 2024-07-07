@@ -1,6 +1,9 @@
 <?php
 include 'config.php';
-require 'PHPExcel.php';
+require 'vendor/autoload.php';
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xls;
 
 $start_date = isset($_GET['start_date']) && !empty($_GET['start_date']) ? $_GET['start_date'] : '1970-01-01';
 $end_date = isset($_GET['end_date']) && !empty($_GET['end_date']) ? $_GET['end_date'] : date('Y-m-d');
@@ -25,9 +28,9 @@ $sql = "SELECT s.id, c.name as customer_name, s.description, s.status, s.cost, s
         ORDER BY s.created_at DESC";
 $result = $conn->query($sql);
 
-$objPHPExcel = new PHPExcel();
-$objPHPExcel->setActiveSheetIndex(0);
-$sheet = $objPHPExcel->getActiveSheet();
+$spreadsheet = new Spreadsheet();
+$spreadsheet->setActiveSheetIndex(0);
+$sheet = $spreadsheet->getActiveSheet();
 
 $sheet->setCellValue('A1', 'Service ID');
 $sheet->setCellValue('B1', 'Customer Name');
@@ -59,6 +62,6 @@ header('Content-Type: application/vnd.ms-excel');
 header('Content-Disposition: attachment;filename="service_report.xls"');
 header('Cache-Control: max-age=0');
 
-$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-$objWriter->save('php://output');
+$writer = new Xls($spreadsheet);
+$writer->save('php://output');
 exit;
