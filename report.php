@@ -45,6 +45,9 @@
             <div class="form-group col-md-4 align-self-end">
                 <button type="submit" class="btn btn-primary btn-block">Filter</button>
             </div>
+            <div class="form-group col-md-4 align-self-end">
+                <button type="submit" class="btn btn-success btn-block" formaction="export_to_excel.php">Export to Excel</button>
+            </div>
         </div>
     </form>
     <table class="table table-bordered mt-4">
