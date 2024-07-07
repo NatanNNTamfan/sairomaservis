@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="container mt-4">
-    <h2>Financial Report</h2>
+    <h2>Service Report</h2>
     <form method="get" action="">
         <div class="form-row">
             <div class="form-group col-md-5">
@@ -38,16 +38,14 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Product</th>
-                <th>Quantity</th>
-                <th>Harga Beli</th>
-                <th>Harga Jual</th>
-                <th>Discount</th>
-                <th>Total</th>
-                <th>Profit</th>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Keuntungan</th>
+                <th>Service ID</th>
+                <th>Customer Name</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Cost</th>
+                <th>Used Products</th>
+                <th>Created At</th>
+                <th>Updated At</th>
             </tr>
         </thead>
         <tbody>
@@ -58,27 +56,29 @@
             $end_time = isset($_GET['end_time']) && !empty($_GET['end_time']) ? $_GET['end_time'] : '23:59:59';
             $search = isset($_GET['search']) ? $_GET['search'] : '';
             $search = str_replace(' ', '', $search);
-            $sql = "SELECT p.merk, p.name, p.hargabeli, s.quantity, s.price, s.discount, s.total, DATE(s.date) as date, TIME(s.date) as time, (s.price - p.hargabeli) * s.quantity - s.discount as profit 
-                    FROM sales s 
-                    JOIN products p ON s.product_id = p.id 
-                    WHERE (s.date BETWEEN '$start_date $start_time' AND '$end_date $end_time')
-                    AND (REPLACE(p.name, ' ', '') LIKE '%$search%' OR REPLACE(p.merk, ' ', '') LIKE '%$search%')
-                    ORDER BY s.date DESC";
+            $sql = "SELECT s.id, c.name as customer_name, s.description, s.status, s.cost, s.created_at, s.updated_at, 
+                           GROUP_CONCAT(p.name SEPARATOR ', ') as used_products
+                    FROM services s
+                    JOIN customers c ON s.customer_id = c.id
+                    LEFT JOIN service_products sp ON s.id = sp.service_id
+                    LEFT JOIN products p ON sp.product_id = p.id
+                    WHERE (s.created_at BETWEEN '$start_date $start_time' AND '$end_date $end_time')
+                    AND (REPLACE(c.name, ' ', '') LIKE '%$search%' OR REPLACE(s.description, ' ', '') LIKE '%$search%')
+                    GROUP BY s.id
+                    ORDER BY s.created_at DESC";
             $result = $conn->query($sql);
 
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>";
-                    echo "<td>" . $row["merk"] . " " . $row["name"] . "</td>";
-                    echo "<td>" . $row["quantity"] . "</td>";
-                    echo "<td>Rp " . number_format($row["hargabeli"], 0, ',', '.') . "</td>";
-                    echo "<td>Rp " . number_format($row["price"], 0, ',', '.') . "</td>";
-                    echo "<td>Rp " . number_format($row["discount"], 0, ',', '.') . "</td>";
-                    echo "<td>Rp " . number_format($row["total"], 0, ',', '.') . "</td>";
-                    echo "<td>Rp " . number_format($row["profit"], 0, ',', '.') . "</td>";
-                    echo "<td>" . $row["date"] . "</td>";
-                    echo "<td>" . $row["time"] . "</td>";
-                    echo "<td>Rp " . number_format($row["profit"], 0, ',', '.') . "</td>";
+                    echo "<td>" . $row["id"] . "</td>";
+                    echo "<td>" . $row["customer_name"] . "</td>";
+                    echo "<td>" . $row["description"] . "</td>";
+                    echo "<td>" . $row["status"] . "</td>";
+                    echo "<td>Rp " . number_format($row["cost"], 0, ',', '.') . "</td>";
+                    echo "<td>" . $row["used_products"] . "</td>";
+                    echo "<td>" . $row["created_at"] . "</td>";
+                    echo "<td>" . $row["updated_at"] . "</td>";
                     echo "</tr>";
                 }
             } else {
@@ -94,27 +94,10 @@
             }
             ?>
             <?php
-            $sql_profit = "SELECT SUM((s.price - p.hargabeli) * s.quantity - s.discount) as total_profit 
-                           FROM sales s 
-                           JOIN products p ON s.product_id = p.id 
-                           WHERE (s.date BETWEEN '$start_date $start_time' AND '$end_date $end_time')
-                           AND (REPLACE(p.name, ' ', '') LIKE '%$search%' OR REPLACE(p.merk, ' ', '') LIKE '%$search%')";
-            $result_profit = $conn->query($sql_profit);
-            $total_profit = $result_profit->fetch_assoc()['total_profit'];
-            ?>
-            <?php
-            $sql_profit = "SELECT SUM((s.price - p.hargabeli) * s.quantity - s.discount) as total_profit 
-                           FROM sales s 
-                           JOIN products p ON s.product_id = p.id 
-                           WHERE (s.date BETWEEN '$start_date $start_time' AND '$end_date $end_time')
-                           AND (REPLACE(p.name, ' ', '') LIKE '%$search%' OR REPLACE(p.merk, ' ', '') LIKE '%$search%')";
-            $result_profit = $conn->query($sql_profit);
-            $total_profit = $result_profit->fetch_assoc()['total_profit'];
             $conn->close();
             ?>
         </tbody>
     </table>
-    <h3>Total Profit: Rp <?php echo $total_profit !== null ? number_format($total_profit, 0, ',', '.') : '0'; ?></h3>
 </div>
 </body>
 </html>
