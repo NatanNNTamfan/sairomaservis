@@ -170,11 +170,11 @@ if (isset($_POST['edit_service'])) {
             </table>
         </div>
         <div class="form-group was-validated">
-            <label for="total_cost">Total Cost:</label>
+            <label for="total_cost">Total Cost of Used Products:</label>
             <input type="text" class="form-control" id="total_cost" name="total_cost" readonly>
         </div>
         <div class="form-group">
-            <label for="profit">Profit:</label>
+            <label for="profit">Profit (Cost - Total Cost of Used Products):</label>
             <input type="text" class="form-control" id="profit" name="profit" readonly>
         </div>
         <div class="form-group">
@@ -241,24 +241,14 @@ if (isset($_POST['edit_service'])) {
         calculateProfit();
     }
 
-    document.getElementById('used_products').addEventListener('change', function() {
-        let totalCost = 0;
-        let selectedOptions = this.selectedOptions;
-        for (let i = 0; i < selectedOptions.length; i++) {
-            totalCost += parseFloat(selectedOptions[i].getAttribute('data-price'));
-        }
-        document.getElementById('total_cost').value = 'Rp ' + totalCost.toLocaleString('id-ID');
-        calculateProfit();
-    });
-
-    document.getElementById('cost').addEventListener('input', calculateProfit);
-
     function calculateProfit() {
         let totalCost = parseFloat(document.getElementById('total_cost').value.replace(/[^0-9.-]+/g,""));
         let serviceCost = parseFloat(document.getElementById('cost').value);
         let profit = serviceCost - totalCost;
         document.getElementById('profit').value = 'Rp ' + profit.toLocaleString('id-ID');
     }
+
+    document.getElementById('cost').addEventListener('input', calculateProfit);
 </script>
 <?php $conn->close(); ?>
 </body>
