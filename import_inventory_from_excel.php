@@ -124,18 +124,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     window.location = 'inventory.php';
                 });
               </script>";
-    } else {
-        log_message("No file uploaded or invalid request");
-        echo "<script>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Import Failed',
-                    text: 'No file uploaded or invalid request.'
-                }).then(function() {
-                    window.location = 'inventory.php';
-                });
-              </script>";
+        } else {
+            log_message("No file uploaded or invalid request");
+            echo "<script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Import Failed',
+                        text: 'No file uploaded or invalid request.'
+                    }).then(function() {
+                        window.location = 'inventory.php';
+                    });
+                  </script>";
+        }
     }
-}
-$conn->close();
+    $conn->close();
 ?>
