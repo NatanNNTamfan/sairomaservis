@@ -235,7 +235,7 @@ if (isset($_POST['edit_service'])) {
             `;
         });
 
-        let totalCost = productCart.reduce((total, product) => total + parseFloat(product.price.replace(/[^\d.-]/g, '')), 0);
+        let totalCost = productCart.reduce((total, product) => total + parseFloat(product.price), 0);
         document.getElementById('total_cost').value = 'Rp ' + totalCost.toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
         calculateProfit();
     }
