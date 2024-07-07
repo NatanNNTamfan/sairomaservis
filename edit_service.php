@@ -28,12 +28,16 @@ if (isset($_GET['id'])) {
     }
 
     // Fetch used products for the service
-    $stmt = $conn->prepare("SELECT product_id FROM service_products WHERE service_id=?");
+    $stmt = $conn->prepare("SELECT sp.product_id, p.name, p.hargabeli FROM service_products sp JOIN products p ON sp.product_id = p.id WHERE sp.service_id=?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $result = $stmt->get_result();
     while ($row = $result->fetch_assoc()) {
-        $service_products[] = $row['product_id'];
+        $service_products[] = [
+            'id' => $row['product_id'],
+            'name' => $row['name'],
+            'price' => $row['hargabeli']
+        ];
     }
 }
 
@@ -146,23 +150,13 @@ if (isset($_POST['edit_service'])) {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if (!empty($service_products)): ?>
-                        <?php foreach ($service_products as $product_id): 
-                            $stmt = $conn->prepare("SELECT name, hargabeli FROM products WHERE id=?");
-                            $stmt->bind_param("i", $product_id);
-                            $stmt->execute();
-                            $product_result = $stmt->get_result();
-                            if ($product_result->num_rows > 0) {
-                                $product = $product_result->fetch_assoc();
-                        ?>
+                    <?php foreach ($service_products as $product): ?>
                         <tr>
                             <td><?php echo htmlspecialchars($product['name']); ?></td>
-                            <td>Rp <?php echo number_format($product['hargabeli'], 0, ',', '.'); ?></td>
-                            <td><button type="button" class="btn btn-danger btn-sm" onclick="removeProduct(<?php echo $product_id; ?>)">Remove</button></td>
+                            <td>Rp <?php echo number_format($product['price'], 0, ',', '.'); ?></td>
+                            <td><button type="button" class="btn btn-danger btn-sm" onclick="removeProduct(<?php echo $product['id']; ?>)">Remove</button></td>
                         </tr>
-                        <?php } ?>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
@@ -187,16 +181,7 @@ if (isset($_POST['edit_service'])) {
     </form>
 
     <script>
-    let productCart = <?php echo json_encode(array_map(function($product_id) use ($conn) {
-    $stmt = $conn->prepare("SELECT id, name, hargabeli FROM products WHERE id=?");
-    $stmt->bind_param("i", $product_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    if ($result->num_rows > 0) {
-        return $result->fetch_assoc();
-    }
-    return null;
-}, $service_products)); ?>;
+    let productCart = <?php echo json_encode($service_products); ?>;
 
 function addProduct() {
     console.log("addProduct function called");
