@@ -240,10 +240,10 @@ if (isset($_POST['edit_service'])) {
     }
 
     function calculateProfit() {
-        let totalCost = parseFloat(document.getElementById('total_cost').value.replace(/[^\d.-]/g, ''));
-        let serviceCost = parseFloat(document.getElementById('cost').value.replace(/[^\d.-]/g, ''));
+        let totalCost = parseFloat(document.getElementById('total_cost').value.replace(/[^\d.-]/g, '')) || 0;
+        let serviceCost = parseFloat(document.getElementById('cost').value.replace(/[^\d.-]/g, '')) || 0;
         let profit = serviceCost - totalCost;
-        document.getElementById('profit').value = 'Rp ' + profit.toFixed(2).toLocaleString('id-ID');
+        document.getElementById('profit').value = 'Rp ' + profit.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 
     document.getElementById('cost').addEventListener('input', calculateProfit);
