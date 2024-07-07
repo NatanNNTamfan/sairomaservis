@@ -15,6 +15,7 @@ require 'vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
+$filter_info = isset($_GET['filter_info']) ? $_GET['filter_info'] : '';
 $start_date = isset($_GET['start_date']) && !empty($_GET['start_date']) ? $_GET['start_date'] : '1970-01-01';
 $end_date = isset($_GET['end_date']) && !empty($_GET['end_date']) ? $_GET['end_date'] : date('Y-m-d');
 $start_time = isset($_GET['start_time']) && !empty($_GET['start_time']) ? $_GET['start_time'] : '00:00:00';
@@ -43,7 +44,14 @@ $spreadsheet = new Spreadsheet();
 $spreadsheet->setActiveSheetIndex(0);
 $sheet = $spreadsheet->getActiveSheet();
 
-$sheet->setCellValue('A1', 'Service ID');
+$sheet->setCellValue('A1', 'Filter Information:');
+$sheet->setCellValue('B1', $filter_info);
+
+$sheet->mergeCells('A1:I1');
+$sheet->getStyle('A1')->getFont()->setBold(true);
+$sheet->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+$sheet->setCellValue('A2', 'Service ID');
 $sheet->setCellValue('B1', 'Customer Name');
 $sheet->setCellValue('C1', 'Description');
 $sheet->setCellValue('D1', 'Status');
@@ -53,9 +61,9 @@ $sheet->setCellValue('G1', 'Created At');
 $sheet->setCellValue('H1', 'Updated At');
 $sheet->setCellValue('I1', 'Profit');
 
-$sheet->getStyle('A1:I1')->getFont()->setBold(true);
-$sheet->getStyle('A1:I1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-$sheet->getStyle('A1:I1')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+$sheet->getStyle('A2:I2')->getFont()->setBold(true);
+$sheet->getStyle('A2:I2')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+$sheet->getStyle('A2:I2')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 $sheet->setCellValue('B1', 'Customer Name');
 $sheet->setCellValue('C1', 'Description');
 $sheet->setCellValue('D1', 'Status');
@@ -85,7 +93,7 @@ foreach (range('A', 'I') as $columnID) {
     $sheet->getColumnDimension($columnID)->setAutoSize(true);
 }
 
-$sheet->getStyle('A2:I' . ($rowNumber - 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+$sheet->getStyle('A3:I' . ($rowNumber - 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 
 header('Content-Type: application/vnd.ms-excel');
 header('Content-Disposition: attachment;filename="service_report.xls"');
