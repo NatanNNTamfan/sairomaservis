@@ -53,6 +53,7 @@
                 <th>Status</th>
                 <th>Cost</th>
                 <th>Used Products</th>
+                <th>Profit</th>
                 <th>Created At</th>
                 <th>Updated At</th>
             </tr>
@@ -69,7 +70,8 @@
             $status_condition = $status !== 'all' ? "AND s.status = '$status'" : '';
 
             $sql = "SELECT s.id, c.name as customer_name, s.description, s.status, s.cost, s.created_at, s.updated_at, 
-                           GROUP_CONCAT(p.name SEPARATOR ', ') as used_products
+                           GROUP_CONCAT(p.name SEPARATOR ', ') as used_products,
+                           (s.cost - IFNULL(SUM(p.hargabeli), 0)) as profit
                     FROM services s
                     JOIN customers c ON s.customer_id = c.id
                     LEFT JOIN service_products sp ON s.id = sp.service_id
@@ -91,6 +93,7 @@
                     echo "<td>Rp " . number_format($row["cost"], 0, ',', '.') . "</td>";
                     echo "<td>" . $row["used_products"] . "</td>";
                     echo "<td>" . $row["created_at"] . "</td>";
+                    echo "<td>Rp " . number_format($row["profit"], 0, ',', '.') . "</td>";
                     echo "<td>" . $row["updated_at"] . "</td>";
                     echo "</tr>";
                 }
