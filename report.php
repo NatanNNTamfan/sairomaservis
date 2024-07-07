@@ -47,18 +47,22 @@
             </div>
         </div>
     </form>
+    <?php
+    $order_by = isset($_GET['order_by']) ? $_GET['order_by'] : 's.created_at';
+    $order_dir = isset($_GET['order_dir']) && $_GET['order_dir'] == 'asc' ? 'asc' : 'desc';
+    ?>
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Service ID</th>
-                <th>Customer Name</th>
-                <th>Description</th>
-                <th>Status</th>
-                <th>Cost</th>
-                <th>Used Products</th>
-                <th>Created At</th>
-                <th>Updated At</th>
-                <th>Profit</th>
+                <th><a href="?<?php echo http_build_query(array_merge($_GET, ['order_by' => 's.id', 'order_dir' => $order_dir == 'asc' ? 'desc' : 'asc'])); ?>">Service ID</a></th>
+                <th><a href="?<?php echo http_build_query(array_merge($_GET, ['order_by' => 'c.name', 'order_dir' => $order_dir == 'asc' ? 'desc' : 'asc'])); ?>">Customer Name</a></th>
+                <th><a href="?<?php echo http_build_query(array_merge($_GET, ['order_by' => 's.description', 'order_dir' => $order_dir == 'asc' ? 'desc' : 'asc'])); ?>">Description</a></th>
+                <th><a href="?<?php echo http_build_query(array_merge($_GET, ['order_by' => 's.status', 'order_dir' => $order_dir == 'asc' ? 'desc' : 'asc'])); ?>">Status</a></th>
+                <th><a href="?<?php echo http_build_query(array_merge($_GET, ['order_by' => 's.cost', 'order_dir' => $order_dir == 'asc' ? 'desc' : 'asc'])); ?>">Cost</a></th>
+                <th><a href="?<?php echo http_build_query(array_merge($_GET, ['order_by' => 'used_products', 'order_dir' => $order_dir == 'asc' ? 'desc' : 'asc'])); ?>">Used Products</a></th>
+                <th><a href="?<?php echo http_build_query(array_merge($_GET, ['order_by' => 's.created_at', 'order_dir' => $order_dir == 'asc' ? 'desc' : 'asc'])); ?>">Created At</a></th>
+                <th><a href="?<?php echo http_build_query(array_merge($_GET, ['order_by' => 's.updated_at', 'order_dir' => $order_dir == 'asc' ? 'desc' : 'asc'])); ?>">Updated At</a></th>
+                <th><a href="?<?php echo http_build_query(array_merge($_GET, ['order_by' => 'profit', 'order_dir' => $order_dir == 'asc' ? 'desc' : 'asc'])); ?>">Profit</a></th>
                 
             </tr>
         </thead>
@@ -84,7 +88,7 @@
                     AND (REPLACE(c.name, ' ', '') LIKE '%$search%' OR REPLACE(s.description, ' ', '') LIKE '%$search%')
                     $status_condition
                     GROUP BY s.id
-                    ORDER BY s.created_at DESC";
+                    ORDER BY $order_by $order_dir";
             $result = $conn->query($sql);
 
             if ($result->num_rows > 0) {
