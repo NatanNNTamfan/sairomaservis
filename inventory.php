@@ -33,6 +33,13 @@ if (isset($_POST['add_product'])) {
         <div class="form-group">
             <a href="export_inventory_to_excel.php?search=<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>" class="btn btn-success">Export to Excel</a>
         </div>
+        <div class="form-group">
+            <form method="post" action="import_inventory_from_excel.php" enctype="multipart/form-data">
+                <label for="import_file">Import from Excel:</label>
+                <input type="file" class="form-control-file" id="import_file" name="import_file" required>
+                <button type="submit" class="btn btn-primary mt-2">Import</button>
+            </form>
+        </div>
         <script>
             function formatRupiah(angka, prefix) {
                 var number_string = angka.replace(/[^,\d]/g, '').toString(),
