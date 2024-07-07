@@ -52,26 +52,19 @@ $sheet->getStyle('A1')->getFont()->setBold(true);
 $sheet->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
 $sheet->setCellValue('A2', 'Service ID');
-$sheet->setCellValue('B1', 'Customer Name');
-$sheet->setCellValue('C1', 'Description');
-$sheet->setCellValue('D1', 'Status');
-$sheet->setCellValue('E1', 'Cost');
-$sheet->setCellValue('F1', 'Used Products');
-$sheet->setCellValue('G1', 'Created At');
-$sheet->setCellValue('H1', 'Updated At');
-$sheet->setCellValue('I1', 'Profit');
+$sheet->setCellValue('A2', 'Service ID');
+$sheet->setCellValue('B2', 'Customer Name');
+$sheet->setCellValue('C2', 'Description');
+$sheet->setCellValue('D2', 'Status');
+$sheet->setCellValue('E2', 'Cost');
+$sheet->setCellValue('F2', 'Used Products');
+$sheet->setCellValue('G2', 'Created At');
+$sheet->setCellValue('H2', 'Updated At');
+$sheet->setCellValue('I2', 'Profit');
 
 $sheet->getStyle('A2:I2')->getFont()->setBold(true);
 $sheet->getStyle('A2:I2')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 $sheet->getStyle('A2:I2')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-$sheet->setCellValue('B1', 'Customer Name');
-$sheet->setCellValue('C1', 'Description');
-$sheet->setCellValue('D1', 'Status');
-$sheet->setCellValue('E1', 'Cost');
-$sheet->setCellValue('F1', 'Used Products');
-$sheet->setCellValue('G1', 'Created At');
-$sheet->setCellValue('H1', 'Updated At');
-$sheet->setCellValue('I1', 'Profit');
 
 $rowNumber = 2;
 if ($result->num_rows > 0) {
