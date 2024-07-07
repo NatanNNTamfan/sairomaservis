@@ -53,9 +53,10 @@
                 <th>Status</th>
                 <th>Cost</th>
                 <th>Used Products</th>
-                <th>Profit</th>
                 <th>Created At</th>
                 <th>Updated At</th>
+                <th>Profit</th>
+
             </tr>
         </thead>
         <tbody>
@@ -93,8 +94,8 @@
                     echo "<td>Rp " . number_format($row["cost"], 0, ',', '.') . "</td>";
                     echo "<td>" . $row["used_products"] . "</td>";
                     echo "<td>" . $row["created_at"] . "</td>";
-                    echo "<td>Rp " . number_format($row["profit"], 0, ',', '.') . "</td>";
                     echo "<td>" . $row["updated_at"] . "</td>";
+                    echo "<td>Rp " . number_format($row["profit"], 0, ',', '.') . "</td>";
                     echo "</tr>";
                 }
             } else {
