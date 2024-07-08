@@ -4,14 +4,7 @@ include 'config.php';
 header('Content-Type: application/json');
 
 try {
-
-try {
-
-try {
-
-header('Content-Type: application/json');
-
-if (!empty($_POST['name']) && !empty($_POST['hargabeli']) && !empty($_POST['stock']) && !empty($_POST['kategori']) && !empty($_POST['merk'])) {
+    if (!empty($_POST['name']) && !empty($_POST['hargabeli']) && !empty($_POST['stock']) && !empty($_POST['kategori']) && !empty($_POST['merk'])) {
     $name = $_POST['merk'] . ' ' . $_POST['name'] . ' ' . $_POST['kategori'];
     $hargabeli = str_replace(['Rp ', '.'], '', $_POST['hargabeli']);
     $stock = $_POST['stock'];
@@ -52,8 +45,23 @@ if (!empty($_POST['name']) && !empty($_POST['hargabeli']) && !empty($_POST['stoc
     ]);
 }
 
-$conn->close();
-exit();
+    } else {
+        echo json_encode([
+            'icon' => 'warning',
+            'title' => 'Warning',
+            'text' => 'All fields are required'
+        ]);
+    }
+
+    $conn->close();
+    exit();
+} catch (Exception $e) {
+    echo json_encode([
+        'icon' => 'error',
+        'title' => 'Error',
+        'text' => 'Unexpected error occurred: ' . $e->getMessage()
+    ]);
+}
 } catch (Exception $e) {
     echo json_encode([
         'icon' => 'error',
