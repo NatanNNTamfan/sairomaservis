@@ -1,5 +1,7 @@
 <?php
 include 'config.php';
+include 'navbar.html';
+
 
 // Get total stock
 $sql = "SELECT SUM(stock) as total_stock FROM products";
