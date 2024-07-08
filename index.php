@@ -194,20 +194,31 @@ $total_sales = $result->fetch_assoc()['total_sales'];
                         },
                         body: 'id=' + id
                     })
-                    .then(response => response.json())
-                    .then(result => {
-                        if (result.status === 'success') {
-                            Swal.fire(
-                                'Deleted!',
-                                'Service has been deleted.',
-                                'success'
-                            ).then(() => {
-                                window.location.reload();
-                            });
-                        } else {
+                    .then(response => response.text())
+                    .then(text => {
+                        try {
+                            const result = JSON.parse(text);
+                            if (result.status === 'success') {
+                                Swal.fire(
+                                    'Deleted!',
+                                    'Service has been deleted.',
+                                    'success'
+                                ).then(() => {
+                                    window.location.reload();
+                                });
+                            } else {
+                                Swal.fire(
+                                    'Error!',
+                                    'Failed to delete service.',
+                                    'error'
+                                );
+                            }
+                        } catch (error) {
+                            console.error('Error parsing JSON:', error);
+                            console.error('Received text:', text);
                             Swal.fire(
                                 'Error!',
-                                'Failed to delete service.',
+                                'An unexpected error occurred. Please check the console for details.',
                                 'error'
                             );
                         }
