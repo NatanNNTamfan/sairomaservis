@@ -244,24 +244,15 @@ file_put_contents('debug.log', print_r($_POST, true) . "\n" . print_r($_FILES, t
         })
         .then(response => response.json())
         .then(result => {
-                Swal.fire({
-                    icon: result.icon,
-                    title: result.title,
-                    text: result.text
-                }).then(function() {
-                    if (result.icon === 'success') {
-                        window.location.reload();
-                    }
-                });
-            } catch (error) {
-                console.error('Error parsing JSON:', error);
-                console.error('Response text:', text);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'An unexpected error occurred'
-                });
-            }
+            Swal.fire({
+                icon: result.icon,
+                title: result.title,
+                text: result.text
+            }).then(function() {
+                if (result.icon === 'success') {
+                    window.location.reload();
+                }
+            });
         })
         .catch(error => {
             console.error('Error:', error);
