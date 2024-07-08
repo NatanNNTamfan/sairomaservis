@@ -1,4 +1,6 @@
-<?php include 'config.php'; ?>
+<?php include 'config.php';
+include 'navbar.html';
+?>
 
 <!DOCTYPE html>
 <html>
