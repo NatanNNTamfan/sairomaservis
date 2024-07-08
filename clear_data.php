@@ -1,11 +1,11 @@
 <?php
 include 'config.php';
 
-// Clear all data from products and sales tables
-$sql = "DELETE FROM products";
+$sql = "DELETE FROM sales";
 $conn->query($sql);
 
-$sql = "DELETE FROM sales";
+// Clear all data from products table
+$sql = "DELETE FROM products";
 $conn->query($sql);
 
 $conn->close();
