@@ -1,6 +1,9 @@
 <?php
 include 'config.php';
 
+$sql = "DELETE FROM service_products";
+$conn->query($sql);
+
 $sql = "DELETE FROM sales";
 $conn->query($sql);
 
