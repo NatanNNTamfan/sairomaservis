@@ -26,9 +26,9 @@ $total_sales = $result->fetch_assoc()['total_sales'];
 <body>
 <div class="container">
     <h1>Dashboard Overview</h1>
-    <p>Total Stock: <?php echo htmlspecialchars($total_stock); ?></p>
+    <p>Total Stock: <?php echo htmlspecialchars($total_stock ?? ''); ?></p>
     <p>Total Transactions: <?php echo htmlspecialchars($total_transactions); ?></p>
-    <p>Total Sales: <?php echo htmlspecialchars($total_sales); ?></p>
+    <p>Total Sales: <?php echo htmlspecialchars($total_sales ?? ''); ?></p>
     <form method="post" action="clear_data.php">
         <button type="submit" class="btn btn-danger mt-4">Clear All Data</button>
     </form>
