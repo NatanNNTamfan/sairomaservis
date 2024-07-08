@@ -161,7 +161,7 @@ $total_sales = $result->fetch_assoc()['total_sales'];
                     echo "<td>" . htmlspecialchars($row["updated_at"]) . "</td>";
                     echo "<td>
                             <a href='edit_service.php?id=" . htmlspecialchars($row['id']) . "' class='btn btn-primary btn-sm'>Edit</a>
-                            <a href='delete_service.php?id=" . htmlspecialchars($row['id']) . "' class='btn btn-danger btn-sm'>Delete</a>
+                            <button class='btn btn-danger btn-sm delete-service-btn' data-id='" . htmlspecialchars($row['id']) . "'>Delete</button>
                           </td>";
                     echo "</tr>";
                 }
