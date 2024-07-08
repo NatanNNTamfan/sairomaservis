@@ -242,7 +242,12 @@ file_put_contents('debug.log', print_r($_POST, true) . "\n" . print_r($_FILES, t
             method: 'POST',
             body: formData
         })
-        .then(response => response.text())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
         .then(text => {
             try {
                 const result = JSON.parse(text);

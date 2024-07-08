@@ -3,6 +3,8 @@ include 'config.php';
 
 header('Content-Type: application/json');
 
+header('Content-Type: application/json');
+
 try {
     if (!empty($_POST['name']) && !empty($_POST['hargabeli']) && !empty($_POST['stock']) && !empty($_POST['kategori']) && !empty($_POST['merk'])) {
         $name = $_POST['name'];
