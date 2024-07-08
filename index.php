@@ -11,16 +11,24 @@ $sql = "SELECT COUNT(*) as total_transactions FROM sales";
 $result = $conn->query($sql);
 $total_transactions = $result->fetch_assoc()['total_transactions'];
 
+// Get total sales
 $sql = "SELECT SUM(total) as total_sales FROM sales";
 $result = $conn->query($sql);
 $total_sales = $result->fetch_assoc()['total_sales'];
-
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Overview</title>
+    <link rel="stylesheet" href="path/to/your/bootstrap.css">
+</head>
+<body>
 <div class="container">
     <h1>Dashboard Overview</h1>
-    <p>Total Stock: <?php echo $total_stock; ?></p>
-    <p>Total Transactions: <?php echo $total_transactions; ?></p>
-    <p>Total Sales: <?php echo $total_sales; ?></p>
+    <p>Total Stock: <?php echo htmlspecialchars($total_stock); ?></p>
+    <p>Total Transactions: <?php echo htmlspecialchars($total_transactions); ?></p>
+    <p>Total Sales: <?php echo htmlspecialchars($total_sales); ?></p>
     <form method="post" action="clear_data.php">
         <button type="submit" class="btn btn-danger mt-4">Clear All Data</button>
     </form>
@@ -52,7 +60,7 @@ $total_sales = $result->fetch_assoc()['total_sales'];
                 $result = $conn->query($sql);
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
-                        echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
+                        echo "<option value='" . htmlspecialchars($row['id']) . "'>" . htmlspecialchars($row['name']) . "</option>";
                     }
                 } else {
                     echo "<option value=''>No customers available</option>";
@@ -78,6 +86,7 @@ $total_sales = $result->fetch_assoc()['total_sales'];
         </div>
         <button type="submit" class="btn btn-primary">Add Service</button>
     </form>
+
     <h2>Customer List</h2>
     <table class="table table-bordered">
         <thead>
@@ -87,7 +96,6 @@ $total_sales = $result->fetch_assoc()['total_sales'];
                 <th>Phone</th>
                 <th>Email</th>
                 <th>Created At</th>
-                <th>Action</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -99,25 +107,19 @@ $total_sales = $result->fetch_assoc()['total_sales'];
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>";
-                    echo "<td>" . $row["id"] . "</td>";
-                    echo "<td>" . $row["name"] . "</td>";
-                    echo "<td>" . $row["phone"] . "</td>";
-                    echo "<td>" . $row["email"] . "</td>";
-                    echo "<td>" . $row["created_at"] . "</td>";
+                    echo "<td>" . htmlspecialchars($row["id"]) . "</td>";
+                    echo "<td>" . htmlspecialchars($row["name"]) . "</td>";
+                    echo "<td>" . htmlspecialchars($row["phone"]) . "</td>";
+                    echo "<td>" . htmlspecialchars($row["email"]) . "</td>";
+                    echo "<td>" . htmlspecialchars($row["created_at"]) . "</td>";
                     echo "<td>
-                            <a href='edit_customer.php?id=" . $row['id'] . "' class='btn btn-primary btn-sm'>Edit</a>
-                            <form method='post' action='delete_customer.php' style='display:inline;'>
-                                <input type='hidden' name='id' value='" . $row['id'] . "'>
-                                <button type='submit' class='btn btn-danger btn-sm'>Delete</button>
-                            </form>
+                            <a href='edit_customer.php?id=" . htmlspecialchars($row['id']) . "' class='btn btn-primary btn-sm'>Edit</a>
+                            <a href='delete_customer.php?id=" . htmlspecialchars($row['id']) . "' class='btn btn-danger btn-sm'>Delete</a>
                           </td>";
-                    echo "<td><a href='edit_service.php?id=" . $row['id'] . "' class='btn btn-primary btn-sm'>Edit</a></td>";
-                    echo "<td><a href='edit_service.php?id=" . $row['id'] . "' class='btn btn-primary btn-sm'>Edit</a></td>";
-                    echo "<td><a href='edit_service.php?id=" . $row['id'] . "' class='btn btn-primary btn-sm'>Edit</a></td>";
                     echo "</tr>";
                 }
             } else {
-                echo "<tr><td colspan='5'>No customers found</td></tr>";
+                echo "<tr><td colspan='6'>No customers found</td></tr>";
             }
             ?>
         </tbody>
@@ -148,21 +150,26 @@ $total_sales = $result->fetch_assoc()['total_sales'];
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>";
-                    echo "<td>" . $row["id"] . "</td>";
-                    echo "<td>" . $row["customer_name"] . "</td>";
-                    echo "<td>" . $row["description"] . "</td>";
-                    echo "<td>" . $row["status"] . "</td>";
-                    echo "<td>Rp " . number_format($row["cost"], 0, ',', '.') . "</td>";
-                    echo "<td>" . $row["created_at"] . "</td>";
-                    echo "<td>" . $row["updated_at"] . "</td>";
+                    echo "<td>" . htmlspecialchars($row["id"]) . "</td>";
+                    echo "<td>" . htmlspecialchars($row["customer_name"]) . "</td>";
+                    echo "<td>" . htmlspecialchars($row["description"]) . "</td>";
+                    echo "<td>" . htmlspecialchars($row["status"]) . "</td>";
+                    echo "<td>Rp " . number_format(htmlspecialchars($row["cost"]), 0, ',', '.') . "</td>";
+                    echo "<td>" . htmlspecialchars($row["created_at"]) . "</td>";
+                    echo "<td>" . htmlspecialchars($row["updated_at"]) . "</td>";
+                    echo "<td>
+                            <a href='edit_service.php?id=" . htmlspecialchars($row['id']) . "' class='btn btn-primary btn-sm'>Edit</a>
+                            <a href='delete_service.php?id=" . htmlspecialchars($row['id']) . "' class='btn btn-danger btn-sm'>Delete</a>
+                          </td>";
                     echo "</tr>";
                 }
             } else {
-                echo "<tr><td colspan='7'>No services found</td></tr>";
+                echo "<tr><td colspan='8'>No services found</td></tr>";
             }
             ?>
         </tbody>
     </table>
 </div>
+<script src="path/to/your/bootstrap.js"></script>
 </body>
 </html>
