@@ -242,28 +242,29 @@ file_put_contents('debug.log', print_r($_POST, true) . "\n" . print_r($_FILES, t
             method: 'POST',
             body: formData
         })
-        .then(response => response.text())
-        .then(text => {
-            try {
-                const result = JSON.parse(text);
-                Swal.fire({
-                    icon: result.icon,
-                    title: result.title,
-                    text: result.text
-                }).then(function() {
-                    if (result.icon === 'success') {
-                        window.location.reload();
-                    }
-                });
-            } catch (error) {
-                console.error('Error parsing JSON:', error);
-                console.error('Response text:', text);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'An unexpected error occurred'
-                });
-            }
+        .then(response => {
+            return response.text().then(text => {
+                try {
+                    const result = JSON.parse(text);
+                    Swal.fire({
+                        icon: result.icon,
+                        title: result.title,
+                        text: result.text
+                    }).then(function() {
+                        if (result.icon === 'success') {
+                            window.location.reload();
+                        }
+                    });
+                } catch (error) {
+                    console.error('Error parsing JSON:', error);
+                    console.error('Response text:', text);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An unexpected error occurred'
+                    });
+                }
+            });
         })
         .catch(error => {
             console.error('Error:', error);
