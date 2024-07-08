@@ -5,6 +5,8 @@ header('Content-Type: application/json');
 
 try {
 
+try {
+
 header('Content-Type: application/json');
 
 if (!empty($_POST['name']) && !empty($_POST['hargabeli']) && !empty($_POST['stock']) && !empty($_POST['kategori']) && !empty($_POST['merk'])) {
@@ -45,22 +47,6 @@ if (!empty($_POST['name']) && !empty($_POST['hargabeli']) && !empty($_POST['stoc
         'icon' => 'warning',
         'title' => 'Warning',
         'text' => 'All fields are required'
-    ]);
-}
-
-} catch (Exception $e) {
-    echo json_encode([
-        'icon' => 'error',
-        'title' => 'Error',
-        'text' => 'Unexpected error occurred: ' . $e->getMessage()
-    ]);
-}
-
-} catch (Exception $e) {
-    echo json_encode([
-        'icon' => 'error',
-        'title' => 'Error',
-        'text' => 'Unexpected error occurred: ' . $e->getMessage()
     ]);
 }
 
