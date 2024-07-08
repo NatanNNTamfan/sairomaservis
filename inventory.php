@@ -273,14 +273,6 @@ file_put_contents('debug.log', print_r($_POST, true) . "\n" . print_r($_FILES, t
                 text: 'An unexpected error occurred'
             });
         });
-        .catch(error => {
-            console.error('Error:', error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'An unexpected error occurred'
-            });
-        });
     });
 
     document.getElementById('importForm').addEventListener('submit', function(e) {
