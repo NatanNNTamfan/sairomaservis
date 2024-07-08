@@ -161,6 +161,7 @@ $total_sales = $result->fetch_assoc()['total_sales'];
                     echo "<td>" . htmlspecialchars($row["updated_at"]) . "</td>";
                     echo "<td>
                             <a href='edit_service.php?id=" . htmlspecialchars($row['id']) . "' class='btn btn-primary btn-sm'>Edit</a>
+                            <button class='btn btn-danger btn-sm delete-service-btn' data-id='" . htmlspecialchars($row['id']) . "'>Delete</button>
                             <a href='delete_service.php?id=" . htmlspecialchars($row['id']) . "' class='btn btn-danger btn-sm'>Delete</a>
                           </td>";
                     echo "</tr>";
@@ -173,5 +174,57 @@ $total_sales = $result->fetch_assoc()['total_sales'];
     </table>
 </div>
 <script src="path/to/your/bootstrap.js"></script>
+<script>
+    document.querySelectorAll('.delete-service-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const id = this.getAttribute('data-id');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('delete_service.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: 'id=' + id
+                    })
+                    .then(response => response.json())
+                    .then(result => {
+                        if (result.status === 'success') {
+                            Swal.fire(
+                                'Deleted!',
+                                'Service has been deleted.',
+                                'success'
+                            ).then(() => {
+                                window.location.reload();
+                            });
+                        } else {
+                            Swal.fire(
+                                'Error!',
+                                'Failed to delete service.',
+                                'error'
+                            );
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire(
+                            'Error!',
+                            'An unexpected error occurred.',
+                            'error'
+                        );
+                    });
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>
