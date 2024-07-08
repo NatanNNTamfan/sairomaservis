@@ -95,7 +95,7 @@ include 'navbar.html';
                     AND (REPLACE(c.name, ' ', '') LIKE '%$search%' OR REPLACE(s.description, ' ', '') LIKE '%$search%')
                     $status_condition
                     GROUP BY s.id
-                    ORDER BY $order_by $order_dir";
+                    ORDER BY s.created_at DESC, $order_by $order_dir";
             $result = $conn->query($sql);
 
             if ($result->num_rows > 0) {
