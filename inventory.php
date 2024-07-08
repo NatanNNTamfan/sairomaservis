@@ -242,10 +242,8 @@ file_put_contents('debug.log', print_r($_POST, true) . "\n" . print_r($_FILES, t
             method: 'POST',
             body: formData
         })
-        .then(response => response.text())
-        .then(text => {
-            try {
-                const result = JSON.parse(text);
+        .then(response => response.json())
+        .then(result => {
                 Swal.fire({
                     icon: result.icon,
                     title: result.title,

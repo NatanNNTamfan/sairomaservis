@@ -5,7 +5,7 @@ header('Content-Type: application/json');
 
 try {
     if (!empty($_POST['name']) && !empty($_POST['hargabeli']) && !empty($_POST['stock']) && !empty($_POST['kategori']) && !empty($_POST['merk'])) {
-        $name = $_POST['merk'] . ' ' . $_POST['name'] . ' ' . $_POST['kategori'];
+        $name = $_POST['name'];
         $hargabeli = str_replace(['Rp ', '.'], '', $_POST['hargabeli']);
         $stock = $_POST['stock'];
         $kategori = $_POST['kategori'];
