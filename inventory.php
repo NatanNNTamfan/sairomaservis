@@ -291,25 +291,28 @@ file_put_contents('debug.log', print_r($_POST, true) . "\n" . print_r($_FILES, t
         method: 'POST',
         body: formData
     })
-    .then(response => {
-        // Log the raw response for debugging
-        response.text().then(text => console.log('Raw response:', text));
-        
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
+    .then(response => response.text())
+    .then(text => {
+        try {
+            const result = JSON.parse(text);
+            Swal.fire({
+                icon: result.status,
+                title: result.status === 'success' ? 'Import Successful' : 'Import Failed',
+                text: result.message
+            }).then(function() {
+                if (result.status === 'success') {
+                    window.location.reload();
+                }
+            });
+        } catch (error) {
+            console.error('Error parsing JSON:', error);
+            console.error('Response text:', text);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'An unexpected error occurred during import. Please check the console for details.'
+            });
         }
-        return response.json();
-    })
-    .then(result => {
-        Swal.fire({
-            icon: result.status,
-            title: result.status === 'success' ? 'Import Successful' : 'Import Failed',
-            text: result.message
-        }).then(function() {
-            if (result.status === 'success') {
-                window.location.reload();
-            }
-        });
     })
     .catch(error => {
         console.error('Error:', error);
