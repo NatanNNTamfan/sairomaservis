@@ -1,0 +1,124 @@
+2024-07-07 20:40:00 - Script started
+2024-07-07 20:40:00 - Invalid request method
+2024-07-07 20:40:30 - Script started
+2024-07-07 20:40:30 - Invalid request method
+2024-07-07 20:43:56 - Script started
+2024-07-07 20:43:56 - POST request received
+2024-07-07 20:43:56 - File upload detected
+2024-07-07 20:43:56 - File uploaded: C:\Users\user\AppData\Local\Temp\php23DE.tmp
+2024-07-07 20:43:56 - File type: application/vnd.ms-excel
+2024-07-07 20:43:56 - File size: 6144
+2024-07-07 20:43:57 - Spreadsheet loaded successfully
+2024-07-07 20:43:57 - Highest row: 13
+2024-07-07 20:43:57 - Processing row 2: ID=14, Name=Samsung barang 1 Connector, HargaBeli=100000, Stock=3, Kategori=Connector, Merk=Samsung
+2024-07-07 20:43:57 - Updating existing product: ID=14
+2024-07-07 20:43:57 - Processing row 3: ID=15, Name=Xiaomi barang 2 Backdoor, HargaBeli=30000, Stock=4, Kategori=Backdoor, Merk=Xiaomi
+2024-07-07 20:43:57 - Updating existing product: ID=15
+2024-07-07 20:43:57 - Processing row 4: ID=16, Name=note 8 pro, HargaBeli=100000, Stock=1, Kategori=LCD, Merk=Xiaomi
+2024-07-07 20:43:57 - Updating existing product: ID=16
+2024-07-07 20:43:57 - Processing row 5: ID=17, Name=dsadas, HargaBeli=21312, Stock=231321, Kategori=Baterai, Merk=Xiaomi
+2024-07-07 20:43:57 - Updating existing product: ID=17
+2024-07-07 20:43:57 - Processing row 6: ID=18, Name=bbb, HargaBeli=21312, Stock=122, Kategori=Connector, Merk=Samsung
+2024-07-07 20:43:57 - Updating existing product: ID=18
+2024-07-07 20:43:57 - Processing row 7: ID=19, Name=Samsung sda Connector, HargaBeli=120000, Stock=10, Kategori=Connector, Merk=Samsung
+2024-07-07 20:43:57 - Updating existing product: ID=19
+2024-07-07 20:43:57 - Processing row 8: ID=20, Name=Samsung halo Connector, HargaBeli=122, Stock=9, Kategori=Connector, Merk=Samsung
+2024-07-07 20:43:57 - Updating existing product: ID=20
+2024-07-07 20:43:57 - Processing row 9: ID=21, Name=Samsung kiw Connector, HargaBeli=12, Stock=10, Kategori=Connector, Merk=Samsung
+2024-07-07 20:43:57 - Updating existing product: ID=21
+2024-07-07 20:43:57 - Processing row 10: ID=22, Name=Samsung 2,5gb Connector, HargaBeli=131, Stock=12, Kategori=Connector, Merk=Samsung
+2024-07-07 20:43:57 - Updating existing product: ID=22
+2024-07-07 20:43:57 - Processing row 11: ID=23, Name=Samsung adasdsa Connector, HargaBeli=12131, Stock=1123, Kategori=Connector, Merk=Samsung
+2024-07-07 20:43:57 - Updating existing product: ID=23
+2024-07-07 20:43:57 - Processing row 12: ID=24, Name=Samsung dsada Connector, HargaBeli=213131, Stock=13, Kategori=Connector, Merk=Samsung
+2024-07-07 20:43:57 - Updating existing product: ID=24
+2024-07-07 20:43:57 - Processing row 13: ID=25, Name=Samsung Pangeran Natanael Napitupulu Connector, HargaBeli=131, Stock=12312, Kategori=Connector, Merk=Samsung
+2024-07-07 20:43:57 - Updating existing product: ID=25
+2024-07-07 20:43:57 - Import successful
+2024-07-07 20:45:34 - Script started
+2024-07-07 20:45:34 - POST request received
+2024-07-07 20:45:34 - File upload detected
+2024-07-07 20:45:34 - File uploaded: C:\Users\user\AppData\Local\Temp\phpA3E7.tmp
+2024-07-07 20:45:34 - File type: application/vnd.ms-excel
+2024-07-07 20:45:34 - File size: 6144
+2024-07-07 20:45:34 - Spreadsheet loaded successfully
+2024-07-07 20:45:34 - Highest row: 13
+2024-07-07 20:45:34 - Processing row 2: ID=14, Name=Samsung barang 1 Connector, HargaBeli=100000, Stock=3, Kategori=Connector, Merk=Samsung
+2024-07-07 20:45:34 - Updating existing product: ID=14
+2024-07-07 20:45:34 - Processing row 3: ID=15, Name=Xiaomi barang 2 Backdoor, HargaBeli=30000, Stock=4, Kategori=Backdoor, Merk=Xiaomi
+2024-07-07 20:45:34 - Updating existing product: ID=15
+2024-07-07 20:45:34 - Processing row 4: ID=16, Name=note 8 pro, HargaBeli=100000, Stock=1, Kategori=LCD, Merk=Xiaomi
+2024-07-07 20:45:34 - Updating existing product: ID=16
+2024-07-07 20:45:34 - Processing row 5: ID=17, Name=dsadas, HargaBeli=21312, Stock=231321, Kategori=Baterai, Merk=Xiaomi
+2024-07-07 20:45:34 - Updating existing product: ID=17
+2024-07-07 20:45:34 - Processing row 6: ID=18, Name=bbb, HargaBeli=21312, Stock=122, Kategori=Connector, Merk=Samsung
+2024-07-07 20:45:34 - Updating existing product: ID=18
+2024-07-07 20:45:34 - Processing row 7: ID=19, Name=Samsung sda Connector, HargaBeli=120000, Stock=10, Kategori=Connector, Merk=Samsung
+2024-07-07 20:45:34 - Updating existing product: ID=19
+2024-07-07 20:45:34 - Processing row 8: ID=20, Name=Samsung halo Connector, HargaBeli=122, Stock=9, Kategori=Connector, Merk=Samsung
+2024-07-07 20:45:34 - Updating existing product: ID=20
+2024-07-07 20:45:34 - Processing row 9: ID=21, Name=Samsung kiw Connector, HargaBeli=12, Stock=10, Kategori=Connector, Merk=Samsung
+2024-07-07 20:45:34 - Updating existing product: ID=21
+2024-07-07 20:45:34 - Processing row 10: ID=22, Name=Samsung 2,5gb Connector, HargaBeli=131, Stock=12, Kategori=Connector, Merk=Samsung
+2024-07-07 20:45:34 - Updating existing product: ID=22
+2024-07-07 20:45:34 - Processing row 11: ID=23, Name=Samsung adasdsa Connector, HargaBeli=12131, Stock=1123, Kategori=Connector, Merk=Samsung
+2024-07-07 20:45:34 - Updating existing product: ID=23
+2024-07-07 20:45:34 - Processing row 12: ID=24, Name=Samsung dsada Connector, HargaBeli=213131, Stock=13, Kategori=Connector, Merk=Samsung
+2024-07-07 20:45:34 - Updating existing product: ID=24
+2024-07-07 20:45:34 - Processing row 13: ID=25, Name=Samsung Pangeran Natanael Napitupulu Connector, HargaBeli=131, Stock=12312, Kategori=Connector, Merk=Samsung
+2024-07-07 20:45:34 - Updating existing product: ID=25
+2024-07-07 20:45:34 - Import successful
+2024-07-07 21:32:06 - POST data: Array
+(
+)
+
+2024-07-07 21:32:06 - FILES data: Array
+(
+    [import_file] => Array
+        (
+            [name] => inventory_report (1).xls
+            [full_path] => inventory_report (1).xls
+            [type] => application/vnd.ms-excel
+            [tmp_name] => C:\Users\user\AppData\Local\Temp\php3C2B.tmp
+            [error] => 0
+            [size] => 6144
+        )
+
+)
+
+2024-07-07 21:34:30 - POST data: Array
+(
+)
+
+2024-07-07 21:34:30 - FILES data: Array
+(
+    [import_file] => Array
+        (
+            [name] => inventory_report (1).xls
+            [full_path] => inventory_report (1).xls
+            [type] => application/vnd.ms-excel
+            [tmp_name] => C:\Users\user\AppData\Local\Temp\php710D.tmp
+            [error] => 0
+            [size] => 6144
+        )
+
+)
+
+2024-07-08 08:29:03 - POST data: Array
+(
+)
+
+2024-07-08 08:29:03 - FILES data: Array
+(
+)
+
+2024-07-08 08:29:03 - Error: No file uploaded or upload error occurred.
+2024-07-08 10:01:27 - POST data: Array
+(
+)
+
+2024-07-08 10:01:27 - FILES data: Array
+(
+)
+
+2024-07-08 10:01:27 - Error: No file uploaded or upload error occurred.

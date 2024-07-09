@@ -1,0 +1,8 @@
+[07-Jul-2024 21:32:06 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::getCellByColumnAndRow() in C:\laragon\www\aider\import_inventory_from_excel.php:73
+Stack trace:
+#0 {main}
+  thrown in C:\laragon\www\aider\import_inventory_from_excel.php on line 73
+[07-Jul-2024 21:34:30 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::getCellByColumnAndRow() in C:\laragon\www\aider\import_inventory_from_excel.php:73
+Stack trace:
+#0 {main}
+  thrown in C:\laragon\www\aider\import_inventory_from_excel.php on line 73
